@@ -1,0 +1,7 @@
+# MCP サーバー（vegbook_* ツール群）
+mcp
+
+
+# データ収集スクリプト（collect_harvest.py）
+# e-Stat API キーが必要: python3 collect_harvest.py <あなたご自身のAPIキー>
+# APIキーの取得: https://www.e-stat.go.jp/api/
