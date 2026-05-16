@@ -21,7 +21,6 @@
 | `regions` | 地域マスタ | 5 |
 | `climate_monthly` | 地域別月別気候データ | 1,560 |
 | `harvest_stats` | 作物別収穫量統計（e-Stat） | 927 |
-| `sns_clicks` | SNS クリックログ | — |
 
 ---
 
@@ -215,18 +214,6 @@
 
 ---
 
-### sns_clicks（SNSクリックログ）
-
-| カラム | 型 | 説明 |
-|---|---|---|
-| `id` | INTEGER PK AUTOINCREMENT | |
-| `crop_name` | TEXT | 作物名 |
-| `tweet_id` | TEXT | ツイートID |
-| `tweet_url` | TEXT | ツイートURL |
-| `clicked_at` | TEXT | クリック日時（JST） |
-
----
-
 ## インデックス一覧
 
 | インデックス名 | テーブル | カラム | 用途 |
@@ -244,8 +231,6 @@
 | `idx_glossary_cat` | glossary | category | カテゴリ検索 |
 | `idx_glossary_reading` | glossary | reading | 読み仮名検索 |
 | `idx_regions_name` | regions | name | 地域名検索 |
-| `idx_sns_crop` | sns_clicks | crop_name | 作物別クリック集計 |
-| `idx_sns_clicked_at` | sns_clicks | clicked_at | 時系列クリック集計 |
 
 ---
 
@@ -267,7 +252,6 @@ regions ─────── climate_monthly
 harvest_stats（作物名文字列で管理、crops との JOIN 不要）
 
 glossary（独立テーブル）
-sns_clicks（独立テーブル）
 ```
 
 ---
