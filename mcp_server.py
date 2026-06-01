@@ -21,6 +21,8 @@ from mcp.server.fastmcp import FastMCP
 
 DB = Path(__file__).parent / 'vegbook.db'
 
+__version__ = '1.3.0'
+
 mcp = FastMCP('vegbook')
 
 
@@ -28,6 +30,29 @@ def _conn() -> sqlite3.Connection:
     conn = sqlite3.connect(DB)
     conn.row_factory = sqlite3.Row
     return conn
+
+
+def _kana_variants(text: str) -> list[str]:
+    """カタカナ↔ひらがな両方の表記バリアントを返す（重複除去）。
+
+    「オクラ」→「おくら」、「おくら」→「オクラ」のように
+    どちらの表記で渡されても DB を検索できるようにする。
+    """
+    kata_to_hira = ''.join(
+        chr(ord(c) - 0x60) if 'ァ' <= c <= 'ヶ' else c
+        for c in text
+    )
+    hira_to_kata = ''.join(
+        chr(ord(c) + 0x60) if 'ぁ' <= c <= 'ゖ' else c
+        for c in text
+    )
+    seen: set[str] = set()
+    result: list[str] = []
+    for v in (text, kata_to_hira, hira_to_kata):
+        if v not in seen:
+            seen.add(v)
+            result.append(v)
+    return result
 
 
 # ── ① 作物検索 ──────────────────────────────────────────────────────
@@ -115,14 +140,16 @@ def vegbook_detail(name: str, lang: str = 'ja') -> dict:
         lang: 出力言語（ja / en）
     """
     conn = _conn()
+    _v = _kana_variants(name)
+    _ph = ','.join('?' * len(_v))
     row = conn.execute(
-        '''SELECT c.*, cc.name AS category, cc.name_en AS category_en,
+        f'''SELECT c.*, cc.name AS category, cc.name_en AS category_en,
                   ge.name AS environment, ge.name_en AS environment_en
            FROM crops c
            JOIN crop_categories cc ON c.category_id = cc.id
            LEFT JOIN grow_environments ge ON c.environment_id = ge.id
-           WHERE c.name = ? OR c.name_en = ?''',
-        (name, name),
+           WHERE c.name IN ({_ph}) OR c.name_en = ?''',
+        (*_v, name),
     ).fetchone()
     conn.close()
 
@@ -230,9 +257,11 @@ def vegbook_companion(crop_name: str, lang: str = 'ja') -> dict:
     conn = _conn()
 
     # 作物IDを取得
+    _v = _kana_variants(crop_name)
+    _ph = ','.join('?' * len(_v))
     crop = conn.execute(
-        'SELECT id, name, name_en FROM crops WHERE name = ? OR name_en = ?',
-        (crop_name, crop_name),
+        f'SELECT id, name, name_en FROM crops WHERE name IN ({_ph}) OR name_en = ?',
+        (*_v, crop_name),
     ).fetchone()
 
     if not crop:
@@ -465,17 +494,21 @@ def vegbook_add_companion(
     """
     conn = _conn()
 
+    _cv = _kana_variants(crop_name)
+    _cph = ','.join('?' * len(_cv))
     crop = conn.execute(
-        'SELECT id FROM crops WHERE name = ? OR name_en = ?',
-        (crop_name, crop_name),
+        f'SELECT id FROM crops WHERE name IN ({_cph}) OR name_en = ?',
+        (*_cv, crop_name),
     ).fetchone()
     if not crop:
         conn.close()
         return {'error': f'Crop "{crop_name}" not found.'}
 
+    _mv = _kana_variants(companion_name)
+    _mph = ','.join('?' * len(_mv))
     companion = conn.execute(
-        'SELECT id FROM crops WHERE name = ? OR name_en = ?',
-        (companion_name, companion_name),
+        f'SELECT id FROM crops WHERE name IN ({_mph}) OR name_en = ?',
+        (*_mv, companion_name),
     ).fetchone()
     if not companion:
         conn.close()
@@ -542,9 +575,11 @@ def vegbook_update_crop(crop_name: str, field: str, value: str) -> dict:
         }
 
     conn = _conn()
+    _v = _kana_variants(crop_name)
+    _ph = ','.join('?' * len(_v))
     crop = conn.execute(
-        'SELECT id, name FROM crops WHERE name = ? OR name_en = ?',
-        (crop_name, crop_name),
+        f'SELECT id, name FROM crops WHERE name IN ({_ph}) OR name_en = ?',
+        (*_v, crop_name),
     ).fetchone()
     if not crop:
         conn.close()
