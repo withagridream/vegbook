@@ -1,0 +1,15 @@
+# Python のキャッシュ
+__pycache__/
+*.pyc
+
+# 作業用・私的なファイル（公開しない）
+agridream.db
+agridream_cli.py
+nginx_withagridream.conf
+withagridream-*.service
+schedule.xlsx
+
+# バックアップ・一時ファイル
+*.bak
+*.tmp
+.venv/
