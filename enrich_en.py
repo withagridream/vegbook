@@ -51,12 +51,12 @@ PEST_CONTROLS_EN = {
     "防虫ネット":                          "Insect-proof net",
     "粘着シート（黄色）":                    "Yellow sticky trap",
     "木酢液":                             "Wood vinegar spray",
-    "スミチオン乳剤":                       "Sumithion emulsion (malathion-based)",
+    "スミチオン乳剤（薬剤を使う場合はラベルの適用作物・使用方法を確認）":                       "Sumithion emulsion (if using a chemical, follow the label for registered crops and directions)",
     "粘着テープ除去・木酢液散布・天敵（テントウムシ）": "Remove with tape, spray wood vinegar, use ladybugs",
-    "水スプレーで洗い流す・殺ダニ剤（バロックフロアブル）": "Wash off with water spray, apply miticide",
-    "防虫ネット・BT剤（オルトラン）・手取り除去":  "Insect net, BT spray, hand removal",
-    "防虫ネット・BT剤・天敵（コナガサムライコマユバチ）": "Insect net, BT spray, parasitic wasp",
-    "株元を掘り起こして手取り・ネキリムシ防除剤":  "Dig around base and remove by hand, apply cutworm bait",
+    "水スプレーで洗い流す・殺ダニ剤（薬剤を使う場合はラベルの適用作物・使用方法を確認）": "Wash off with water spray, apply miticide (if using a chemical, follow the label for registered crops and directions)",
+    "防虫ネット・BT剤・手取り除去（薬剤を使う場合はラベルの適用作物・使用方法を確認）":  "Insect net, BT spray, hand removal (if using a chemical, follow the label for registered crops and directions)",
+    "防虫ネット・BT剤・天敵（コナガサムライコマユバチ）（薬剤を使う場合はラベルの適用作物・使用方法を確認）": "Insect net, BT spray, parasitic wasp (if using a chemical, follow the label for registered crops and directions)",
+    "株元を掘り起こして手取り・ネキリムシ防除剤（薬剤を使う場合はラベルの適用作物・使用方法を確認）":  "Dig around base and remove by hand, apply cutworm bait (if using a chemical, follow the label for registered crops and directions)",
     "粘着テープ・木酢液散布":                 "Sticky tape, wood vinegar spray",
 }
 
