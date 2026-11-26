@@ -185,7 +185,7 @@ Claude Codeのチャットで自然な日本語で質問するだけで、vegboo
 |---|---|
 | 「今月何を植えれば良い？」 | vegbook_recommend |
 | 「トマトの育て方を教えて」 | vegbook_detail |
-| 「ベランダで育てられる初心者向け野菜は？」 | vegbook_search |
+| 「プランターで育てられる初心者向け野菜は？」 | vegbook_search |
 | 「連作障害って何？」 | vegbook_glossary |
 | 「ナスの隣に植えると良い野菜は？」 | vegbook_companion |
 | 「関東の今月の気候データを見たい」 | vegbook_climate |
@@ -236,10 +236,10 @@ vegbook_diagnose を実行して不足データを確認して
 #### 今月何を植えるか迷ったとき
 
 ```
-5月にベランダで育てられる初心者向けの野菜を教えて
+5月にプランターで育てられる初心者向けの野菜を教えて
 ```
 
-`vegbook_search` が `environment=ベランダ` `difficulty=1` で絞り込み、候補を返す。
+`vegbook_search` が `environment=プランター` `difficulty=1` で絞り込み、候補を返す。
 
 #### コンパニオンプランツを活用したい
 
@@ -371,14 +371,14 @@ python vegbook.py search --category 果菜類
 python vegbook.py search --difficulty 1
 
 # 栽培環境で絞り込み
-python vegbook.py search --environment ベランダ
+python vegbook.py search --environment プランター
 
 # 複合条件
 python vegbook.py search --month 5 --category 葉モノ野菜 --difficulty 1
 ```
 
 カテゴリ一覧：`果菜類` `葉モノ野菜` `根菜類` `ハーブ` `豆類` `イモ類`  
-栽培環境一覧：`ほ場` `プランター` `ベランダ` `水耕栽培` `室内`
+栽培環境一覧：`ほ場` `プランター`（現在、作物に登録があるのはこの2つだけ。`ベランダ` `水耕栽培` `室内` は区分のみで、指定すると0件になる）
 
 ### 作物の詳細情報
 
@@ -437,8 +437,8 @@ MCP経由で使えるツールの仕様一覧です。
 | vegbook_climate | 地域別月別気候データを取得 | region, year（省略時は直近5年）, month |
 | vegbook_harvest_stats | 作物別収穫量統計を取得 | crop_name, start_year（デフォルト2000）, end_year |
 | vegbook_diagnose | DBの不足データを診断 | なし |
-| vegbook_add_companion | コンパニオンプランツを追加 | crop_name, companion_name, effect, is_positive, effect_en |
-| vegbook_update_crop | 作物フィールドを更新 | crop_name, field, value |
+| vegbook_add_companion | コンパニオンプランツを追加（既定で無効） | crop_name, companion_name, effect, is_positive, effect_en |
+| vegbook_update_crop | 作物フィールドを更新（既定で無効） | crop_name, field, value |
 
 ### vegbook_climate の地域名一覧
 
@@ -449,6 +449,34 @@ MCP経由で使えるツールの仕様一覧です。
 | 九州 または 九州北部 | 九州北部 |
 | 東北 | 東北 |
 | 北海道 | 北海道 |
+
+地域名は日本語で指定する（`Kanto` などの英語名では見つからない）。
+
+### 書き込み系ツールを有効にする
+
+`vegbook_add_companion` と `vegbook_update_crop` は、既定では無効になっている。DB は読み取り専用（`mode=ro`）で開き、呼び出すと「無効です」という理由を返す。
+有効にするには、MCP サーバーの起動時に環境変数 `VEGBOOK_ALLOW_WRITE=1` を設定する。`.mcp.json` の例：
+
+```json
+{
+  "mcpServers": {
+    "vegbook": {
+      "type": "stdio",
+      "command": "/絶対パス/vegbook/.venv/bin/python",
+      "args": ["/絶対パス/vegbook/mcp_server.py"],
+      "env": { "VEGBOOK_ALLOW_WRITE": "1" }
+    }
+  }
+}
+```
+
+有効にすると `vegbook.db` が直接書き換わる（履歴は残らず、値の検証も限定的）。書き換える前に `vegbook.db` のコピーを取っておくこと。
+
+### データ上の注意（既知の不具合・未修正）
+
+- `vegbook_harvest_stats`：2014〜2020年は、別の作物の値が入っている疑いがあるため値を返さない（警告を返す）。ダイコン2007〜08年・いちご2023年も一部の値を返さない。
+- `vegbook_climate`：九州北部2010・2011、東北2011、北海道2006（降水量）・2011は、月の値がずれている疑いがあるため値を返さない。
+- いずれも `vegbook.db` の行は未修正。原典で確認できるまで、記事や計画の根拠にしないこと。
 
 ---
 

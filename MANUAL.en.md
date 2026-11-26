@@ -185,7 +185,7 @@ Just ask in natural language in the Claude Code chat — the relevant vegbook to
 |---|---|
 | "What should I plant this month?" | vegbook_recommend |
 | "How do I grow tomatoes?" | vegbook_detail |
-| "What beginner-friendly vegetables can I grow on a balcony?" | vegbook_search |
+| "What beginner-friendly vegetables can I grow in a planter?" | vegbook_search |
 | "What is crop rotation?" | vegbook_glossary |
 | "What grows well next to eggplant?" | vegbook_companion |
 | "What is the climate data for Kanto this month?" | vegbook_climate |
@@ -236,10 +236,10 @@ Returns: crops missing companion plant entries, crops missing seed/seedling type
 #### Not sure what to plant this month?
 
 ```
-What beginner-friendly vegetables can I grow on a balcony in May?
+What beginner-friendly vegetables can I grow in a planter in May?
 ```
 
-`vegbook_search` filters by `environment=Balcony` and `difficulty=1` and returns matching crops.
+`vegbook_search` filters by `environment=Planter` and `difficulty=1` and returns matching crops.
 
 #### Want to use companion planting?
 
@@ -372,14 +372,14 @@ python vegbook.py search --category "Fruiting Vegetables" --lang en
 python vegbook.py search --difficulty 1 --lang en
 
 # Filter by growing environment
-python vegbook.py search --environment Balcony --lang en
+python vegbook.py search --environment Planter --lang en
 
 # Combined filters
 python vegbook.py search --month 5 --category "Leafy Vegetables" --difficulty 1 --lang en
 ```
 
 Categories: `Fruiting Vegetables` `Leafy Vegetables` `Root Vegetables` `Herbs` `Legumes` `Tubers`  
-Environments: `Field` `Planter` `Balcony` `Hydroponics` `Indoors`
+Environments: `Field` `Planter` (currently the only two assigned to crops; `Balcony` `Hydroponics` `Indoors` exist as categories but return 0 results)
 
 ### Crop details
 
@@ -436,8 +436,8 @@ All tools available via MCP:
 | vegbook_climate | Get regional monthly climate data | region, year (default: last 5 years), month |
 | vegbook_harvest_stats | Get national harvest statistics by crop | crop_name, start_year (default 2000), end_year |
 | vegbook_diagnose | Diagnose missing data in the DB | none |
-| vegbook_add_companion | Add a companion plant entry | crop_name, companion_name, effect, is_positive, effect_en |
-| vegbook_update_crop | Update a crop field | crop_name, field, value |
+| vegbook_add_companion | Add a companion plant entry (disabled by default) | crop_name, companion_name, effect, is_positive, effect_en |
+| vegbook_update_crop | Update a crop field (disabled by default) | crop_name, field, value |
 
 ### Available regions for vegbook_climate
 
@@ -448,6 +448,34 @@ All tools available via MCP:
 | 九州 or 九州北部 | Kyushu North |
 | 東北 | Tohoku |
 | 北海道 | Hokkaido |
+
+Region names must be given in Japanese (English names such as `Kanto` will not match).
+
+### Enabling write tools
+
+`vegbook_add_companion` and `vegbook_update_crop` are disabled by default. The database is opened read-only (`mode=ro`), and calling these tools returns a message explaining why they are disabled.
+To enable them, set the environment variable `VEGBOOK_ALLOW_WRITE=1` when starting the MCP server. Example `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "vegbook": {
+      "type": "stdio",
+      "command": "/absolute/path/vegbook/.venv/bin/python",
+      "args": ["/absolute/path/vegbook/mcp_server.py"],
+      "env": { "VEGBOOK_ALLOW_WRITE": "1" }
+    }
+  }
+}
+```
+
+When enabled, `vegbook.db` is modified directly (no history is kept and validation is limited). Make a backup copy of `vegbook.db` first.
+
+### Known data issues (not yet fixed)
+
+- `vegbook_harvest_stats`: values for 2014-2020 are withheld (a warning is returned) because of a suspected crop mix-up during import. Daikon 2007-08 and strawberry 2023 are also partly withheld.
+- `vegbook_climate`: values for Kyushu North 2010/2011, Tohoku 2011, Hokkaido 2006 (precipitation) and 2011 are withheld because monthly columns appear shifted.
+- The rows in `vegbook.db` themselves are not yet corrected. Do not rely on these figures until verified against the original sources.
 
 ---
 

@@ -8,11 +8,15 @@ tools:
   vegbook_companion    - コンパニオンプランツ検索
   vegbook_glossary     - 農業用語検索
   vegbook_climate      - 地域別月別気候データ取得
-  vegbook_harvest      - 作物別収穫量統計取得
+  vegbook_harvest_stats - 作物別収穫量統計取得
   vegbook_diagnose     - 不足データの診断レポート
-  vegbook_add_companion - コンパニオンプランツの追加
-  vegbook_update_crop  - 作物フィールドの更新
+  vegbook_add_companion - コンパニオンプランツの追加（既定で無効）
+  vegbook_update_crop  - 作物フィールドの更新（既定で無効）
+
+書き込み系ツールは、環境変数 VEGBOOK_ALLOW_WRITE=1 を設定して
+起動したときだけ動く。それ以外は読み取り専用（mode=ro）で DB を開く。
 """
+import os
 import sqlite3
 from datetime import date
 from pathlib import Path
@@ -26,10 +30,61 @@ __version__ = '1.3.0'
 mcp = FastMCP('vegbook')
 
 
-def _conn() -> sqlite3.Connection:
-    conn = sqlite3.connect(DB)
+def _write_enabled() -> bool:
+    """書き込み系ツールが有効か（環境変数 VEGBOOK_ALLOW_WRITE=1 のときだけ True）。"""
+    return os.environ.get('VEGBOOK_ALLOW_WRITE') == '1'
+
+
+_WRITE_DISABLED = {
+    'error': 'このツールは既定で無効です（vegbook.db は読み取り専用で公開されています）。'
+             '有効にするには、MCPサーバーの起動時に環境変数 VEGBOOK_ALLOW_WRITE=1 を設定してください。',
+    'error_en': 'This tool is disabled by default (vegbook.db is read-only). '
+                'Set the environment variable VEGBOOK_ALLOW_WRITE=1 when starting the MCP server to enable it.',
+}
+
+
+def _conn(write: bool = False) -> sqlite3.Connection:
+    """DB 接続を返す。write=False（既定）は読み取り専用（mode=ro）。"""
+    mode = 'rw' if write else 'ro'
+    conn = sqlite3.connect(f'{DB.as_uri()}?mode={mode}', uri=True)
     conn.row_factory = sqlite3.Row
     return conn
+
+
+def _in_month_sql(start: str, end: str) -> str:
+    """月 m が [start, end] に入る条件のSQL断片（プレースホルダ4個: m, m, m, m）。
+
+    start > end（例：11〜2月）は年をまたぐ範囲として扱う。
+    """
+    return (f'(({start} <= {end} AND {start} <= ? AND {end} >= ?)'
+            f' OR ({start} > {end} AND ({start} <= ? OR {end} >= ?)))')
+
+
+# 取り込み不良の疑いがあるデータ（DBの行は未修正。応急処置として値を返さない）
+# 収穫統計：2014〜2020年は品目コード表のずれの疑い（38作物の約22作物で2013→2014・2020→2021の値が不連続）
+_HARVEST_SUSPECT_YEARS = set(range(2014, 2021))
+_HARVEST_SUSPECT_NOTE = (
+    '取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。'
+    '（e-Stat の原典で確認してください）'
+)
+# 作物・年・値の列を個別に指定する疑い行
+_HARVEST_SUSPECT_ROWS: dict[tuple[str, int], tuple[set[str], str]] = {
+    ('ダイコン', 2007): ({'area_ha', 'shipment_t'}, '作付面積が日本の耕地面積を超える異常値（取り込み不良の疑い・未修正）'),
+    ('ダイコン', 2008): ({'area_ha', 'shipment_t'}, '作付面積が日本の耕地面積を超える異常値（取り込み不良の疑い・未修正）'),
+    ('いちご', 2023): ({'area_ha', 'harvest_t', 'shipment_t'}, '前後の年の約4倍で、値の取り込み不良の疑い（未修正）'),
+}
+
+# 気候データ：月の列が詰まって12月に年平均・年合計が入った地域年（region_id, year）→ 値を返さない列
+_CLIMATE_SUSPECT: dict[tuple[int, int], set[str]] = {
+    (3, 2010): {'avg_temp_c', 'precipitation_mm'},  # 九州北部
+    (3, 2011): {'avg_temp_c', 'precipitation_mm'},
+    (4, 2011): {'avg_temp_c', 'precipitation_mm'},  # 東北
+    (5, 2006): {'precipitation_mm'},                # 北海道（降水量のみ）
+    (5, 2011): {'avg_temp_c', 'precipitation_mm'},
+}
+_CLIMATE_SUSPECT_NOTE = (
+    '取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。'
+)
 
 
 def _kana_variants(text: str) -> list[str]:
@@ -87,8 +142,9 @@ def vegbook_search(
     params: list = []
 
     if month is not None:
-        query += ' AND (c.sow_start <= ? AND c.sow_end >= ? OR c.harvest_start <= ? AND c.harvest_end >= ?)'
-        params += [month, month, month, month]
+        query += (' AND (' + _in_month_sql('c.sow_start', 'c.sow_end')
+                  + ' OR ' + _in_month_sql('c.harvest_start', 'c.harvest_end') + ')')
+        params += [month] * 8
     if category:
         query += ' AND cc.name LIKE ?'
         params.append(f'%{category}%')
@@ -217,10 +273,10 @@ def vegbook_recommend(month: int | None = None, lang: str = 'ja') -> list[dict]:
                   cc.name AS category, cc.name_en AS category_en
            FROM crops c
            JOIN crop_categories cc ON c.category_id = cc.id
-           WHERE c.sow_start <= ? AND c.sow_end >= ?
+           WHERE ''' + _in_month_sql('c.sow_start', 'c.sow_end') + '''
              AND c.difficulty <= 2
            ORDER BY c.difficulty, c.days_to_harvest''',
-        (month, month),
+        (month, month, month, month),
     ).fetchall()
     conn.close()
 
@@ -307,12 +363,16 @@ def vegbook_glossary(query: str, lang: str = 'ja') -> list[dict]:
         lang:  出力言語（ja / en）
     """
     conn = _conn()
+    # カタカナ・ひらがな両方の表記で検索する
+    variants = _kana_variants(query)
+    cond = ' OR '.join(['term LIKE ? OR reading LIKE ? OR plain_ja LIKE ? OR plain_en LIKE ?'] * len(variants))
+    params = [f'%{v}%' for v in variants for _ in range(4)]
     rows = conn.execute(
-        '''SELECT term, reading, plain_ja, plain_en, category
+        f'''SELECT DISTINCT term, reading, plain_ja, plain_en, category
            FROM glossary
-           WHERE term LIKE ? OR reading LIKE ? OR plain_ja LIKE ? OR plain_en LIKE ?
-           ORDER BY term''',
-        (f'%{query}%', f'%{query}%', f'%{query}%', f'%{query}%'),
+           WHERE {cond}
+           ORDER BY term''',  # noqa: S608 – cond は固定文字列のみ
+        params,
     ).fetchall()
     conn.close()
 
@@ -357,7 +417,7 @@ def vegbook_climate(
     ).fetchone()
     if not reg:
         conn.close()
-        return [{'error': f'Region "{region}" not found. Available: Kanto-Plain, Kinki, Kyushu-North, Tohoku, Hokkaido'}]
+        return [{'error': f'Region "{region}" not found. Available (Japanese names only / 日本語名で指定): 関東平野, 近畿, 九州北部, 東北, 北海道'}]
 
     query = '''
         SELECT year, month, avg_temp, precipitation
@@ -383,16 +443,22 @@ def vegbook_climate(
     rows = conn.execute(query, params).fetchall()
     conn.close()
 
-    return [
-        {
+    results = []
+    for r in rows:
+        item = {
             'region': reg['name'],
             'year': r['year'],
             'month': r['month'],
             'avg_temp_c': r['avg_temp'],
             'precipitation_mm': r['precipitation'],
         }
-        for r in rows
-    ]
+        suspect = _CLIMATE_SUSPECT.get((reg['id'], r['year']))
+        if suspect:
+            for col in suspect:
+                item[col] = None
+            item['warning'] = _CLIMATE_SUSPECT_NOTE
+        results.append(item)
+    return results
 
 
 # ── ⑦ 収穫量統計 ────────────────────────────────────────────────────
@@ -405,7 +471,7 @@ def vegbook_harvest_stats(
     """作物別の全国収穫量統計（作付面積・収穫量・出荷量）を返す。
 
     Args:
-        crop_name:  作物名（vegbookのcropsテーブルと同じ名称）
+        crop_name:  作物名（日本語。カタカナ・ひらがなどちらでも可）
         start_year: 開始年（デフォルト2000年）
         end_year:   終了年（省略時は最新年）
     """
@@ -413,28 +479,40 @@ def vegbook_harvest_stats(
         end_year = date.today().year
 
     conn = _conn()
+    _v = _kana_variants(crop_name)
+    _ph = ','.join('?' * len(_v))
     rows = conn.execute(
-        '''SELECT year, area_ha, harvest_t, shipment_t
+        f'''SELECT crop_name, year, area_ha, harvest_t, shipment_t
            FROM harvest_stats
-           WHERE crop_name = ? AND year >= ? AND year <= ?
-           ORDER BY year''',
-        (crop_name, start_year, end_year),
+           WHERE crop_name IN ({_ph}) AND year >= ? AND year <= ?
+           ORDER BY crop_name, year''',  # noqa: S608 – _ph は ? のみ
+        (*_v, start_year, end_year),
     ).fetchall()
     conn.close()
 
     if not rows:
         return [{'error': f'No harvest data found for "{crop_name}".'}]
 
-    return [
-        {
-            'crop_name': crop_name,
+    results = []
+    for r in rows:
+        item = {
+            'crop_name': r['crop_name'],
             'year': r['year'],
             'area_ha': r['area_ha'],
             'harvest_t': r['harvest_t'],
             'shipment_t': r['shipment_t'],
         }
-        for r in rows
-    ]
+        if r['year'] in _HARVEST_SUSPECT_YEARS:
+            for col in ('area_ha', 'harvest_t', 'shipment_t'):
+                item[col] = None
+            item['warning'] = _HARVEST_SUSPECT_NOTE
+        elif (r['crop_name'], r['year']) in _HARVEST_SUSPECT_ROWS:
+            cols, note = _HARVEST_SUSPECT_ROWS[(r['crop_name'], r['year'])]
+            for col in cols:
+                item[col] = None
+            item['warning'] = note
+        results.append(item)
+    return results
 
 
 # ── ⑧ 不足データ診断 ────────────────────────────────────────────────
@@ -491,8 +569,12 @@ def vegbook_add_companion(
         effect:         効果の説明（日本語）
         is_positive:    True=相性良い / False=相性悪い
         effect_en:      効果の説明（英語・省略可）
+
+    既定では無効。環境変数 VEGBOOK_ALLOW_WRITE=1 で起動したときだけ動く。
     """
-    conn = _conn()
+    if not _write_enabled():
+        return dict(_WRITE_DISABLED)
+    conn = _conn(write=True)
 
     _cv = _kana_variants(crop_name)
     _cph = ','.join('?' * len(_cv))
@@ -567,14 +649,18 @@ def vegbook_update_crop(crop_name: str, field: str, value: str) -> dict:
                    sow_start / sow_end / harvest_start / harvest_end /
                    days_to_harvest / difficulty
         value:     設定する値
+
+    既定では無効。環境変数 VEGBOOK_ALLOW_WRITE=1 で起動したときだけ動く。
     """
+    if not _write_enabled():
+        return dict(_WRITE_DISABLED)
     if field not in _UPDATABLE_FIELDS:
         return {
             'error': f'Field "{field}" cannot be updated.',
             'allowed_fields': sorted(_UPDATABLE_FIELDS),
         }
 
-    conn = _conn()
+    conn = _conn(write=True)
     _v = _kana_variants(crop_name)
     _ph = ','.join('?' * len(_v))
     crop = conn.execute(

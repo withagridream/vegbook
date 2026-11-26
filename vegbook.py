@@ -93,6 +93,13 @@ def get_db():
     return conn
 
 
+def in_month_sql(start, end):
+    """月 m が [start, end] に入る条件のSQL断片（プレースホルダ4個: m, m, m, m）。
+    start > end（例：11〜2月）は年をまたぐ範囲として扱う。"""
+    return (f"(({start} <= {end} AND {start} <= ? AND {end} >= ?)"
+            f" OR ({start} > {end} AND ({start} <= ? OR {end} >= ?)))")
+
+
 def stars(n):
     n = n or 1
     return "★" * n + "☆" * (5 - n)
@@ -134,8 +141,8 @@ def cmd_search(args):
     params = []
 
     if args.month:
-        query += " AND cr.sow_start <= ? AND cr.sow_end >= ?"
-        params += [args.month, args.month]
+        query += " AND " + in_month_sql("cr.sow_start", "cr.sow_end")
+        params += [args.month] * 4
     if args.category:
         col = "cc.name_en" if args.lang == "en" else "cc.name"
         query += f" AND {col} = ?"
@@ -288,16 +295,16 @@ def cmd_recommend(args):
     sowable = conn.execute("""
         SELECT cr.*, cc.name AS category, cc.name_en AS category_en
         FROM crops cr LEFT JOIN crop_categories cc ON cr.category_id = cc.id
-        WHERE cr.sow_start <= ? AND cr.sow_end >= ?
+        WHERE """ + in_month_sql("cr.sow_start", "cr.sow_end") + """
         ORDER BY cr.difficulty, cr.name LIMIT 8
-    """, [month, month]).fetchall()
+    """, [month] * 4).fetchall()
 
     harvestable = conn.execute("""
         SELECT cr.*, cc.name AS category, cc.name_en AS category_en
         FROM crops cr LEFT JOIN crop_categories cc ON cr.category_id = cc.id
-        WHERE cr.harvest_start <= ? AND cr.harvest_end >= ?
+        WHERE """ + in_month_sql("cr.harvest_start", "cr.harvest_end") + """
         ORDER BY cr.name LIMIT 8
-    """, [month, month]).fetchall()
+    """, [month] * 4).fetchall()
 
     conn.close()
 

@@ -19,7 +19,7 @@ An agricultural and home gardening crop database system. Use it as a **Claude Co
 → Use `glossary` to look up agricultural terms in plain language — no prior knowledge needed.
 
 **"I want to find easy vegetables I can grow on my balcony."**  
-→ Filter with `search --environment Balcony --difficulty 1` and similar combinations.
+→ Filter with `search --environment Planter --difficulty 1` and similar combinations.
 
 **"I want to use this data in my own app or script."**  
 → `vegbook.db` is a standard SQLite3 file. Query it directly from Python, Node.js, or any language you prefer.
@@ -32,11 +32,16 @@ Agricultural database built from public sources: NARO (National Agriculture and 
 
 | Table | Records |
 |---|---|
-| Crops | 100 varieties |
+| Crops | 116 varieties |
 | Fertilizer links | 92 |
 | Pest & control links | 62 |
 | Companion plants | 161 |
 | Glossary terms | 52 |
+
+> **Known data issues (not yet fixed)**
+> - `vegbook_harvest_stats` withholds values for 2014-2020 (suspected crop mix-up during import). Daikon 2007-08 and strawberry 2023 are also partly withheld.
+> - `vegbook_climate` withholds values for some region-years (Kyushu North 2010/2011, Tohoku 2011, Hokkaido 2006 [precipitation] and 2011) because monthly columns appear shifted.
+> - The rows in `vegbook.db` themselves are not yet corrected. Do not rely on these figures until verified against the original sources.
 
 ---
 
@@ -46,6 +51,9 @@ Agricultural database built from public sources: NARO (National Agriculture and 
 - Python 3.10 or later
 - Claude Code
 - `pip install mcp`
+
+**Write tools:** `vegbook_update_crop` and `vegbook_add_companion` are disabled by default (the database is opened read-only).
+To enable them, set the environment variable `VEGBOOK_ALLOW_WRITE=1` when starting the MCP server (see "Enabling write tools" in MANUAL.en.md).
 
 **As CLI**
 - Python 3.8 or later
@@ -123,7 +131,7 @@ python vegbook.py search --month 5 --category "Fruiting Vegetables" --lang en
 ```
 
 Categories: `Fruiting Vegetables` `Leafy Vegetables` `Root Vegetables` `Herbs` `Legumes` `Tubers`  
-Environments: `Field` `Planter` `Balcony` `Hydroponics` `Indoors`
+Environments: `Field` `Planter` (currently the only two assigned to crops; `Balcony` `Hydroponics` `Indoors` exist as categories but return 0 results)
 
 ### Crop detail
 
@@ -170,7 +178,7 @@ python vegbook.py companion トマト
 
 ```
 vegbook.db (SQLite3)
-├── crops              Main crop table (30 records)
+├── crops              Main crop table (116 records)
 ├── crop_categories    Category master
 ├── grow_environments  Growing environment master
 ├── fertilizers        Fertilizer master

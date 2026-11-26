@@ -8,7 +8,7 @@
 
 | テーブル | 説明 | 件数 |
 |---|---|---|
-| `crops` | 作物メイン | 100 |
+| `crops` | 作物メイン | 116 |
 | `crop_categories` | カテゴリマスタ | 6 |
 | `grow_environments` | 栽培環境マスタ | 5 |
 | `fertilizers` | 肥料マスタ | 9 |
@@ -80,7 +80,7 @@
 | カラム | 型 | 説明 |
 |---|---|---|
 | `id` | INTEGER PK | |
-| `name` | TEXT | 栽培環境（日本語）例: ほ場, プランター, ベランダ, 水耕栽培, 室内 |
+| `name` | TEXT | 栽培環境（日本語）例: ほ場, プランター, ベランダ, 水耕栽培, 室内（現在、作物に登録があるのは ほ場・プランター のみ） |
 | `name_en` | TEXT | 栽培環境（英語）例: Field, Planter, Balcony, Hydroponics, Indoors |
 
 ---
