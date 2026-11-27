@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 from export_csv import TABLES
-from vegbook_core import STORAGE_METHODS, format_days, is_evidence, issue_key
+from vegbook_core import STORAGE_METHODS, format_days, is_evidence, issue_key, load_row_issues
 
 HERE = Path(__file__).parent
 NULL = '\\N'
@@ -173,6 +173,28 @@ def check_data_issues(conn: sqlite3.Connection) -> list[str]:
     return bad
 
 
+def check_chunks_issues(conn: sqlite3.Connection) -> list[str]:
+    """data_issues の hide に当たる文章欄から chunk が作られていないこと／note の chunk は仮で警告つきであること。"""
+    bad: list[str] = []
+    for r in conn.execute("SELECT * FROM data_issues WHERE table_name='crops' AND action IN ('hide','note')"):
+        parts = dict(p.split('=', 1) for p in r['row_key'].split('|'))
+        crop = conn.execute('SELECT id FROM crops WHERE name = ?', (parts.get('name'),)).fetchone()
+        if not crop:
+            continue
+        for col in (c.strip() for c in (r['column_name'] or '').split(',') if c.strip()):
+            lang = 'en' if col.endswith('_en') else 'ja'
+            section = col[:-3] if col.endswith('_en') else col
+            rows = conn.execute("SELECT provisional, has_source, warning FROM chunks WHERE ref_table='crops' AND ref_id=? "
+                                'AND section=? AND lang=?', (crop[0], section, lang)).fetchall()
+            if r['action'] == 'hide' and rows:
+                bad.append(f'chunks: hide の {parts.get("name")} {col} から chunk が作られている（{len(rows)}件）')
+            if r['action'] == 'note':
+                for c in rows:
+                    if not c['provisional'] or c['has_source'] or not c['warning']:
+                        bad.append(f'chunks: note の {parts.get("name")} {col} の chunk が仮・警告つきになっていない')
+    return bad
+
+
 def build_chunks(conn: sqlite3.Connection) -> int:
     """文章欄から chunks を作る。順序は決まっているので、同じCSVからは同じ結果になる。
 
@@ -190,19 +212,28 @@ def build_chunks(conn: sqlite3.Connection) -> int:
             (crop_id, field)).fetchone()
         return r[0]
 
-    def row(source_id, crop_id, lang, section, text, ref_table, ref_id, provisional=0):
+    def row(source_id, crop_id, lang, section, text, ref_table, ref_id, provisional=0, warning=None):
         # 根拠にできる判定は vegbook_core.is_evidence の1か所だけ（親が仮かどうかは呼び出し側が provisional に含める）
         ok = is_evidence(source_id in usable, provisional)
         sid = source_id if ok else None
-        return (sid, crop_id, lang, section, text, 0, ref_table, ref_id, 1 if provisional else 0, 1 if ok else 0)
+        return (sid, crop_id, lang, section, text, 0, ref_table, ref_id, 1 if provisional else 0, 1 if ok else 0, warning)
 
-    for r in conn.execute(f'SELECT id, {", ".join(CROP_TEXT_FIELDS)}, '
+    # 作物の文章欄：data_issues の hide の列からは chunk を作らない／note の列の chunk は仮（provisional=1・has_source=0）で警告つき
+    crop_issues = load_row_issues(conn, 'crops')
+    for r in conn.execute(f'SELECT id, name, {", ".join(CROP_TEXT_FIELDS)}, '
                           + ', '.join(f + '_en' for f in CROP_TEXT_FIELDS) + ' FROM crops ORDER BY id'):  # noqa: S608
         cid = r[0]
+        marks = crop_issues.get(issue_key(name=r['name']), [])
         n = len(CROP_TEXT_FIELDS)
         for i, field in enumerate(CROP_TEXT_FIELDS):
-            for lang, val, fld in (('ja', r[1 + i], field), ('en', r[1 + n + i], field + '_en')):
-                if val and str(val).strip():
+            hidden = {c for m in marks if m['action'] == 'hide' for c in m['cols']}
+            notes = [m['issue'] for m in marks if m['action'] == 'note' and {field, field + '_en'} & m['cols']]
+            for lang, val, fld in (('ja', r[2 + i], field), ('en', r[2 + n + i], field + '_en')):
+                if not (val and str(val).strip()) or fld in hidden:
+                    continue
+                if notes:
+                    out.append(row(None, cid, lang, field, str(val).strip(), 'crops', cid, 1, '／'.join(notes)))
+                else:
                     out.append(row(src(cid, fld), cid, lang, field, str(val).strip(), 'crops', cid))
     for r in conn.execute('SELECT id, crop_id, method, steps, duration_min_days, duration_max_days, '
                           'source_id, lang, wisdom, provisional FROM crop_storage ORDER BY id'):
@@ -247,7 +278,7 @@ def build_chunks(conn: sqlite3.Connection) -> int:
                            '\n'.join(parts), 'troubles', t['id'], 0 if ev else 1))
     conn.executemany(
         'INSERT INTO chunks (source_id, crop_id, lang, section, text, is_translation, ref_table, ref_id, '
-        'provisional, has_source) VALUES (?,?,?,?,?,?,?,?,?,?)', out)
+        'provisional, has_source, warning) VALUES (?,?,?,?,?,?,?,?,?,?,?)', out)
     conn.execute("INSERT INTO chunks_fts(chunks_fts) VALUES('rebuild')")
     return len(out)
 
@@ -271,7 +302,7 @@ def build(out: Path, data_dir: Path = HERE / 'data') -> dict[str, int]:
         # 検査に1つでも違反があればビルドを止める（既存の vegbook.db は壊れない）
         bad_fk = conn.execute('PRAGMA foreign_key_check').fetchall()
         problems = [f'外部キー違反: {tuple(b)}' for b in bad_fk]
-        problems += check_gate(conn) + check_pesticide(conn) + check_data_issues(conn)
+        problems += check_gate(conn) + check_pesticide(conn) + check_data_issues(conn) + check_chunks_issues(conn)
         if problems:
             raise SystemExit(f'ビルドを中止します（{len(problems)}件の検査違反）:\n  ' + '\n  '.join(problems[:30]))
         ok = conn.execute('PRAGMA integrity_check').fetchone()[0]

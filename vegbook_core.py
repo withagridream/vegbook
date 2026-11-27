@@ -434,7 +434,8 @@ def search_chunks(conn: sqlite3.Connection, query: str, crop_id: int | None = No
         crop = conn.execute('SELECT name FROM crops WHERE id=?', (r['crop_id'],)).fetchone() if r['crop_id'] else None
         out.append({'crop': crop['name'] if crop else None, 'section': r['section'], 'lang': r['lang'],
                     'text': r['text'], 'source': source_info(conn, r['source_id']),
-                    'provisional': bool(r['provisional']), 'has_source': bool(r['has_source'])})
+                    'provisional': bool(r['provisional']), 'has_source': bool(r['has_source']),
+                    'warning': r['warning']})
     return out
 
 
@@ -497,6 +498,8 @@ def ask(conn: sqlite3.Connection, query: str, crop: str | None = None, lang: str
     if any(not p['has_source'] for p in result['passages']) or any(
             c['evidence_count'] == 0 for t in result['troubles'] for c in t['causes']):
         note.append('根拠にできる出典がない項目（「出典未登録」または仮の行）は、確認できていません。記事や判断の根拠にする前に原典で確かめてください。')
+    if any(p.get('warning') for p in result['passages']):
+        note.append('warning の付いた文章は、疑いのある値（日英の食い違いなど）を含みます。原典で確かめてください。')
     if note:
         result['note'] = note
     return result

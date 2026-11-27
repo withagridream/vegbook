@@ -387,7 +387,9 @@ CREATE TABLE chunks (
     ref_id         INTEGER,
     -- provisional=1: 元の行が仮抽出（または根拠にできない）。has_source=1: 根拠に使える出典がある
     provisional    INTEGER NOT NULL DEFAULT 0 CHECK (provisional IN (0,1)),
-    has_source     INTEGER NOT NULL DEFAULT 0 CHECK (has_source IN (0,1))
+    has_source     INTEGER NOT NULL DEFAULT 0 CHECK (has_source IN (0,1)),
+    -- warning: data_issues の note（疑いのある値）に当たる chunk の警告文。hide の値は chunk を作らない
+    warning        TEXT
 );
 CREATE INDEX idx_chunks_crop ON chunks(crop_id);
 CREATE VIRTUAL TABLE chunks_fts USING fts5(
