@@ -199,28 +199,37 @@ def load_row_issues(conn: sqlite3.Connection, table: str) -> dict[str, list[dict
     return out
 
 
+def crop_marks(crop_name: str, issues: dict[str, list[dict]], shown: dict[str, str],
+               other: dict[str, str] | None = None) -> dict[str, dict[str, list[str]]]:
+    """作物の data_issues の印を、出力のキーごとにまとめる。{出力キー: {'hide': [理由...], 'note': [理由...]}}。
+    hide は shown（表示している列）だけが対象。note は shown に加えて other（別言語の列）も対象。
+    shown・other は {DBの列名: 出力のキー}。"""
+    other = other or {}
+    out: dict[str, dict[str, list[str]]] = {}
+    for m in issues.get(issue_key(name=crop_name), []):
+        for col in sorted(m['cols']):
+            key = shown.get(col) or (other.get(col) if m['action'] == 'note' else None)
+            if key:
+                lst = out.setdefault(key, {'hide': [], 'note': []})[m['action']]
+                if m['issue'] not in lst:
+                    lst.append(m['issue'])
+    return out
+
+
 def apply_crop_issues(item: dict, crop_name: str, issues: dict[str, list[dict]], shown: dict[str, str],
                       other: dict[str, str] | None = None) -> dict:
     """作物の返り値 item に data_issues の印を反映する。
-    ・hide の列：出力のキーを None にして、warnings に理由を入れる（shown に入っている列だけ。表示言語の列）
-    ・note の列：値は返したまま、warnings に理由を入れる（shown に加えて other＝別言語の列も対象）
-    shown・other は {DBの列名: 出力のキー}。
+    ・hide の列：出力のキーを None にして、warnings に理由を入れる
+    ・note の列：値は返したまま、warnings に理由を入れる
     """
-    marks = issues.get(issue_key(name=crop_name))
-    if not marks:
-        return item
-    other = other or {}
     warnings: list[str] = []
-    for m in marks:
-        keys: list[str] = []
-        for col in sorted(m['cols']):
-            key = shown.get(col) or (other.get(col) if m['action'] == 'note' else None)
-            if key and key in item and key not in keys:
-                keys.append(key)
-        for key in keys:
-            if m['action'] == 'hide':
-                item[key] = None
-            warnings.append(f'{key}: {m["issue"]}' + ('（値は返していません）' if m['action'] == 'hide' else ''))
+    for key, mk in crop_marks(crop_name, issues, shown, other).items():
+        if key not in item:
+            continue
+        if mk['hide']:
+            item[key] = None
+        warnings += [f'{key}: {r}（値は返していません）' for r in mk['hide']]
+        warnings += [f'{key}: {r}' for r in mk['note']]
     if warnings:
         item['warnings'] = list(dict.fromkeys(warnings))
     return item

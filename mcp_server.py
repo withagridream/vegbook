@@ -81,10 +81,17 @@ _NUM_COLS = {'days_to_harvest': 'days_to_harvest', 'temp_min': 'temp_min', 'temp
              'harvest_start': 'harvest_months', 'harvest_end': 'harvest_months'}
 
 
-def _detail_colmaps(lang: str) -> tuple[dict[str, str], dict[str, str]]:
+def _detail_colmaps(lang: str, row: sqlite3.Row | None = None) -> tuple[dict[str, str], dict[str, str]]:
+    """英語の出力で _en 列が空のとき、日本語欄の値に戻して出している。その場合は日本語の列も「表示している列」に数える
+    （日本語欄が hide なら、戻さず None と警告にするため）。"""
     ja = {c: c for c in _TEXT_COLS}
     en = {c + '_en': c for c in _TEXT_COLS}
     shown, other = (en, ja) if lang == 'en' else (ja, en)
+    shown = dict(shown)
+    if lang == 'en' and row is not None:
+        for c in _TEXT_COLS:
+            if not row[c + '_en']:
+                shown[c] = c
     return {**_NUM_COLS, **shown}, other
 
 
@@ -289,7 +296,7 @@ def vegbook_detail(name: str, lang: str = 'ja') -> dict:
         out['also_matches'] = res['also']
     out.update(_ambiguity(res))
     out.update(extras)
-    shown, other = _detail_colmaps(lang)
+    shown, other = _detail_colmaps(lang, row)
     return apply_crop_issues(out, row['name'], issues, shown, other)
 
 
