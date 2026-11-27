@@ -520,6 +520,8 @@ Rows with `provisional=1` in troubles / causes / storage were cut mechanically o
 
 ### Targets to enter from primary sources in stage 2c
 
+- **Known errors in the crops table**: values are not rewritten; they are marked in `data_issues` (`table_name=crops`, `row_key=name=<crop>`). `vegbook_detail` (and search / recommend) return `None` for `hide` columns with the reason in `warnings`, and keep the value for `note` columns while adding the reason to `warnings`. Re-check from primary sources in 2c, then remove the marks. hide: fava bean harvest_sign; note: days_to_harvest of chamomile / potato / burdock / corn, placeholder harvest months 1-12, missing autumn sowing (turnip, carrot), leafy greens' sow/harvest months, and ja/en number mismatches (64 crops, 117 columns).
+- **Known limits (crops table)**: many companion pairs are registered in one direction only (the tool also looks up the reverse direction and marks it `registered_as='reverse'`); prices have no region or date.
 - **Greening (solanine)**: potato "発芽・緑化する" (troubles 58, post-harvest) is a provisional row linked only to a storage cause. In 2c, re-enter symptom / cause / prevention from a primary (public) source with a locator, as new rows. Orphan provisional causes (44, 88, 92) are recorded in `data_issues`.
 
 ### Suspect values (data_issues) and symptom aliases (trouble_aliases)
