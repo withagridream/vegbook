@@ -252,8 +252,8 @@ id,question,phase,crop,crop_group,expected_tables,wisdom,qtype,expected_terms,or
 251,自然薯は冷蔵と冷暗所のどちらがいいか,postharvest,自然薯,イモ類,"troubles,causes,trouble_causes,remedies,crop_storage,cause_conditions",0,what,\N,段階2aの検収用に作成（個別の出どころは未記録）,refrigerate;room
 252,いもを冷蔵庫に入れてはいけないのはどれか,postharvest,\N,イモ類,"troubles,causes,trouble_causes,remedies,crop_storage,cause_conditions",0,what,\N,段階2aの検収用に作成（個別の出どころは未記録）,refrigerate
 253,干すと長持ちするいもはあるか,postharvest,\N,イモ類,"troubles,causes,trouble_causes,remedies,crop_storage",1,what,\N,段階2aの検収用に作成（個別の出どころは未記録）,dry
-254,寒起こしは何のためにするのか,growing,\N,根菜類,remedies,1,reason,寒起こし;凍結;病害虫,段階2a手直し（係長）で追加：栽培中の先人の智慧,\N
-255,天地返しは何のためにするのか,growing,\N,根菜類,remedies,1,reason,天地返し;土壌;病害虫,段階2a手直し（係長）で追加：栽培中の先人の智慧,\N
-256,麦踏みはなぜするのか,growing,\N,葉モノ野菜,remedies,1,reason,霜柱;分げつ;根張り,段階2a手直し（係長）で追加：栽培中の先人の智慧,\N
-257,敷きわらを敷くのはなぜか,growing,\N,果菜類,remedies,1,reason,乾燥;地温;雑草,段階2a手直し（係長）で追加：栽培中の先人の智慧,\N
-258,霜よけにわらで囲うのはなぜか,growing,\N,葉モノ野菜,remedies,1,reason,霜害;低温;寒さ,段階2a手直し（係長）で追加：栽培中の先人の智慧,\N
+254,寒起こしは何のためにするのか,growing,\N,根菜類,remedies,1,reason,寒起こし;凍結;病害虫,段階2a手直しで追加：栽培中の先人の智慧,\N
+255,天地返しは何のためにするのか,growing,\N,根菜類,remedies,1,reason,天地返し;土壌;病害虫,段階2a手直しで追加：栽培中の先人の智慧,\N
+256,麦踏みはなぜするのか,growing,\N,葉モノ野菜,remedies,1,reason,霜柱;分げつ;根張り,段階2a手直しで追加：栽培中の先人の智慧,\N
+257,敷きわらを敷くのはなぜか,growing,\N,果菜類,remedies,1,reason,乾燥;地温;雑草,段階2a手直しで追加：栽培中の先人の智慧,\N
+258,霜よけにわらで囲うのはなぜか,growing,\N,葉モノ野菜,remedies,1,reason,霜害;低温;寒さ,段階2a手直しで追加：栽培中の先人の智慧,\N
