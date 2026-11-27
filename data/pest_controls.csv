@@ -1,0 +1,11 @@
+id,name,type,availability,name_en
+1,防虫ネット,物理的防除,2,Insect-proof net
+2,粘着シート（黄色）,物理的防除,2,Yellow sticky trap
+3,木酢液,天然資材,2,Wood vinegar spray
+4,スミチオン乳剤（薬剤を使う場合はラベルの適用作物・使用方法を確認）,農薬,2,"Sumithion emulsion (if using a chemical, follow the label for registered crops and directions)"
+5,粘着テープ除去・木酢液散布・天敵（テントウムシ）,複合,\N,"Remove with tape, spray wood vinegar, use ladybugs"
+6,水スプレーで洗い流す・殺ダニ剤（薬剤を使う場合はラベルの適用作物・使用方法を確認）,複合,\N,"Wash off with water spray, apply miticide (if using a chemical, follow the label for registered crops and directions)"
+7,防虫ネット・BT剤・手取り除去（薬剤を使う場合はラベルの適用作物・使用方法を確認）,複合,\N,"Insect net, BT spray, hand removal (if using a chemical, follow the label for registered crops and directions)"
+8,防虫ネット・BT剤・天敵（コナガサムライコマユバチ）（薬剤を使う場合はラベルの適用作物・使用方法を確認）,複合,\N,"Insect net, BT spray, parasitic wasp (if using a chemical, follow the label for registered crops and directions)"
+9,株元を掘り起こして手取り・ネキリムシ防除剤（薬剤を使う場合はラベルの適用作物・使用方法を確認）,複合,\N,"Dig around base and remove by hand, apply cutworm bait (if using a chemical, follow the label for registered crops and directions)"
+10,粘着テープ・木酢液散布,複合,\N,"Sticky tape, wood vinegar spray"

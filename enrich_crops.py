@@ -2,6 +2,16 @@
 作物データ補完スクリプト
 出典: FAO Crop Information, 農研機構, 農水省, Wikipedia CC BY-SA
 """
+# ──────────────────────────────────────────────────────────────
+# 【引退】正本は data/ のCSV（schema.sql と build_db.py で vegbook.db を生成する）。
+# このスクリプトは過去の取り込み記録で、実行しない。データを直すときは data/*.csv を編集して
+# build_db.py を実行する。
+# ──────────────────────────────────────────────────────────────
+import sys as _sys
+print('このスクリプトは引退しています。正本は data/*.csv です（schema.sql と build_db.py で vegbook.db を生成します）。\nデータを直すときは data/*.csv を編集して build_db.py を実行してください。実行すると vegbook.db（生成物）を直接書き換え、次のビルドで消えるか、手で直した内容を壊します。', file=_sys.stderr)
+_sys.exit(1)
+
+
 
 import sqlite3
 from pathlib import Path

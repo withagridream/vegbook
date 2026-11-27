@@ -1,9 +1,12 @@
-"""e-Stat APIから野菜生産出荷統計（全国・作付面積・収穫量・出荷量）を取得してDBに保存する。
+"""e-Stat APIから野菜生産出荷統計（全国・作付面積・収穫量・出荷量）を取得して data/incoming/harvest_stats.csv に書く。
 
-使い方:
+DB（vegbook.db）には直接書かない（INSERT OR IGNORE では壊れた行が置き換わらないため）。
+取り込み直しの手順は main() の docstring と MANUAL.md 第4章を参照。
+
+使い方（外部通信あり：e-Stat。APIキーが必要）:
     python3 collect_harvest.py <e-stat APIキー>
 """
-import sqlite3
+import csv
 import urllib.request
 import urllib.parse
 import json
@@ -13,7 +16,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-DB = Path(__file__).parent / 'vegbook.db'
+OUT = Path(__file__).parent / 'data' / 'incoming' / 'harvest_stats.csv'
 
 STAT_CODE = '00500215'
 
@@ -247,30 +250,24 @@ def search_target_tables(api_key: str) -> list[dict]:
     return unique
 
 
-def setup_table(conn: sqlite3.Connection) -> None:
-    conn.execute('''
-        CREATE TABLE IF NOT EXISTS harvest_stats (
-            id           INTEGER PRIMARY KEY AUTOINCREMENT,
-            crop_name    TEXT NOT NULL,
-            year         INTEGER NOT NULL,
-            area_ha      REAL,
-            harvest_t    REAL,
-            shipment_t   REAL,
-            source       TEXT DEFAULT 'e-Stat',
-            UNIQUE(crop_name, year)
-        )
-    ''')
-    conn.commit()
-
-
 def main() -> None:
+    """取得した値を data/incoming/harvest_stats.csv に書く。
+
+    取り込み直しの手順：
+      1. このスクリプトを実行する
+      2. data/incoming/harvest_stats.csv（crop_name,year,area_ha,harvest_t,shipment_t,source）を data/harvest_stats.csv と
+         自然キー crop_name+year で突き合わせる（同じキーが複数の表に出たときは先に出た値を採用している）
+      3. 置き換える行は id を保ったまま値だけ差し替え、新しい行は末尾に id を振って追加する
+      4. data_issues.csv は crop_name・year の自然キーで指しているので、id が変わっても対応は崩れない。
+         取り込み不良が直った年の hide は人が確かめてから外す（2014〜2020年は品目コード表のずれの疑い）
+      5. python3 build_db.py --out 一時DB → 検査が通ったら vegbook.db に差し替える
+    """
     if len(sys.argv) < 2:
         print('使い方: python3 collect_harvest.py <APIキー>')
         sys.exit(1)
 
     api_key = sys.argv[1]
-    conn = sqlite3.connect(DB)
-    setup_table(conn)
+    all_records: dict[tuple, dict] = {}   # {(crop_name, year): {area, harvest, shipment}}
 
     print('対象表を検索中...')
     tables = search_target_tables(api_key)
@@ -331,36 +328,21 @@ def main() -> None:
                 records[key] = {'area': None, 'harvest': None, 'shipment': None}
             records[key][indicator] = val
 
-        for (crop_name, year), vals in records.items():
-            try:
-                conn.execute(
-                    '''INSERT OR IGNORE INTO harvest_stats
-                       (crop_name, year, area_ha, harvest_t, shipment_t)
-                       VALUES (?,?,?,?,?)''',
-                    (crop_name, year, vals['area'], vals['harvest'], vals['shipment']),
-                )
-                if conn.execute('SELECT changes()').fetchone()[0]:
-                    inserted += 1
-                else:
-                    skipped += 1
-            except Exception as e:
-                print(f'    INSERT失敗 ({crop_name}/{year}): {e}')
-
-        conn.commit()
+        for key, vals in records.items():
+            if key in all_records:
+                skipped += 1            # 先に出た表の値を採用する（従来の INSERT OR IGNORE と同じ）
+            else:
+                all_records[key] = vals
+                inserted += 1
         print(f'{len(records)}件処理')
 
-    conn.close()
-    print(f'\n挿入: {inserted}件 / スキップ（既存）: {skipped}件')
-
-    conn = sqlite3.connect(DB)
-    cur = conn.cursor()
-    cur.execute('SELECT COUNT(*) FROM harvest_stats')
-    print(f'harvest_stats 合計: {cur.fetchone()[0]}件')
-    cur.execute('SELECT DISTINCT crop_name FROM harvest_stats ORDER BY crop_name')
-    print('収録作物:', [r[0] for r in cur.fetchall()])
-    cur.execute('SELECT MIN(year), MAX(year) FROM harvest_stats')
-    print('年範囲:', cur.fetchone())
-    conn.close()
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    with open(OUT, 'w', encoding='utf-8', newline='') as f:
+        w = csv.writer(f, lineterminator='\n')
+        w.writerow(['crop_name', 'year', 'area_ha', 'harvest_t', 'shipment_t', 'source'])
+        for (crop_name, year), v in sorted(all_records.items()):
+            w.writerow([crop_name, year] + ['\\N' if x is None else x for x in (v['area'], v['harvest'], v['shipment'])] + ['e-Stat'])
+    print(f'\n書き出し: {len(all_records)}行（重複で除外: {skipped}件）→ {OUT}')
 
 
 if __name__ == '__main__':

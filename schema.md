@@ -24,6 +24,127 @@
 
 ---
 
+## vegbook 2.0（開発中）で追加したテーブル
+
+正本は `data/*.csv` と `schema.sql`。`vegbook.db` は `build_db.py` で生成する（手順は MANUAL.md 第4章）。
+2.0 は従来の図鑑データ（上の13テーブル）を壊さず、その上に「困ったときに引ける」層と出典の層を積む。
+
+| テーブル | 説明 | 件数 |
+|---|---|---|
+| `sources` | 出典の台帳（kind・license・retrieved_at・checksum・usable_as_evidence） | 9 |
+| `crop_field_sources` | 作物の値（列）ごとの出典。`field='*'` は行全体（対象列は未特定）。`provisional`（既定1）・`locator`。根拠にできるのは provisional=0・根拠に使える出典・locator ありだけ | 117 |
+| `dataset_sources` | テーブル全体の出典（気候・収穫統計） | 2 |
+| `crop_aliases` | 名前解決用の別名・表記ゆれ・英語名 | 428 |
+| `crop_storage` | 保存方法（方法ごとに1行） | 174（すべて仮抽出） |
+| `crop_soil` | 土の項目（pH範囲・水はけ・土質・用土配合・NPK）。スキーマのみ | 0 |
+| `troubles` | 困りごと（症状。phase = growing / postharvest） | 171（すべて仮抽出） |
+| `causes` | 原因（category つき） | 93（すべて仮抽出） |
+| `trouble_causes` | 症状と原因の多対多（出典の件数で「よくある原因か」を裏付ける） | 181（すべて仮抽出） |
+| `cause_conditions` | 原因を作物データの値につなぐ条件 | 45（すべて仮抽出） |
+| `remedies` | 予防・対策（農薬を使う対策は caution 必須） | 9（すべて仮抽出） |
+| `questions` | 答えるべき問い（検収の基準。`check_questions.py` で使う。qtype・expected_terms・expected_method・origin つき） | 258 |
+| `data_issues` | 疑いのある値（取り込み不良など）の台帳。行は自然キー（`row_key`）で指す | 348 |
+| `trouble_aliases` | 症状の言い換え表（実が割れる→裂果 など。症状検索で使う） | 46 |
+| `chunks` / `chunks_fts` | RAG用の文章と全文検索索引（FTS5 trigram）。`build_db.py` が生成 | 生成物 |
+
+「仮抽出」は、既存の `failure_points`・`storage` などの文章から機械的に拾った行で、`provisional=1`・出典未登録の印が付く。
+推測では値を足していない。
+
+### sources（出典）
+
+| カラム | 型 | 説明 |
+|---|---|---|
+| `id` | INTEGER PK | |
+| `title` / `publisher` / `url` | TEXT | 資料名・発行者・URL |
+| `license` | TEXT | 利用条件（確認できていないものはその旨を書く） |
+| `retrieved_at` / `checksum` | TEXT | 取得日・ファイルのハッシュ |
+| `note` | TEXT | 確認できていること・できていないこと |
+| `kind` | TEXT | `official`=公的資料 / `research`=研究機関 / `seed_company`=種苗会社 / `tradition`=地域の慣行・伝承の記録 / `author`=作者の公開記事（URLのみ。本文は取り込まない）/ `statistics`=統計データ（気候・収穫統計。原因・対策・保存方法の根拠に付けられない）/ `other` |
+| `usable_as_evidence` | INTEGER | 1=個別の値の根拠に使える / 0=使えない（一括記載・列未特定・利用許諾なし・ライセンス未確認）。既定は0。`evidence_count`・`sourced`・`has_source` は1の出典だけで数える |
+| `region` | TEXT | 地域。`tradition` では必須（記録した資料 publisher も必須。出典なしの言い伝えは入れない） |
+
+### crop_storage（保存方法）
+
+方法（`method`）は次の固定値。1つの作物に方法ごとに行を持てる。
+
+| method | 意味 |
+|---|---|
+| `refrigerate` | 冷蔵 |
+| `room` | 常温・冷暗所 |
+| `freeze` | 冷凍 |
+| `dry` | 干す・乾燥 |
+| `pickle` | 漬ける |
+| `cure` | キュアリング・追熟 |
+| `ground` | 土中・囲い |
+
+| カラム | 説明 |
+|---|---|
+| `steps` | 手順・説明（文章） |
+| `duration_min_days` / `duration_max_days` | 日持ちの日数（下限・上限。「以上」は上限NULL） |
+| `temp_c_min` / `temp_c_max` | 保存温度（℃） |
+| `caution` | 注意 |
+| `source_id` | 出典（仮抽出の行は NULL） |
+| `lang` | 文章の言語 |
+| `provisional` | 1=既存の `crops.storage` から機械的に切り出した仮の行 |
+| `wisdom` | 1=「先人の智慧」（やぐら干し・土中保存・吊り干しなど、慣行・伝承の工夫）。`source_id` 必須 |
+| `locator` | 引用箇所（ページ・節・URLのアンカー）。`provisional=0` なら必須（`trouble_causes`・`cause_conditions`・`remedies` も同じ） |
+
+既存の `crops.storage`（日英）は消さずに残している。
+
+### 困りごと（症状 → 原因 → 条件 → 予防・対策 → 出典）
+
+```
+troubles ── trouble_causes ── causes ── cause_conditions   （作物データの列と結合）
+                  │              └──── remedies             （農薬を使う対策は caution 必須）
+                  └─ source_id（同じ症状・原因に付く出典の件数＝よくある原因かの裏付け）
+```
+
+- `cause_conditions.field` が `crops.temp_max` のような「テーブル.列」で `value` が NULL のときは、
+  利用者の実測値をその作物の列の値と比べる（例：気温 > `crops.temp_max`）。
+  `soil_ph`・`storage_temp_c`・`air_temp_c` で `value` があるときは、実測値を `value` と比べる。
+- `causes.category`：温度 / 水分 / 日照 / 土・pH / 肥料過多・不足 / 病気 / 害虫 / 生理障害 / 収穫時期 / 保存温度・湿度 / エチレン / 傷 / その他
+- 関門：`provisional=0` の行は `source_id`・`locator` が必須で、出典は `usable_as_evidence=1` かつ `kind` が `statistics` でないこと。親の行（`troubles`・`causes`）が仮なら、子（`trouble_causes`・`remedies`・`cause_conditions`）も仮のまま（ビルドが検査）。
+- 農薬の語を含む対策は `uses_pesticide=1` が必須で、`uses_pesticide=1` なら `caution` 必須（CHECK）。
+- 頻度は推測で書かない。「よくある原因か」は、同じ (症状, 原因) に付く出典の件数（`vegbook_trouble` の `evidence_count`）で見る。
+
+### data_issues（疑いのある値の台帳）
+
+| カラム | 説明 |
+|---|---|
+| `table_name` | 対象の表 |
+| `row_key` | 行の自然キー。「列=値」を `|` でつなぎ列名の昇順。収穫統計 `crop_name=ダイコン|year=2007`／気候 `month=3|region=九州北部|year=2010`（region は regions.name）／用語集 `term=BT剤`／その他 `id=行id` |
+| `column_name` | 対象の列（`,`区切り） |
+| `issue` | 利用者に見せる警告文・問題の説明 |
+| `action` | `hide`=値を返さない（行は残す）/ `removed`=CSVから外した（記録のみ）/ `note`=注意書きのみ |
+
+ビルドが、hide・note は指した先が1行だけ存在し、removed は存在しないことを照合する。
+
+### trouble_aliases（症状の言い換え）
+
+`alias`（利用者の言い回し）→ `symptom`（正式な症状名）。`vegbook_trouble` / `vegbook_ask` の症状検索で使う。
+
+### questions（検収の問い）
+
+`qtype`：`why`=原因 / `how`=方法 / `what`=事実 / `reason`=方法の理由。`expected_terms`=原因の名前に含まれていてほしい語（`;`区切り・2文字以上）、
+`expected_method`=返ってほしい保存方法（`crop_storage.method`）、`origin`=問いの出どころ。期待語・期待方法が空の問いは検収で「判定不能」。
+
+### chunks（RAG用の文章。生成物）
+
+`source_id`・`provisional`・`has_source`：根拠にできる行（行も親も provisional=0・根拠に使える出典あり）のときだけ `source_id` が入り `has_source=1`。
+
+### crop_aliases（名前解決）
+
+`kind`：`name`=正式名 / `name_en`=英語名 / `name_en_shared`=他の作物と重複する英語名（Bell Pepper・Taro・Turnip の2件目。曖昧なときの優先度は最低）/
+`name_en_part`=英語名の一部 / `variant`=表記ゆれ（漢字・かな違い）/ `alias`=別名。
+名前解決は `vegbook_core.resolve_crop()` の1か所に集約している（かな違い・大文字小文字は問わない）。
+
+### crop_soil（スキーマのみ）
+
+作物ごとの適正pH範囲（`ph_min`・`ph_max`）、水はけ/保水の好み、合う土質、プランター用土の配合の目安、NPK要求の目安。
+各値に `*_source_id` を持つ。値は出典付きで入れる（段階2c）。
+
+---
+
 ## テーブル定義
 
 ### crops（作物メイン）
@@ -252,11 +373,18 @@ regions ─────── climate_monthly
 harvest_stats（作物名文字列で管理、crops との JOIN 不要）
 
 glossary（独立テーブル）
+
+── 2.0 で追加 ──
+sources ─┬─ crop_field_sources ── crops
+         ├─ dataset_sources（climate_monthly / harvest_stats）
+         └─ crop_storage / crop_soil / trouble_causes / cause_conditions / remedies
+crops ── crop_aliases / crop_storage / crop_soil / troubles ── trouble_causes ── causes
+chunks（生成物）＋ chunks_fts（FTS5 trigram）
 ```
 
 ---
 
 ## ライセンス
 
-データ出典: 農研機構・農林水産省・Wikipedia（CC BY-SA）および家庭菜園実践知見  
+データ出典: `data/sources.csv` が正（README のデータの項を参照）。データのライセンスは未定（管理者の判断待ち）。  
 コード: MIT License — Copyright (c) 2026 withagridream@gmail.com

@@ -1,0 +1,162 @@
+id,crop_id,companion_id,effect,is_positive,effect_en
+1,1,27,アブラムシ・ハダニを忌避するアリシン成分。青枯病の抑制効果も報告されている,1,Allicin in garlic repels aphids and spider mites; also reported to suppress bacterial wilt.
+2,1,29,根圏の拮抗菌がフザリウム菌を抑制し連作障害を軽減する,1,Antagonistic bacteria in leek roots suppress Fusarium wilt and reduce crop rotation problems.
+3,1,6,レタスがトマトの根元の乾燥と雑草を抑えるリビングマルチ効果,1,"Lettuce acts as a living mulch, retaining moisture and suppressing weeds around tomato roots."
+4,1,23,同じナス科で疫病・青枯病が伝染しやすい。互いに距離を置く,0,Both are Solanaceae; share late blight and bacterial wilt pathogens. Keep apart.
+5,17,27,アブラムシ・ハダニを忌避するアリシン成分。青枯病の抑制効果も報告されている,1,Allicin in garlic repels aphids and spider mites; also reported to suppress bacterial wilt.
+6,17,29,根圏の拮抗菌がフザリウム菌を抑制し連作障害を軽減する,1,Antagonistic bacteria in leek roots suppress Fusarium wilt and reduce crop rotation problems.
+7,17,6,レタスがミニトマトの根元の乾燥と雑草を抑えるリビングマルチ効果,1,"Lettuce acts as a living mulch, retaining moisture and suppressing weeds around tomato roots."
+8,17,23,同じナス科で疫病・青枯病が共通の天敵。混植は避ける,0,Both are Solanaceae; share late blight and bacterial wilt pathogens. Avoid planting together.
+9,19,29,ネギ根圏の拮抗菌がナスの半身萎凋病・青枯病を抑制する定番組み合わせ,1,Antagonistic bacteria in leek rhizosphere suppress verticillium wilt and bacterial wilt in eggplant.
+10,19,27,アブラムシ・ハダニ忌避。ナスの害虫被害を軽減する,1,"Garlic repels aphids and spider mites, reducing pest damage on eggplant."
+11,19,23,同じナス科。疫病・ニジュウヤホシテントウが共通の天敵。混植不可,0,Both are Solanaceae; share late blight and 28-spotted ladybird beetle. Do not plant together.
+12,13,29,ネギ根圏の拮抗菌がきゅうりのつる割病（フザリウム）を抑制する代表的組み合わせ,1,Antagonistic bacteria in leek roots suppress Fusarium wilt (crown rot) in cucumber — a classic pairing.
+13,13,27,アブラムシ・うどんこ病の抑制効果がある,1,Helps suppress aphids and powdery mildew on cucumber.
+14,13,5,同じウリ科。うどんこ病・べと病が伝染しやすく混植は避ける,0,Same family (Cucurbitaceae); powdery mildew and downy mildew spread easily between them. Avoid.
+15,4,27,アブラムシ・ハダニを忌避。カプサイシン×アリシンの相乗効果,1,Garlic repels aphids and spider mites; synergistic effect of capsaicin and allicin.
+16,4,29,根圏拮抗菌が疫病を抑制する,1,Rhizosphere antagonistic bacteria suppress phytophthora blight in pepper.
+17,2,27,アブラムシ・ハダニを忌避。害虫被害を軽減する,1,"Garlic repels aphids and spider mites, reducing pest damage."
+18,2,29,根圏拮抗菌が疫病を抑制する,1,Rhizosphere antagonistic bacteria suppress phytophthora blight.
+19,12,6,レタスのフィトンチッドがアオムシ・コナガを忌避。互いに生育を助ける,1,Phytoncides from lettuce repel cabbage white caterpillars and diamondback moths; mutually beneficial growth.
+20,12,11,レタスのフィトンチッドがアオムシ・コナガを忌避する,1,Phytoncides from head lettuce repel cabbage white caterpillars and diamondback moths.
+21,12,9,同じアブラナ科でキスジノミハムシが集中する。混植は被害を拡大させる,0,Same family (Brassicaceae); striped flea beetles concentrate on both. Mixed planting amplifies damage.
+22,30,6,レタスのフィトンチッドがアオムシ・コナガを忌避する,1,Phytoncides from lettuce repel cabbage white caterpillars and diamondback moths.
+23,30,9,同じアブラナ科でキスジノミハムシ・根こぶ病が共通の天敵。距離を置く,0,Same family; share striped flea beetle and clubroot disease. Keep apart.
+24,14,6,レタスがリビングマルチとなり土壌水分を保持。アオムシ忌避効果も,1,"Lettuce acts as a living mulch, retaining soil moisture. Also repels cabbage caterpillars."
+25,14,9,同じアブラナ科。根こぶ病が共通感染するため混植は避ける,0,Same family (Brassicaceae); share clubroot infection. Avoid mixed planting.
+26,7,28,玉ねぎの揮発成分がキアゲハの産卵を忌避。にんじんの害虫被害を減らす,1,"Volatile compounds from onion deter swallowtail butterfly egg-laying, reducing carrot pest damage."
+27,7,29,ネギの揮発成分がキアゲハ・ニンジンアブラムシを忌避する,1,Volatile compounds from leek deter swallowtail butterflies and carrot aphids.
+28,8,6,レタスのフィトンチッドがアブラナ科害虫を忌避する,1,Phytoncides from lettuce repel common brassica pests.
+29,9,6,レタスがリビングマルチになりダイコンの根元を保護する,1,"Lettuce acts as a living mulch, protecting daikon root base."
+30,16,20,エダマメの根粒菌が窒素を固定しとうもろこしに供給。互いに生育を促進,1,Root nodule bacteria in edamame fix nitrogen and supply it to corn; mutually beneficial growth.
+31,16,29,エダマメのカメムシをネギの揮発成分が忌避する効果がある,1,Volatile compounds from leek may deter stink bugs that damage edamame pods.
+32,21,20,落花生の根粒菌が窒素固定しとうもろこしに供給。畑のスペースを有効活用,1,Root nodule bacteria in peanut fix nitrogen and supply it to corn; efficient use of field space.
+33,3,27,ニンニクのアリシンがアブラムシを忌避し、ほうれん草の被害を軽減,1,"Allicin from garlic repels aphids, reducing pest damage on spinach."
+34,10,6,レタスのフィトンチッドがアオムシ・コナガを忌避する,1,Phytoncides from lettuce repel cabbage white caterpillars and diamondback moths.
+35,5,29,ネギ根圏の拮抗菌がウリ科のつる割病を抑制する,1,Antagonistic bacteria in leek rhizosphere suppress Fusarium wilt in cucurbits.
+36,5,13,同じウリ科。うどんこ病・べと病が伝染しやすい。混植は避ける,0,Same family (Cucurbitaceae); powdery mildew and downy mildew spread easily. Avoid mixed planting.
+37,18,27,アブラムシ忌避。おくらのハマキムシ被害も軽減する,1,Garlic repels aphids and helps reduce leafroller damage on okra.
+38,18,22,ともに高温多日照を好む。混植で空間を有効利用できる相性の良い組み合わせ,1,Both thrive in high heat and full sun; mixed planting makes efficient use of space.
+39,15,29,ネギの根圏拮抗菌がしょうがの根茎腐敗病を抑制する効果が期待される,1,Antagonistic bacteria in leek rhizosphere are expected to suppress rhizome rot in ginger.
+40,15,26,ともに半日陰・多湿を好む。混植で互いの生育環境を補完する,1,Both prefer partial shade and high humidity; mixed planting creates a complementary microclimate.
+41,23,19,同じナス科。疫病・ニジュウヤホシテントウが共通の天敵。混植不可,0,Both are Solanaceae; share late blight and 28-spotted ladybird beetle. Do not plant together.
+42,23,1,同じナス科で疫病が伝染しやすい。圃場での混植は避ける,0,Both are Solanaceae; late blight spreads easily between them. Avoid mixing in the field.
+43,23,17,同じナス科で疫病が伝染しやすい。圃場での混植は避ける,0,Both are Solanaceae; late blight spreads easily between them. Avoid mixing in the field.
+44,27,7,ニンニクのアリシンがキアゲハを忌避。にんじんはニンニクの害虫を忌避する相互効果,1,Allicin in garlic deters swallowtail butterfly; carrot volatile compounds repel garlic pests — mutual benefit.
+45,27,6,ニンニクのアリシンがアブラムシを忌避しレタスを保護する,1,Allicin from garlic repels aphids and protects lettuce.
+46,28,7,玉ねぎの揮発成分がキアゲハを忌避。にんじんは玉ねぎのタマネギバエを忌避する相互効果,1,Onion volatiles deter swallowtail butterfly; carrot volatile compounds repel onion fly — mutual benefit.
+47,28,6,玉ねぎの揮発成分がアブラムシを忌避しレタスを保護する,1,Onion volatile compounds repel aphids and protect lettuce.
+48,29,7,ネギの揮発成分がキアゲハ・ニンジンアブラムシを忌避する,1,Volatile compounds from leek repel swallowtail butterflies and carrot aphids.
+49,24,21,落花生の根粒菌が窒素固定しサツマイモに供給。つるぼけしにくい組み合わせ,1,"Root nodule bacteria in peanut fix nitrogen and supply it to sweet potato, reducing vine lushness."
+50,20,16,エダマメが窒素固定しとうもろこしに供給。風通しと受粉にも有利,1,Edamame fixes nitrogen and supplies it to corn; also improves air circulation and pollination.
+51,20,21,落花生が窒素固定しとうもろこしに供給。互いに生育を促進,1,Peanut fixes nitrogen and supplies it to corn; mutually beneficial growth.
+52,68,17,アブラムシ・コナジラミを忌避し、ミニトマトの糖度と風味を向上させる,1,Repels aphids and whiteflies; improves sugar content and flavor of cherry tomatoes.
+53,68,1,アブラムシ・コナジラミを忌避し、トマトの風味と生育を促進する,1,Repels aphids and whiteflies; promotes tomato flavor and growth.
+54,68,13,コナジラミ・アブラムシを忌避し、きゅうりの生育を助ける,1,"Repels whiteflies and aphids, aiding cucumber growth."
+55,68,4,アブラムシを忌避し、ピーマンの害虫被害を軽減する,1,"Repels aphids, reducing pest damage on peppers."
+56,68,77,フェンネルのアレロパシーによりバジルの生育が著しく阻害される,0,Fennel allelopathy severely inhibits basil growth.
+57,67,13,カメムシ・アブラムシを忌避し、きゅうりの害虫被害を軽減する,1,"Repels stink bugs and aphids, reducing pest damage on cucumbers."
+58,67,19,カメムシを忌避し、ナスの害虫被害を軽減する,1,"Repels stink bugs, reducing pest damage on eggplants."
+59,67,1,アブラムシを忌避し、トマトの防虫効果が期待できる,1,"Repels aphids, providing pest control for tomatoes."
+60,70,12,アオムシ・コナガを忌避し、キャベツへの食害を軽減する,1,"Repels cabbage worms and diamondback moths, reducing leaf damage."
+61,70,54,アブラムシ・アオムシを忌避し、ブロッコリーを保護する,1,"Repels aphids and cabbage worms, protecting broccoli."
+62,70,55,アブラムシ・アオムシを忌避し、カリフラワーを保護する,1,"Repels aphids and cabbage worms, protecting cauliflower."
+63,71,12,モンシロチョウの産卵を忌避し、キャベツのアオムシ被害を軽減する,1,"Repels cabbage white butterflies, reducing caterpillar damage."
+64,71,7,にんじんアブラムシを忌避し、生育を助ける,1,Repels carrot aphids and promotes carrot growth.
+65,72,12,アオムシ・コナガを忌避し、キャベツの害虫被害を軽減する,1,Repels caterpillars and diamondback moths from cabbage.
+66,72,19,揮発成分がカメムシ・アブラムシを忌避し、ナスを保護する,1,"Volatile compounds repel stink bugs and aphids, protecting eggplant."
+67,74,7,アブラムシを忌避し、にんじんの生育を助ける,1,Repels aphids and supports carrot growth.
+68,74,1,アブラムシを忌避し、トマトの病害虫を抑制する,1,Repels aphids and suppresses tomato pests and diseases.
+69,75,12,アブラムシ・アオムシを忌避し、キャベツを保護する,1,"Repels aphids and caterpillars, protecting cabbage."
+70,75,1,アブラムシを忌避し、トマトの害虫被害を軽減する,1,"Repels aphids, reducing pest damage on tomatoes."
+71,76,12,アオムシ・コナガを忌避し、キャベツの害虫被害を軽減する,1,"Repels cabbage worms and moths, reducing damage."
+72,76,7,同科（セリ科）のため交差汚染・アゲハ類の競合が起きやすい,0,Same family (Apiaceae); risk of cross-contamination and swallowtail butterfly competition.
+73,77,68,アレロパシーによりバジルの生育を著しく阻害する,0,Allelopathy severely inhibits basil growth.
+74,77,1,アレロパシーによりトマトの生育を阻害する,0,Allelopathy inhibits tomato growth.
+75,77,13,アレロパシーによりきゅうりの生育を阻害する,0,Allelopathy inhibits cucumber growth.
+76,6,7,相互に生育を促進し、スペースを有効活用できる,1,Mutually promote growth and make efficient use of space.
+77,6,29,ネギの根圏菌がレタスの根腐れ病を抑制する,1,Root microbes from leeks suppress lettuce root rot.
+78,38,27,ニンニクの揮発成分が炭疽病・灰色かび病の発生を抑制する,1,Volatile compounds from garlic suppress anthracnose and gray mold.
+79,38,53,ニラの根圏拮抗菌が炭疽病を抑制し、生育を安定させる,1,Antagonistic root bacteria from Chinese chives suppress anthracnose.
+80,38,12,キャベツのアレロパシーがいちごの生育を抑制する,0,Cabbage allelopathy suppresses strawberry growth.
+81,31,20,スリーシスターズの関係。空間利用効率を高め互いに生育を助ける,1,Three Sisters relationship; improves space efficiency and mutual growth support.
+82,31,68,バジルがアブラムシ・コナジラミを忌避し、ズッキーニを保護する,1,"Basil repels aphids and whiteflies, protecting zucchini."
+83,54,74,チャイブがアブラムシを忌避し、ブロッコリーの害虫被害を軽減する,1,"Chives repel aphids, reducing pest damage on broccoli."
+84,54,51,セロリの揮発成分がモンシロチョウを忌避し、食害を軽減する,1,"Celery volatiles repel cabbage white butterflies, reducing damage."
+85,54,23,同じ土壌病害（疫病・根腐れ）を共有しやすく感染リスクが高まる,0,Both susceptible to same soil-borne diseases; proximity increases infection risk.
+86,55,74,チャイブがアブラムシを忌避し、カリフラワーを保護する,1,"Chives repel aphids, protecting cauliflower."
+87,55,70,ミントのアオムシ忌避効果でカリフラワーへの食害を軽減する,1,"Mint repels caterpillars, reducing leaf damage on cauliflower."
+88,82,20,スリーシスターズ。根粒菌の窒素固定がとうもろこしの生育を助ける,1,Three Sisters; nitrogen fixation by root nodules supports corn growth.
+89,82,8,根粒菌の窒素固定でカブの生育を助ける。相互に生育促進,1,Nitrogen fixation from root nodules supports turnip growth.
+90,82,28,マメ科と玉ねぎは相互に生育を抑制する,0,Legumes and onions mutually inhibit each other's growth.
+91,82,27,ニンニクの抗菌成分がマメ科の根粒菌を阻害し生育を妨げる,0,Antimicrobial compounds in garlic inhibit legume root nodule bacteria.
+92,85,7,根粒菌の窒素固定ととにんじんの生育促進が相乗効果を生む,1,Nitrogen fixation and growth promotion create synergistic effects with carrots.
+93,85,28,マメ科と玉ねぎは相互に生育を抑制する,0,Legumes and onions mutually inhibit each other's growth.
+94,85,27,ニンニクの抗菌成分が根粒菌を阻害し生育を妨げる,0,Antimicrobial compounds in garlic inhibit root nodule bacteria.
+95,83,6,根粒菌の窒素固定がレタスの生育を助け相互に効果的,1,Nitrogen fixation from root nodules supports lettuce growth synergistically.
+96,83,28,マメ科と玉ねぎは相互に生育を抑制する,0,Legumes and onions mutually inhibit each other's growth.
+97,84,7,根粒菌の窒素固定がにんじんの生育を助ける,1,Nitrogen fixation from root nodules supports carrot growth.
+98,84,28,マメ科と玉ねぎは相互に生育を抑制する,0,Legumes and onions mutually inhibit each other's growth.
+99,34,53,ニラの根圏拮抗菌が土壌病害を抑制し、ゴーヤの生育を安定させる,1,Root antagonistic bacteria from chives suppress soil-borne diseases.
+100,34,75,コリアンダーがアブラムシを忌避し、ゴーヤの害虫被害を軽減する,1,"Coriander repels aphids, reducing pest damage on bitter melon."
+101,35,20,スリーシスターズ。空間と土壌栄養を効率よく活用できる,1,Three Sisters; makes efficient use of space and soil nutrients.
+102,35,29,ネギの根圏菌がうどんこ病・土壌病害を抑制する,1,Root microbes from leeks suppress powdery mildew and soil-borne diseases.
+103,45,1,アブラムシの忌避効果があり、トマトの防虫に役立つ,1,"Has aphid-repelling effect, useful for tomato pest control."
+104,45,13,害虫忌避効果でカビ・アブラムシの被害を軽減する,1,Pest-repelling effect reduces mold and aphid damage on cucumbers.
+105,53,38,根圏拮抗菌がいちごの炭疽病を抑制し、生育を安定させる,1,Root antagonistic bacteria suppress strawberry anthracnose.
+106,53,17,根圏拮抗菌がミニトマトの青枯病・萎凋病を抑制する,1,Root antagonistic bacteria suppress bacterial wilt and fusarium wilt in cherry tomatoes.
+107,53,1,根圏拮抗菌がトマトの青枯病・萎凋病を抑制する,1,Root antagonistic bacteria suppress bacterial wilt and fusarium wilt in tomatoes.
+108,69,1,揮発成分がアブラムシを忌避し、トマトの防虫に役立つ,1,"Volatile compounds repel aphids, aiding tomato pest control."
+109,69,7,同科（セリ科）のため交差汚染・病害競合のリスクがある,0,Same family (Apiaceae); risk of cross-contamination and disease competition.
+110,47,74,アブラムシを忌避しケールの害虫被害を軽減する,1,"Chives repel aphids, reducing pest damage on kale."
+111,48,72,アオムシ・コナガを忌避し、芽キャベツの害虫被害を軽減する,1,"Repels caterpillars and diamondback moths, reducing pest damage on Brussels sprouts."
+112,44,53,ニラの根に共生する拮抗菌が土壌病原菌を抑制し、水菜の根腐れを防ぐ,1,Antagonistic bacteria on chive roots suppress soil pathogens and prevent root rot in water spinach
+113,22,68,バジルの香りがアブラムシを忌避し、モロヘイヤの栽培環境を改善する,1,Basil's scent repels aphids and improves the growing environment for moroheiya
+114,25,29,ネギの根に共生する拮抗菌が土壌病原菌を抑制し、ヤマイモの根腐れ・立枯れを予防する,1,Antagonistic bacteria on green onion roots suppress soil pathogens and prevent root rot in yam
+115,32,68,バジルの香りがアブラムシ・ハダニを忌避し、パプリカの品質向上と収量増加に寄与する,1,"Basil's scent repels aphids and spider mites, improving paprika quality and yield"
+116,33,68,バジルの香りがアブラムシを忌避し、唐辛子への害虫被害を軽減する,1,Basil's aroma repels aphids and reduces pest damage on chili peppers
+117,36,29,ネギの抗菌成分がつる割れ病の原因菌（フザリウム）を抑制し、スイカの連作障害を軽減する,1,"Antibacterial compounds in green onions suppress Fusarium, the cause of wilt disease in watermelon"
+118,37,29,ネギの根圏微生物がつる割れ病菌を抑制し、メロンの連作障害を防ぐ,1,Rhizosphere microbes of green onions suppress wilt disease pathogens and prevent melon replant problems
+119,39,1,トマトのソラニンがアスパラガスハムシを忌避し、アスパラガスの根圏が線虫を抑制してトマトを守る相互利益関係,1,Tomato solanine repels asparagus beetles; asparagus roots suppress nematodes that harm tomatoes — mutually beneficial
+120,40,29,ネギの根圏拮抗菌がウリ科に多いつる割れ病・疫病を抑制する,1,Antagonistic bacteria in green onion rhizosphere suppress wilt and blight common in cucurbits
+121,11,29,ネギの拮抗菌が土壌病害を抑制し、玉レタスの根腐れを予防する。浅根と深根の組み合わせで土壌を有効活用できる,1,Green onion's antagonistic bacteria suppress soil diseases and prevent root rot in lettuce. Shallow and deep roots make efficient use of soil
+122,26,53,ニラの根に共生する拮抗菌が土壌病原菌を抑制し、サトイモの疫病・軟腐病を予防する,1,Antagonistic bacteria on chive roots suppress soil pathogens and prevent taro blight and soft rot
+123,41,53,ニラの根圏拮抗菌がウリ科に多い土壌病原菌を抑制し、へちまの立枯れ・根腐れを予防する,1,Rhizosphere antagonistic bacteria of chives suppress cucurbit soil pathogens and prevent damping-off and root rot
+124,42,29,ネギの拮抗菌がアブラナ科に多い軟腐病・根こぶ病を抑制し、チンゲン菜の健全育成を助ける,1,"Green onion antagonistic bacteria suppress soft rot and clubroot common in brassicas, supporting healthy bok choy growth"
+125,43,29,ネギの根圏微生物が春菊の土壌病害を抑制する。ネギの強い香りがアブラムシを遠ざける効果もある,1,Green onion rhizosphere microbes suppress soil diseases in shungiku; the strong scent also repels aphids
+126,46,29,ネギの拮抗菌がスイスチャードの根腐れ・立枯れを予防し、安定した収量を助ける,1,"Green onion antagonistic bacteria prevent root rot and damping-off in Swiss chard, supporting stable yield"
+127,49,29,ネギの根圏微生物がアブラナ科の根こぶ病・軟腐病を抑制し、パクチョイの健全育成を促す,1,"Green onion rhizosphere microbes suppress clubroot and soft rot in brassicas, promoting healthy pak choi growth"
+128,50,53,ニラの拮抗菌がアブラナ科病原菌を抑制し、からし菜の根腐れを予防する,1,Chive antagonistic bacteria suppress brassica pathogens and prevent root rot in mustard greens
+129,51,1,セロリの香りがトマトの害虫を忌避し、トマトの成長がセロリに適度な日陰を提供する相互利益関係,1,"Celery's scent repels tomato pests, while tomato plants provide light shade for celery — mutually beneficial"
+130,52,62,日陰・湿潤を好む植物同士として共存しやすく、互いの根が土壌を隙間なく活用できる,1,Both prefer shade and moisture; they coexist well and their roots make efficient use of soil space
+131,56,29,ネギの根圏微生物が湿潤土壌に多い病原菌を抑制し、クレソンの根腐れリスクを低減する,1,"Green onion rhizosphere microbes suppress pathogens common in moist soil, reducing root rot risk in watercress"
+132,57,29,ネギの抗菌作用がビーツの根腐れ・萎凋病を予防し、根部の品質を安定させる,1,"Green onion antibacterial action prevents root rot and wilt in beets, stabilizing root quality"
+133,58,29,ネギの拮抗菌がアブラナ科の根こぶ病を抑制し、ターニップの根部肥大を促す,1,Green onion antagonistic bacteria suppress clubroot in brassicas and promote turnip root enlargement
+134,59,29,ネギの根圏微生物がパースニップの土壌病害を抑制し、根部の健全な成長を助ける,1,Green onion rhizosphere microbes suppress soil diseases in parsnip and support healthy root development
+135,60,29,ネギの抗菌成分が水田環境のレンコン病原菌を抑制し、蓮根の腐敗リスクを低減する,1,"Green onion antibacterial compounds suppress lotus root pathogens in paddy environments, reducing rot risk"
+136,61,29,ネギの根圏微生物がゴボウの黒斑病・根腐れを抑制し、直根の品質を維持する,1,"Green onion rhizosphere microbes suppress black spot and root rot in burdock, maintaining taproot quality"
+137,62,52,日陰・湿潤環境を好む植物同士として共存しやすく、フキの大葉がミョウガの過乾燥を防ぐ,1,Both thrive in shade and moisture; fuki's large leaves prevent myoga from drying out
+138,63,53,ネギ類同士の組み合わせで土壌病害への相乗的な抑制効果が得られる。香り成分で土壌害虫も忌避する,1,Combining two allium species provides synergistic suppression of soil diseases and deters soil pests with aromatic compounds
+139,64,29,ネギの拮抗菌がアブラナ科の根こぶ病・軟腐病を抑制し、コールラビの球茎形成を助ける,1,"Green onion antagonistic bacteria suppress clubroot and soft rot in brassicas, supporting kohlrabi bulb formation"
+140,65,1,セロリアックの香りがトマトの害虫を忌避し、トマトの適度な草丈がセロリアックに日陰を提供する,1,Celeriac's aroma repels tomato pests; tomato's height provides light shade for celeriac
+141,66,29,ネギの根圏微生物が湿潤環境の病原菌を抑制し、ワサビの根腐れリスクを低減する,1,"Green onion rhizosphere microbes suppress pathogens in moist environments, reducing root rot risk in wasabi"
+142,73,1,オレガノの香りがトマトのアブラムシ・ハダニを忌避し、トマトの風味向上にも寄与するとされる,1,Oregano's scent repels aphids and spider mites on tomatoes and is said to enhance tomato flavor
+143,78,1,レモンバームの花がミツバチを引き寄せ、トマトの受粉率を高めて結実を促進する,1,"Lemon balm flowers attract bees, improving tomato pollination rates and promoting fruit set"
+144,79,1,セージの揮発成分がトマトの害虫を忌避し、相互に風味を高め合うとされる,1,Sage's volatile compounds repel tomato pests and the two are said to enhance each other's flavor
+145,80,1,カモミールの花が天敵昆虫を引き寄せ、トマトのアブラムシ・コナジラミの生物的防除を助ける,1,"Chamomile flowers attract beneficial insects, supporting biological control of aphids and whiteflies on tomatoes"
+146,81,68,ラベンダーの香りがアブラムシ・ナメクジを忌避し、バジルの周辺環境を改善する。ミツバチも引き寄せる,1,"Lavender's scent repels aphids and slugs, improving the environment around basil, and also attracts bees"
+147,86,29,さやえんどうの根粒菌が窒素を固定してネギの生育を助け、ネギの拮抗菌がえんどうの土壌病害を抑制する相互利益関係,1,Snow pea nodule bacteria fix nitrogen to support green onion growth; green onion antagonistic bacteria suppress soil diseases in peas
+148,87,29,小豆の根粒菌が土壌窒素を固定してネギの生育を補い、ネギの香りが小豆のアブラムシを忌避する,1,Adzuki bean nodule bacteria fix soil nitrogen to supplement green onion growth; green onion scent repels aphids on adzuki beans
+149,88,29,黒豆の根粒菌が窒素を固定し土壌を肥沃にする。ネギの拮抗菌が黒豆の土壌病害を抑制する,1,Black soybean nodule bacteria fix nitrogen and enrich soil; green onion antagonistic bacteria suppress soil diseases in black soybeans
+150,89,29,レンズ豆の根粒菌が窒素固定を行い、ネギの拮抗菌がレンズ豆の根腐れを予防する,1,Lentil nodule bacteria fix nitrogen; green onion antagonistic bacteria prevent root rot in lentils
+151,90,29,ひよこ豆の根粒菌が窒素を固定し、ネギの拮抗菌がひよこ豆の土壌病害を抑制する,1,Chickpea nodule bacteria fix nitrogen; green onion antagonistic bacteria suppress soil diseases in chickpeas
+152,91,29,白花豆の根粒菌が窒素固定を行い土壌を改良する。ネギの拮抗菌が豆類の根腐れを予防する,1,Runner bean nodule bacteria fix nitrogen and improve soil; green onion antagonistic bacteria prevent root rot in beans
+153,92,53,ニラの拮抗菌がキクイモの土壌病害を抑制する。キクイモの大きな株が周辺植物に日陰を作る点には注意が必要,1,Chive antagonistic bacteria suppress soil diseases in Jerusalem artichoke. Note that its large growth can shade nearby plants
+154,93,53,ニラの根圏拮抗菌がこんにゃくの軟腐病・根腐れを抑制し、湿潤土壌での健全育成を助ける,1,"Chive rhizosphere antagonistic bacteria suppress soft rot and root rot in konjac, supporting healthy growth in moist soil"
+155,94,29,ネギの抗菌成分が水田環境の病原菌を抑制し、クワイの球茎腐敗リスクを低減する,1,"Green onion antibacterial compounds suppress pathogens in paddy environments, reducing corm rot risk in water chestnut"
+156,95,53,ニラの拮抗菌がヤーコンの根腐れ・立枯れを抑制し、塊根の品質維持を助ける,1,"Chive antagonistic bacteria suppress root rot and damping-off in yacon, helping maintain tuber quality"
+157,96,53,ニラの根圏拮抗菌がタロイモの疫病・軟腐病を抑制し、球茎の健全な発達を促す,1,"Chive rhizosphere antagonistic bacteria suppress blight and soft rot in taro, promoting healthy corm development"
+158,97,29,ネギの拮抗菌がヤマイモ類の土壌病原菌を抑制し、ムカゴの健全な形成を助ける,1,"Green onion antagonistic bacteria suppress soil pathogens in yam species, supporting healthy bulbil formation"
+159,98,29,ネギの根圏微生物がツクネイモの土壌病害・根腐れを抑制し、塊茎の安定した肥大を促す,1,"Green onion rhizosphere microbes suppress soil diseases and root rot in tsukune yam, supporting stable tuber enlargement"
+160,99,29,ネギの拮抗菌が自然薯の根腐れ・立枯れを予防し、長い塊根の品質維持を助ける,1,"Green onion antagonistic bacteria prevent root rot and damping-off in wild yam, helping maintain the quality of its long tuber"
+161,100,68,バジルの香りがキャッサバのアブラムシ・コナジラミを忌避し、ミツバチを引き寄せて受粉を助ける,1,Basil's aroma repels aphids and whiteflies on cassava and attracts bees to aid pollination

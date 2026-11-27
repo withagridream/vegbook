@@ -1,0 +1,8 @@
+id,name,season,description,name_en
+1,アブラムシ,春〜秋,新芽・若葉に群生して吸汁する。ウイルス病を媒介する,Aphid
+2,ハダニ,梅雨明け〜夏,葉裏に寄生して吸汁。乾燥時に多発する,Spider Mite
+3,コナジラミ,春〜秋,葉裏に寄生。すす病を誘発する,Whitefly
+4,オオタバコガ,夏〜秋,果実に穴を開けて食害する,Cotton Bollworm
+5,アオムシ（モンシロチョウ幼虫）,春・秋,\N,Cabbage White Caterpillar
+6,コナガ,通年,\N,Diamondback Moth
+7,ネキリムシ（ヨトウムシ幼虫）,春〜秋,\N,Cutworm

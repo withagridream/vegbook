@@ -9,7 +9,10 @@ tools:
   vegbook_glossary     - 農業用語検索
   vegbook_climate      - 地域別月別気候データ取得
   vegbook_harvest_stats - 作物別収穫量統計取得
-  vegbook_diagnose     - 不足データの診断レポート
+  vegbook_diagnose     - DBの不足データの診断（互換用。vegbook_db_check と同じ）
+  vegbook_db_check     - DBの不足データの診断（名前を中身に合わせた新名）
+  vegbook_trouble      - 困りごと（症状→原因→条件→対策→出典）
+  vegbook_ask          - 質問に関連する情報を出典つきで検索（FTS5）
   vegbook_add_companion - コンパニオンプランツの追加（既定で無効）
   vegbook_update_crop  - 作物フィールドの更新（既定で無効）
 
@@ -23,9 +26,14 @@ from pathlib import Path
 
 from mcp.server.fastmcp import FastMCP
 
+from vegbook_core import (
+    STORAGE_METHODS, STORAGE_METHODS_EN, UNSOURCED, ask, kana_variants, resolve_crop,
+    issue_key, load_data_issues, source_info, source_usable, storage_rows, trouble,
+)
+
 DB = Path(__file__).parent / 'vegbook.db'
 
-__version__ = '1.3.0'
+__version__ = '2.0.0-dev'  # 2.0 開発中（リリース表記は段階2cの完了後に決める）
 
 mcp = FastMCP('vegbook')
 
@@ -61,53 +69,12 @@ def _in_month_sql(start: str, end: str) -> str:
 
 
 # 取り込み不良の疑いがあるデータ（DBの行は未修正。応急処置として値を返さない）
-# 収穫統計：2014〜2020年は品目コード表のずれの疑い（38作物の約22作物で2013→2014・2020→2021の値が不連続）
-_HARVEST_SUSPECT_YEARS = set(range(2014, 2021))
-_HARVEST_SUSPECT_NOTE = (
-    '取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。'
-    '（e-Stat の原典で確認してください）'
-)
-# 作物・年・値の列を個別に指定する疑い行
-_HARVEST_SUSPECT_ROWS: dict[tuple[str, int], tuple[set[str], str]] = {
-    ('ダイコン', 2007): ({'area_ha', 'shipment_t'}, '作付面積が日本の耕地面積を超える異常値（取り込み不良の疑い・未修正）'),
-    ('ダイコン', 2008): ({'area_ha', 'shipment_t'}, '作付面積が日本の耕地面積を超える異常値（取り込み不良の疑い・未修正）'),
-    ('いちご', 2023): ({'area_ha', 'harvest_t', 'shipment_t'}, '前後の年の約4倍で、値の取り込み不良の疑い（未修正）'),
-}
-
-# 気候データ：月の列が詰まって12月に年平均・年合計が入った地域年（region_id, year）→ 値を返さない列
-_CLIMATE_SUSPECT: dict[tuple[int, int], set[str]] = {
-    (3, 2010): {'avg_temp_c', 'precipitation_mm'},  # 九州北部
-    (3, 2011): {'avg_temp_c', 'precipitation_mm'},
-    (4, 2011): {'avg_temp_c', 'precipitation_mm'},  # 東北
-    (5, 2006): {'precipitation_mm'},                # 北海道（降水量のみ）
-    (5, 2011): {'avg_temp_c', 'precipitation_mm'},
-}
-_CLIMATE_SUSPECT_NOTE = (
-    '取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。'
-)
+# 対象の行・列・警告文は data/data_issues.csv（DBの data_issues 表）が持つ。action='hide' の行の列は None にして返す。
+# 出力のキー名（avg_temp_c など）とDBの列名の対応
+_CLIMATE_COLS = {'avg_temp': 'avg_temp_c', 'precipitation': 'precipitation_mm'}
 
 
-def _kana_variants(text: str) -> list[str]:
-    """カタカナ↔ひらがな両方の表記バリアントを返す（重複除去）。
-
-    「オクラ」→「おくら」、「おくら」→「オクラ」のように
-    どちらの表記で渡されても DB を検索できるようにする。
-    """
-    kata_to_hira = ''.join(
-        chr(ord(c) - 0x60) if 'ァ' <= c <= 'ヶ' else c
-        for c in text
-    )
-    hira_to_kata = ''.join(
-        chr(ord(c) + 0x60) if 'ぁ' <= c <= 'ゖ' else c
-        for c in text
-    )
-    seen: set[str] = set()
-    result: list[str] = []
-    for v in (text, kata_to_hira, hira_to_kata):
-        if v not in seen:
-            seen.add(v)
-            result.append(v)
-    return result
+_kana_variants = kana_variants  # 互換用の別名（実体は vegbook_core.kana_variants）
 
 
 # ── ① 作物検索 ──────────────────────────────────────────────────────
@@ -187,33 +154,69 @@ def vegbook_search(
 
 
 # ── ② 作物詳細 ──────────────────────────────────────────────────────
+def _detail_extras(conn: sqlite3.Connection, row: sqlite3.Row, lang: str) -> dict:
+    """出典・地域・保存方法（方法ごと）を詳細に添える。"""
+    region = None
+    if row['region_id'] is not None:
+        r = conn.execute('SELECT name FROM regions WHERE id = ?', (row['region_id'],)).fetchone()
+        region = r['name'] if r else None
+    srcs = conn.execute(
+        'SELECT field, source_id, provisional FROM crop_field_sources WHERE crop_id = ? ORDER BY source_id, field',
+        (row['id'],)
+    ).fetchall()
+    grouped: dict[int, list[str]] = {}
+    confirmed: dict[int, bool] = {}   # 出典ごとに、引用箇所の確認済み（provisional=0）の列が1つでもあるか
+    for x in srcs:
+        grouped.setdefault(x['source_id'], []).append(x['field'])
+        confirmed[x['source_id']] = confirmed.get(x['source_id'], False) or x['provisional'] == 0
+    sources = [{'fields': f, 'source': source_info(conn, sid), 'provisional': not confirmed[sid]}
+               for sid, f in grouped.items()]
+    storage = storage_rows(conn, row['id'])
+    for st in storage:
+        if lang == 'en':
+            st['method_label'] = STORAGE_METHODS_EN.get(st['method'], st['method'])
+    return {
+        'region': region,
+        'region_note': None if region else '地域の指定なし（登録時に地域を区別していない値。全国共通とは限りません）',
+        'sources': sources or UNSOURCED,
+        'sources_note': ('列ごとの出典。ここに載っていない列は出典未登録です。'
+                         'usable_as_evidence=false の出典（一括記載・列未特定・利用許諾なしなど）は、個別の値の根拠に使えません。'
+                         if sources else None),
+        # 根拠に使える出典が、引用箇所の確認済み（provisional=0）で付いているときだけ True
+        'has_usable_source': any(source_usable(x['source']) and not x['provisional'] for x in sources),
+        'storage_methods': storage,
+    }
+
+
 @mcp.tool()
 def vegbook_detail(name: str, lang: str = 'ja') -> dict:
     """作物の詳細情報を取得する。
 
     Args:
-        name: 作物名（日本語または英語）
+        name: 作物名（日本語・英語・別名・表記ゆれ。ひらがな/カタカナどちらでも可）
         lang: 出力言語（ja / en）
+
+    出典（sources）・地域（region）・保存方法（storage_methods。方法ごと）も返す。
     """
     conn = _conn()
-    _v = _kana_variants(name)
-    _ph = ','.join('?' * len(_v))
+    res = resolve_crop(conn, name)
+    if not res['crop']:
+        conn.close()
+        return {'error': f'Crop "{name}" not found.', 'suggestions': res['suggestions']}
     row = conn.execute(
-        f'''SELECT c.*, cc.name AS category, cc.name_en AS category_en,
+        '''SELECT c.*, cc.name AS category, cc.name_en AS category_en,
                   ge.name AS environment, ge.name_en AS environment_en
            FROM crops c
            JOIN crop_categories cc ON c.category_id = cc.id
            LEFT JOIN grow_environments ge ON c.environment_id = ge.id
-           WHERE c.name IN ({_ph}) OR c.name_en = ?''',
-        (*_v, name),
+           WHERE c.id = ?''',
+        (res['crop']['id'],),
     ).fetchone()
+    extras = _detail_extras(conn, row, lang)
     conn.close()
 
-    if not row:
-        return {'error': f'Crop "{name}" not found.'}
-
     if lang == 'en':
-        return {
+        out = {
             'name': row['name_en'] or row['name'],
             'name_ja': row['name'],
             'category': row['category_en'],
@@ -233,7 +236,7 @@ def vegbook_detail(name: str, lang: str = 'ja') -> dict:
             'failure_points': row['failure_points_en'] or row['failure_points'],
         }
     else:
-        return {
+        out = {
             'name': row['name'],
             'name_en': row['name_en'],
             'category': row['category'],
@@ -252,6 +255,10 @@ def vegbook_detail(name: str, lang: str = 'ja') -> dict:
             'harvest_sign': row['harvest_sign'],
             'failure_points': row['failure_points'],
         }
+    if res['also']:
+        out['also_matches'] = res['also']
+    out.update(extras)
+    return out
 
 
 # ── ③ 今月のおすすめ ────────────────────────────────────────────────
@@ -307,50 +314,51 @@ def vegbook_companion(crop_name: str, lang: str = 'ja') -> dict:
     """指定作物のコンパニオンプランツ（相性の良い・悪い組み合わせ）を返す。
 
     Args:
-        crop_name: 作物名（日本語または英語）
+        crop_name: 作物名（日本語・英語・別名・表記ゆれ）
         lang:      出力言語（ja / en）
+
+    登録の向きは問わず両方向から引く。相手の側にだけ登録がある組み合わせは
+    registered_as='reverse' と示す（効果の説明文は登録した側の作物から見た書き方）。
     """
     conn = _conn()
-
-    # 作物IDを取得
-    _v = _kana_variants(crop_name)
-    _ph = ','.join('?' * len(_v))
-    crop = conn.execute(
-        f'SELECT id, name, name_en FROM crops WHERE name IN ({_ph}) OR name_en = ?',
-        (*_v, crop_name),
-    ).fetchone()
-
+    res = resolve_crop(conn, crop_name)
+    crop = res['crop']
     if not crop:
         conn.close()
-        return {'error': f'Crop "{crop_name}" not found.'}
+        return {'error': f'Crop "{crop_name}" not found.', 'suggestions': res['suggestions']}
 
     rows = conn.execute(
-        '''SELECT c2.name, c2.name_en, cp.effect, cp.effect_en, cp.is_positive
-           FROM companion_plants cp
-           JOIN crops c2 ON cp.companion_id = c2.id
+        '''SELECT c2.id AS oid, c2.name, c2.name_en, cp.effect, cp.effect_en, cp.is_positive, 'direct' AS d
+           FROM companion_plants cp JOIN crops c2 ON cp.companion_id = c2.id
            WHERE cp.crop_id = ?
-           ORDER BY cp.is_positive DESC, c2.name''',
-        (crop['id'],),
+           UNION ALL
+           SELECT c1.id AS oid, c1.name, c1.name_en, cp.effect, cp.effect_en, cp.is_positive, 'reverse' AS d
+           FROM companion_plants cp JOIN crops c1 ON cp.crop_id = c1.id
+           WHERE cp.companion_id = ?''',
+        (crop['id'], crop['id']),
     ).fetchall()
     conn.close()
 
-    good = []
-    bad  = []
-    for r in rows:
+    good, bad = [], []
+    seen: set[int] = set()
+    for r in sorted(rows, key=lambda x: (x['d'] != 'direct', not x['is_positive'], x['name'])):
+        if r['oid'] in seen:      # 両方向に登録がある相手は、正方向の登録を優先して1回だけ出す
+            continue
+        seen.add(r['oid'])
         entry = {
             'name': (r['name_en'] or r['name']) if lang == 'en' else r['name'],
             'effect': (r['effect_en'] or r['effect']) if lang == 'en' else r['effect'],
+            'registered_as': r['d'],
         }
-        if r['is_positive']:
-            good.append(entry)
-        else:
-            bad.append(entry)
-
-    return {
+        (good if r['is_positive'] else bad).append(entry)
+    out = {
         'crop': (crop['name_en'] or crop['name']) if lang == 'en' else crop['name'],
         'good_companions': good,
         'bad_companions': bad,
     }
+    if res['also']:
+        out['also_matches'] = res['also']
+    return out
 
 
 # ── ⑤ 農業用語検索 ──────────────────────────────────────────────────
@@ -420,7 +428,7 @@ def vegbook_climate(
         return [{'error': f'Region "{region}" not found. Available (Japanese names only / 日本語名で指定): 関東平野, 近畿, 九州北部, 東北, 北海道'}]
 
     query = '''
-        SELECT year, month, avg_temp, precipitation
+        SELECT id, year, month, avg_temp, precipitation
         FROM climate_monthly
         WHERE region_id = ?
     '''
@@ -430,10 +438,10 @@ def vegbook_climate(
         query += ' AND year = ?'
         params.append(year)
     else:
-        # 直近5年
-        max_year = date.today().year
+        # 直近5年（今年ではなく、この地域のデータにある最新の年から数える。今年の値はまだ入っていないため）
+        latest = conn.execute('SELECT MAX(year) FROM climate_monthly WHERE region_id = ?', (reg['id'],)).fetchone()[0]
         query += ' AND year >= ?'
-        params.append(max_year - 4)
+        params.append((latest if latest is not None else date.today().year) - 4)
 
     if month is not None:
         query += ' AND month = ?'
@@ -441,6 +449,7 @@ def vegbook_climate(
 
     query += ' ORDER BY year, month'
     rows = conn.execute(query, params).fetchall()
+    issues = load_data_issues(conn, 'climate_monthly')
     conn.close()
 
     results = []
@@ -452,11 +461,12 @@ def vegbook_climate(
             'avg_temp_c': r['avg_temp'],
             'precipitation_mm': r['precipitation'],
         }
-        suspect = _CLIMATE_SUSPECT.get((reg['id'], r['year']))
-        if suspect:
-            for col in suspect:
-                item[col] = None
-            item['warning'] = _CLIMATE_SUSPECT_NOTE
+        key = issue_key(region=reg['name'], year=r['year'], month=r['month'])   # 自然キー（行idは使わない）
+        if key in issues:
+            cols, note = issues[key]
+            for col in cols:
+                item[_CLIMATE_COLS.get(col, col)] = None
+            item['warning'] = note
         results.append(item)
     return results
 
@@ -479,15 +489,18 @@ def vegbook_harvest_stats(
         end_year = date.today().year
 
     conn = _conn()
-    _v = _kana_variants(crop_name)
+    # 作物名は別名・表記ゆれも受け付ける（解決できなければ入力のかな違いで直接探す）
+    res = resolve_crop(conn, crop_name)
+    _v = [res['crop']['name']] if res['crop'] else _kana_variants(crop_name)
     _ph = ','.join('?' * len(_v))
     rows = conn.execute(
-        f'''SELECT crop_name, year, area_ha, harvest_t, shipment_t
+        f'''SELECT id, crop_name, year, area_ha, harvest_t, shipment_t
            FROM harvest_stats
            WHERE crop_name IN ({_ph}) AND year >= ? AND year <= ?
            ORDER BY crop_name, year''',  # noqa: S608 – _ph は ? のみ
         (*_v, start_year, end_year),
     ).fetchall()
+    issues = load_data_issues(conn, 'harvest_stats')
     conn.close()
 
     if not rows:
@@ -502,12 +515,9 @@ def vegbook_harvest_stats(
             'harvest_t': r['harvest_t'],
             'shipment_t': r['shipment_t'],
         }
-        if r['year'] in _HARVEST_SUSPECT_YEARS:
-            for col in ('area_ha', 'harvest_t', 'shipment_t'):
-                item[col] = None
-            item['warning'] = _HARVEST_SUSPECT_NOTE
-        elif (r['crop_name'], r['year']) in _HARVEST_SUSPECT_ROWS:
-            cols, note = _HARVEST_SUSPECT_ROWS[(r['crop_name'], r['year'])]
+        key = issue_key(crop_name=r['crop_name'], year=r['year'])   # 自然キー（行idは使わない）
+        if key in issues:
+            cols, note = issues[key]
             for col in cols:
                 item[col] = None
             item['warning'] = note
@@ -516,40 +526,98 @@ def vegbook_harvest_stats(
 
 
 # ── ⑧ 不足データ診断 ────────────────────────────────────────────────
-@mcp.tool()
-def vegbook_diagnose() -> dict:
-    """DBの不足データを診断してレポートする。
-
-    以下を検出する:
-    - companion_plantsに主作物として未登録の作物
-    - seed_or_seedling が NULL の作物
-    """
+def _db_check() -> dict:
     conn = _conn()
-
-    # companion_plantsに未登録の作物
     no_companion = conn.execute(
         '''SELECT id, name FROM crops
            WHERE id NOT IN (SELECT DISTINCT crop_id FROM companion_plants)
-           ORDER BY id''',
-    ).fetchall()
-
-    # seed_or_seedling が NULL の作物
+             AND id NOT IN (SELECT DISTINCT companion_id FROM companion_plants)
+           ORDER BY id''').fetchall()
     no_seed_type = conn.execute(
-        'SELECT id, name FROM crops WHERE seed_or_seedling IS NULL ORDER BY id',
-    ).fetchall()
-
+        'SELECT id, name FROM crops WHERE seed_or_seedling IS NULL ORDER BY id').fetchall()
+    no_storage = conn.execute(
+        'SELECT id, name FROM crops WHERE id NOT IN (SELECT crop_id FROM crop_storage) ORDER BY id').fetchall()
+    n_crops = conn.execute('SELECT COUNT(*) FROM crops').fetchone()[0]
+    # 根拠に使える出典（usable_as_evidence=1）が、引用箇所の確認済み（provisional=0）で付いた作物だけを数える。
+    # 使えない出典だけの作物は別に数える
+    n_srcd = conn.execute(
+        'SELECT COUNT(DISTINCT f.crop_id) FROM crop_field_sources f JOIN sources s ON s.id = f.source_id '
+        'WHERE s.usable_as_evidence = 1 AND f.provisional = 0').fetchone()[0]
+    n_any = conn.execute('SELECT COUNT(DISTINCT crop_id) FROM crop_field_sources').fetchone()[0]
+    troubles = conn.execute(
+        'SELECT COUNT(*), SUM(provisional) FROM troubles').fetchone()
     conn.close()
-
     return {
-        'companion_missing': [
-            {'id': r['id'], 'name': r['name']} for r in no_companion
-        ],
+        'companion_missing': [{'id': r['id'], 'name': r['name']} for r in no_companion],
         'companion_missing_count': len(no_companion),
-        'seed_type_missing': [
-            {'id': r['id'], 'name': r['name']} for r in no_seed_type
-        ],
+        'seed_type_missing': [{'id': r['id'], 'name': r['name']} for r in no_seed_type],
         'seed_type_missing_count': len(no_seed_type),
+        'storage_missing_count': len(no_storage),
+        'crops_with_any_source': n_srcd,                      # 根拠に使える出典が付いた作物
+        'crops_with_unusable_source_only': n_any - n_srcd,   # 出典の記載はあるが根拠に使えないものだけ
+        'crops_without_source': n_crops - n_srcd,
+        'troubles_total': troubles[0], 'troubles_provisional': troubles[1] or 0,
     }
+
+
+@mcp.tool()
+def vegbook_db_check() -> dict:
+    """DB の不足データを診断してレポートする（旧名 vegbook_diagnose）。
+
+    検出する内容: コンパニオン登録が0件（どちら向きにも）の作物 / seed_or_seedling が NULL の作物 /
+    保存方法が未登録の作物 / 出典が1つも付いていない作物の数 / 困りごとの件数（仮抽出の数）。
+    ※ 栽培の診断（症状の原因）ではない。症状から原因を引くには vegbook_trouble を使う。
+    """
+    return _db_check()
+
+
+@mcp.tool()
+def vegbook_diagnose() -> dict:
+    """（互換用）vegbook_db_check と同じ。名前は「DBの不足データ診断」の意味で、栽培の診断ではない。
+
+    症状から原因を調べるには vegbook_trouble / vegbook_ask を使う。
+    """
+    return _db_check()
+
+
+# ── ⑪ 困りごと・質問検索 ────────────────────────────────────────────
+@mcp.tool()
+def vegbook_trouble(query: str, crop: str | None = None, lang: str = 'ja', phase: str | None = None) -> dict:
+    """「◯◯に困ったら」：症状から、原因（複数）・条件・予防/対策・出典を返す。
+
+    Args:
+        query: 症状や困りごと（例：「実が割れる」「葉が黄色い」「すが入る」）
+        crop:  作物名（省略可。日本語・英語・別名・表記ゆれ）
+        lang:  出力言語（ja / en）
+        phase: growing（栽培中）/ postharvest（収穫後）。省略時は両方
+
+    出典のない項目は「出典未登録」と明示する。provisional=true は既存の文章から機械的に
+    拾った仮の項目で、根拠として使う前に原典で確かめる必要がある。
+    農薬を使う対策には必ず caution（登録のある作物にだけ使う等）が付く。
+    """
+    conn = _conn()
+    out = trouble(conn, query, crop, lang, phase)
+    conn.close()
+    return out
+
+
+@mcp.tool()
+def vegbook_ask(query: str, crop: str | None = None, lang: str = 'ja') -> dict:
+    """質問に関連する情報を、出典つきで返す（困りごと・保存方法・関連する文章を全文検索）。
+
+    Args:
+        query: 質問（例：「大根 干す」「トマト 冷蔵庫」「アブラムシ」「トマト 保存」）
+        crop:  作物名（省略時は質問文から探す）
+        lang:  出力言語（ja / en）。文章検索の対象言語
+
+    保存方法の語（冷蔵・常温・冷凍・干す・漬ける・追熟・土に埋める）が含まれると、
+    その作物の保存方法（crop_storage）を方法ごとに返す。登録がなければ「未登録」と返す。
+    出典のないものは「出典未登録」と明示する。
+    """
+    conn = _conn()
+    out = ask(conn, query, crop, lang)
+    conn.close()
+    return out
 
 
 # ── ⑨ コンパニオンプランツ追加 ──────────────────────────────────────
@@ -576,25 +644,16 @@ def vegbook_add_companion(
         return dict(_WRITE_DISABLED)
     conn = _conn(write=True)
 
-    _cv = _kana_variants(crop_name)
-    _cph = ','.join('?' * len(_cv))
-    crop = conn.execute(
-        f'SELECT id FROM crops WHERE name IN ({_cph}) OR name_en = ?',
-        (*_cv, crop_name),
-    ).fetchone()
+    r1 = resolve_crop(conn, crop_name)
+    crop = r1['crop']
     if not crop:
         conn.close()
-        return {'error': f'Crop "{crop_name}" not found.'}
-
-    _mv = _kana_variants(companion_name)
-    _mph = ','.join('?' * len(_mv))
-    companion = conn.execute(
-        f'SELECT id FROM crops WHERE name IN ({_mph}) OR name_en = ?',
-        (*_mv, companion_name),
-    ).fetchone()
+        return {'error': f'Crop "{crop_name}" not found.', 'suggestions': r1['suggestions']}
+    r2 = resolve_crop(conn, companion_name)
+    companion = r2['crop']
     if not companion:
         conn.close()
-        return {'error': f'Companion crop "{companion_name}" not found.'}
+        return {'error': f'Companion crop "{companion_name}" not found.', 'suggestions': r2['suggestions']}
 
     # 重複チェック
     existing = conn.execute(
@@ -626,6 +685,48 @@ def vegbook_add_companion(
 
 
 # ── ⑩ 作物フィールド更新 ─────────────────────────────────────────────
+# 値の検証ルール：整数の範囲 / 実数の範囲 / 文字列の最大長
+_INT_RANGE = {
+    'sow_start': (1, 12), 'sow_end': (1, 12), 'harvest_start': (1, 12), 'harvest_end': (1, 12),
+    'difficulty': (1, 3), 'days_to_harvest': (1, 1000),
+}
+_REAL_RANGE = {'temp_min': (-30.0, 60.0), 'temp_max': (-30.0, 60.0)}
+_TEXT_MAX = 2000
+
+
+def _validate_value(conn: sqlite3.Connection, crop_id: int, field: str, value: str):
+    """更新値を検証して、DB に入れる型（int / float / str）にして返す。不正なら ValueError。"""
+    if field in _INT_RANGE:
+        lo, hi = _INT_RANGE[field]
+        try:
+            f = float(str(value).strip())
+        except ValueError:
+            raise ValueError(f'整数で指定してください（{lo}〜{hi}）') from None
+        if f != int(f) or not lo <= int(f) <= hi:
+            raise ValueError(f'{lo}〜{hi} の整数で指定してください')
+        return int(f)
+    if field in _REAL_RANGE:
+        lo, hi = _REAL_RANGE[field]
+        try:
+            f = float(str(value).strip())
+        except ValueError:
+            raise ValueError(f'数値で指定してください（{lo}〜{hi}）℃') from None
+        if not lo <= f <= hi:
+            raise ValueError(f'{lo}〜{hi} の範囲で指定してください')
+        row = conn.execute('SELECT temp_min, temp_max FROM crops WHERE id = ?', (crop_id,)).fetchone()
+        tmin = f if field == 'temp_min' else row['temp_min']
+        tmax = f if field == 'temp_max' else row['temp_max']
+        if tmin is not None and tmax is not None and tmin >= tmax:
+            raise ValueError(f'temp_min（{tmin}）は temp_max（{tmax}）より小さくしてください')
+        return f
+    text = str(value).strip()
+    if not text:
+        raise ValueError('空の値は指定できません')
+    if len(text) > _TEXT_MAX:
+        raise ValueError(f'{_TEXT_MAX}文字以内で指定してください')
+    return text
+
+
 # 更新を許可するフィールドのホワイトリスト
 _UPDATABLE_FIELDS = {
     'seed_or_seedling', 'planter_size', 'yield_per_plant',
@@ -661,15 +762,18 @@ def vegbook_update_crop(crop_name: str, field: str, value: str) -> dict:
         }
 
     conn = _conn(write=True)
-    _v = _kana_variants(crop_name)
-    _ph = ','.join('?' * len(_v))
-    crop = conn.execute(
-        f'SELECT id, name FROM crops WHERE name IN ({_ph}) OR name_en = ?',
-        (*_v, crop_name),
-    ).fetchone()
+    res = resolve_crop(conn, crop_name)
+    crop = res['crop']
     if not crop:
         conn.close()
-        return {'error': f'Crop "{crop_name}" not found.'}
+        return {'error': f'Crop "{crop_name}" not found.', 'suggestions': res['suggestions']}
+
+    # 値の検証（型・範囲）。通らなければ書き込まない
+    try:
+        value = _validate_value(conn, crop['id'], field, value)
+    except ValueError as e:
+        conn.close()
+        return {'error': f'Invalid value for "{field}": {e}', 'field': field, 'value': value}
 
     conn.execute(
         f'UPDATE crops SET {field} = ? WHERE id = ?',  # noqa: S608 – field はホワイトリスト済み

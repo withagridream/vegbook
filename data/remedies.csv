@@ -1,0 +1,10 @@
+id,cause_id,kind,text,caution,uses_pesticide,crop_id,source_id,lang,provisional,wisdom,locator
+1,17,prevention,防虫ネット必須,\N,0,10,\N,ja,1,0,\N
+2,17,prevention,定植直後から防虫ネット必須,\N,0,12,\N,ja,1,0,\N
+3,47,prevention,夏の水やりが最重要,\N,0,26,\N,ja,1,0,\N
+4,50,prevention,苗の太さ管理が重要,\N,0,28,\N,ja,1,0,\N
+5,8,prevention,排水性が重要,\N,0,44,\N,ja,1,0,\N
+6,76,prevention,3〜4年で株分け更新が必要,\N,0,62,\N,ja,1,0,\N
+7,78,prevention,2〜3年ごとの掘り上げが必要,\N,0,63,\N,ja,1,0,\N
+8,8,prevention,梅雨期の管理が重要,\N,0,72,\N,ja,1,0,\N
+9,86,prevention,プランターまたは区画管理が推奨,\N,0,92,\N,ja,1,0,\N

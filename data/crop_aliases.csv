@@ -1,0 +1,429 @@
+id,crop_id,alias,lang,kind
+1,1,トマト,ja,name
+2,1,Tomato,en,name_en
+3,2,シシトウ,ja,name
+4,2,Shishito Pepper,en,name_en
+5,2,獅子唐,ja,variant
+6,2,獅子唐辛子,ja,variant
+7,2,Shishito,en,alias
+8,3,ほうれん草,ja,name
+9,3,Spinach,en,name_en
+10,3,ほうれんそう,ja,variant
+11,3,ホウレンソウ,ja,variant
+12,4,ピーマン,ja,name
+13,4,Bell Pepper,en,name_en
+14,4,Green Pepper,en,alias
+15,5,まくわうり,ja,name
+16,5,Oriental Melon,en,name_en
+17,5,真桑瓜,ja,variant
+18,6,レタス,ja,name
+19,6,Lettuce,en,name_en
+20,7,にんじん,ja,name
+21,7,Carrot,en,name_en
+22,7,人参,ja,variant
+23,8,カブ,ja,name
+24,8,Turnip,en,name_en
+25,8,蕪,ja,variant
+26,9,ダイコン,ja,name
+27,9,Daikon Radish,en,name_en
+28,9,大根,ja,variant
+29,9,Daikon,en,alias
+30,9,Japanese radish,en,alias
+31,10,小松菜,ja,name
+32,10,Komatsuna (Japanese Mustard Spinach),en,name_en
+33,10,Komatsuna,en,name_en_part
+34,10,Japanese Mustard Spinach,en,name_en_part
+35,10,こまつな,ja,variant
+36,11,玉レタス,ja,name
+37,11,Head Lettuce (Iceberg-type),en,name_en
+38,11,Head Lettuce,en,name_en_part
+39,11,Iceberg-type,en,name_en_part
+40,11,結球レタス,ja,alias
+41,11,Iceberg lettuce,en,alias
+42,12,キャベツ,ja,name
+43,12,Cabbage,en,name_en
+44,13,きゅうり,ja,name
+45,13,Cucumber,en,name_en
+46,13,胡瓜,ja,variant
+47,14,スティックセニョール,ja,name
+48,14,Sprouting Broccoli,en,name_en
+49,15,しょうが,ja,name
+50,15,Ginger,en,name_en
+51,15,生姜,ja,variant
+52,16,エダマメ,ja,name
+53,16,Edamame (Green Soybean),en,name_en
+54,16,Edamame,en,name_en_part
+55,16,Green Soybean,en,name_en_part
+56,16,枝豆,ja,variant
+57,17,ミニトマト,ja,name
+58,17,Cherry Tomato,en,name_en
+59,17,プチトマト,ja,alias
+60,18,おくら,ja,name
+61,18,Okra,en,name_en
+62,19,ナス,ja,name
+63,19,Eggplant,en,name_en
+64,19,茄子,ja,variant
+65,19,なすび,ja,alias
+66,19,ナスビ,ja,alias
+67,19,Aubergine,en,alias
+68,20,とうもろこし,ja,name
+69,20,Corn,en,name_en
+70,20,玉蜀黍,ja,variant
+71,20,Maize,en,alias
+72,20,Sweet corn,en,alias
+73,21,落花生,ja,name
+74,21,Peanut,en,name_en
+75,21,ピーナッツ,ja,alias
+76,21,ピーナツ,ja,alias
+77,21,ラッカセイ,ja,variant
+78,21,Groundnut,en,alias
+79,22,モロヘイヤ,ja,name
+80,22,Molokhia (Jute Mallow),en,name_en
+81,22,Molokhia,en,name_en_part
+82,22,Jute Mallow,en,name_en_part
+83,23,ジャガイモ,ja,name
+84,23,Potato,en,name_en
+85,23,馬鈴薯,ja,variant
+86,23,じゃが芋,ja,variant
+87,24,サツマイモ,ja,name
+88,24,Sweet Potato,en,name_en
+89,24,薩摩芋,ja,variant
+90,24,甘藷,ja,alias
+91,25,ヤマイモ（長いも）,ja,name
+92,25,Japanese Mountain Yam,en,name_en
+93,25,長いも,ja,alias
+94,25,長芋,ja,alias
+95,25,ナガイモ,ja,alias
+96,25,ヤマイモ,ja,alias
+97,25,山芋,ja,alias
+98,26,サトイモ,ja,name
+99,26,Taro,en,name_en
+100,26,里芋,ja,variant
+101,27,ニンニク,ja,name
+102,27,Garlic,en,name_en
+103,27,大蒜,ja,variant
+104,28,玉ねぎ,ja,name
+105,28,Onion,en,name_en
+106,28,玉葱,ja,variant
+107,28,たまねぎ,ja,variant
+108,29,ネギ,ja,name
+109,29,Japanese Bunching Onion (Negi),en,name_en
+110,29,Japanese Bunching Onion,en,name_en_part
+111,29,Negi,en,name_en_part
+112,29,葱,ja,variant
+113,29,長ネギ,ja,alias
+114,29,長葱,ja,alias
+115,29,白ねぎ,ja,alias
+116,30,白菜,ja,name
+117,30,Napa Cabbage (Chinese Cabbage),en,name_en
+118,30,Napa Cabbage,en,name_en_part
+119,30,Chinese Cabbage,en,name_en_part
+120,30,Chinese cabbage,en,alias
+121,30,Napa cabbage,en,alias
+122,31,ズッキーニ,ja,name
+123,31,Zucchini,en,name_en
+124,32,パプリカ,ja,name
+125,32,Bell Pepper,en,name_en_shared
+126,33,唐辛子,ja,name
+127,33,Chili Pepper,en,name_en
+128,34,ゴーヤ,ja,name
+129,34,Bitter Melon,en,name_en
+130,34,ニガウリ,ja,alias
+131,34,苦瓜,ja,alias
+132,34,ゴーヤー,ja,alias
+133,34,Goya,en,alias
+134,34,Bitter gourd,en,alias
+135,35,かぼちゃ,ja,name
+136,35,Pumpkin / Kabocha Squash,en,name_en
+137,35,Pumpkin,en,name_en_part
+138,35,Kabocha Squash,en,name_en_part
+139,35,南瓜,ja,variant
+140,35,Kabocha,en,alias
+141,36,スイカ,ja,name
+142,36,Watermelon,en,name_en
+143,36,西瓜,ja,variant
+144,37,メロン,ja,name
+145,37,Muskmelon,en,name_en
+146,38,いちご,ja,name
+147,38,Strawberry,en,name_en
+148,38,苺,ja,variant
+149,39,アスパラガス,ja,name
+150,39,Asparagus,en,name_en
+151,39,アスパラ,ja,alias
+152,40,冬瓜,ja,name
+153,40,Winter Melon / Wax Gourd,en,name_en
+154,40,Winter Melon,en,name_en_part
+155,40,Wax Gourd,en,name_en_part
+156,40,トウガン,ja,variant
+157,40,とうがん,ja,variant
+158,41,へちま,ja,name
+159,41,Sponge Gourd / Luffa,en,name_en
+160,41,Sponge Gourd,en,name_en_part
+161,41,Luffa,en,name_en_part
+162,41,糸瓜,ja,variant
+163,42,チンゲン菜,ja,name
+164,42,Bok Choy,en,name_en
+165,42,チンゲンサイ,ja,variant
+166,42,青梗菜,ja,variant
+167,42,ちんげんさい,ja,variant
+168,43,春菊,ja,name
+169,43,Edible Chrysanthemum / Garland Chrysanthemum,en,name_en
+170,43,Edible Chrysanthemum,en,name_en_part
+171,43,Garland Chrysanthemum,en,name_en_part
+172,43,しゅんぎく,ja,variant
+173,44,水菜,ja,name
+174,44,Mizuna / Japanese Mustard Greens,en,name_en
+175,44,Mizuna,en,name_en_part
+176,44,Japanese Mustard Greens,en,name_en_part
+177,44,みずな,ja,variant
+178,44,京菜,ja,alias
+179,45,ルッコラ,ja,name
+180,45,Arugula / Rocket,en,name_en
+181,45,Arugula,en,name_en_part
+182,45,Rocket,en,name_en_part
+183,45,ロケット,ja,alias
+184,45,ロケットサラダ,ja,alias
+185,46,スイスチャード,ja,name
+186,46,Swiss Chard,en,name_en
+187,47,ケール,ja,name
+188,47,Kale,en,name_en
+189,48,芽キャベツ,ja,name
+190,48,Brussels Sprouts,en,name_en
+191,48,メキャベツ,ja,alias
+192,49,パクチョイ,ja,name
+193,49,Pak Choi / Baby Bok Choy,en,name_en
+194,49,Pak Choi,en,name_en_part
+195,49,Baby Bok Choy,en,name_en_part
+196,50,からし菜,ja,name
+197,50,Mustard Greens,en,name_en
+198,50,カラシナ,ja,variant
+199,50,芥子菜,ja,variant
+200,51,セロリ,ja,name
+201,51,Celery,en,name_en
+202,51,セルリー,ja,alias
+203,52,フキ,ja,name
+204,52,Japanese Butterbur,en,name_en
+205,52,蕗,ja,variant
+206,53,ニラ,ja,name
+207,53,Chinese Chives / Garlic Chives,en,name_en
+208,53,Chinese Chives,en,name_en_part
+209,53,Garlic Chives,en,name_en_part
+210,53,韮,ja,variant
+211,54,ブロッコリー,ja,name
+212,54,Broccoli,en,name_en
+213,54,ブロッコリ,ja,alias
+214,55,カリフラワー,ja,name
+215,55,Cauliflower,en,name_en
+216,55,花野菜,ja,alias
+217,56,クレソン,ja,name
+218,56,Watercress,en,name_en
+219,56,オランダガラシ,ja,alias
+220,57,ビーツ,ja,name
+221,57,Beetroot,en,name_en
+222,57,ビート,ja,alias
+223,57,ビートルート,ja,alias
+224,58,ターニップ,ja,name
+225,58,Turnip,en,name_en_shared
+226,59,パースニップ,ja,name
+227,59,Parsnip,en,name_en
+228,60,レンコン,ja,name
+229,60,Lotus Root,en,name_en
+230,60,蓮根,ja,variant
+231,61,ゴボウ,ja,name
+232,61,Burdock Root,en,name_en
+233,61,牛蒡,ja,variant
+234,62,ミョウガ,ja,name
+235,62,Japanese Ginger / Myoga,en,name_en
+236,62,Japanese Ginger,en,name_en_part
+237,62,Myoga,en,name_en_part
+238,62,茗荷,ja,variant
+239,63,ラッキョウ,ja,name
+240,63,Rakkyo / Chinese Shallot,en,name_en
+241,63,Rakkyo,en,name_en_part
+242,63,Chinese Shallot,en,name_en_part
+243,63,辣韮,ja,variant
+244,64,コールラビ,ja,name
+245,64,Kohlrabi,en,name_en
+246,64,カブカンラン,ja,alias
+247,65,セロリアック,ja,name
+248,65,Celeriac / Celery Root,en,name_en
+249,65,Celeriac,en,name_en_part
+250,65,Celery Root,en,name_en_part
+251,66,ワサビ,ja,name
+252,66,Wasabi,en,name_en
+253,66,山葵,ja,variant
+254,67,シソ,ja,name
+255,67,Japanese Perilla / Shiso,en,name_en
+256,67,Japanese Perilla,en,name_en_part
+257,67,Shiso,en,name_en_part
+258,67,紫蘇,ja,variant
+259,67,大葉,ja,alias
+260,68,バジル,ja,name
+261,68,Basil,en,name_en
+262,68,バジリコ,ja,alias
+263,69,パセリ,ja,name
+264,69,Parsley,en,name_en
+265,70,ミント,ja,name
+266,70,Mint,en,name_en
+267,71,ローズマリー,ja,name
+268,71,Rosemary,en,name_en
+269,72,タイム,ja,name
+270,72,Thyme,en,name_en
+271,73,オレガノ,ja,name
+272,73,Oregano,en,name_en
+273,74,チャイブ,ja,name
+274,74,Chives,en,name_en
+275,75,コリアンダー,ja,name
+276,75,Coriander / Cilantro,en,name_en
+277,75,Coriander,en,name_en_part
+278,75,Cilantro,en,name_en_part
+279,75,パクチー,ja,alias
+280,75,パクチ,ja,alias
+281,75,シャンサイ,ja,alias
+282,75,香菜,ja,alias
+283,76,ディル,ja,name
+284,76,Dill,en,name_en
+285,76,イノンド,ja,alias
+286,77,フェンネル,ja,name
+287,77,Fennel,en,name_en
+288,77,ウイキョウ,ja,alias
+289,77,茴香,ja,alias
+290,78,レモンバーム,ja,name
+291,78,Lemon Balm,en,name_en
+292,78,メリッサ,ja,alias
+293,79,セージ,ja,name
+294,79,Sage,en,name_en
+295,80,カモミール,ja,name
+296,80,Chamomile,en,name_en
+297,80,カミツレ,ja,alias
+298,81,ラベンダー,ja,name
+299,81,Lavender,en,name_en
+300,82,サヤインゲン,ja,name
+301,82,Green Beans / French Beans,en,name_en
+302,82,Green Beans,en,name_en_part
+303,82,French Beans,en,name_en_part
+304,82,インゲン,ja,alias
+305,82,いんげん,ja,alias
+306,83,そら豆,ja,name
+307,83,Broad Beans / Fava Beans,en,name_en
+308,83,Broad Beans,en,name_en_part
+309,83,Fava Beans,en,name_en_part
+310,83,空豆,ja,variant
+311,84,グリーンピース,ja,name
+312,84,Green Peas,en,name_en
+313,85,スナップエンドウ,ja,name
+314,85,Snap Peas,en,name_en
+315,85,スナックエンドウ,ja,variant
+316,86,さやえんどう,ja,name
+317,86,Snow Peas / Mange-tout,en,name_en
+318,86,Snow Peas,en,name_en_part
+319,86,Mange-tout,en,name_en_part
+320,86,絹さや,ja,alias
+321,86,キヌサヤ,ja,alias
+322,86,莢豌豆,ja,variant
+323,87,小豆,ja,name
+324,87,Adzuki Beans,en,name_en
+325,87,アズキ,ja,variant
+326,88,黒豆,ja,name
+327,88,Black Soybeans,en,name_en
+328,88,黒大豆,ja,alias
+329,89,レンズ豆,ja,name
+330,89,Lentils,en,name_en
+331,90,ひよこ豆,ja,name
+332,90,Chickpeas / Garbanzo Beans,en,name_en
+333,90,Chickpeas,en,name_en_part
+334,90,Garbanzo Beans,en,name_en_part
+335,91,白花豆,ja,name
+336,91,White Runner Beans / Shiro-hana-mame,en,name_en
+337,91,White Runner Beans,en,name_en_part
+338,91,Shiro-hana-mame,en,name_en_part
+339,91,シロハナマメ,ja,variant
+340,92,キクイモ,ja,name
+341,92,Jerusalem Artichoke,en,name_en
+342,92,菊芋,ja,variant
+343,93,こんにゃく,ja,name
+344,93,Konjac,en,name_en
+345,93,蒟蒻,ja,variant
+346,94,クワイ,ja,name
+347,94,Arrowhead / Kuwai,en,name_en
+348,94,Arrowhead,en,name_en_part
+349,94,Kuwai,en,name_en_part
+350,94,慈姑,ja,variant
+351,95,ヤーコン,ja,name
+352,95,Yacon,en,name_en
+353,96,タロイモ,ja,name
+354,96,Taro,en,name_en_shared
+355,97,ムカゴ,ja,name
+356,97,Mukago / Aerial Yam Bulbils,en,name_en
+357,97,Mukago,en,name_en_part
+358,97,Aerial Yam Bulbils,en,name_en_part
+359,97,零余子,ja,variant
+360,98,ツクネイモ,ja,name
+361,98,Tsukune Yam / Round Yam,en,name_en
+362,98,Tsukune Yam,en,name_en_part
+363,98,Round Yam,en,name_en_part
+364,99,自然薯,ja,name
+365,99,Wild Japanese Yam / Jinenjo,en,name_en
+366,99,Wild Japanese Yam,en,name_en_part
+367,99,Jinenjo,en,name_en_part
+368,99,ジネンジョ,ja,alias
+369,99,じねんじょ,ja,alias
+370,100,キャッサバ,ja,name
+371,100,Cassava / Tapioca,en,name_en
+372,100,Cassava,en,name_en_part
+373,100,Tapioca,en,name_en_part
+374,101,ラディッシュ,ja,name
+375,101,Radish,en,name_en
+376,101,二十日大根,ja,alias
+377,101,ハツカダイコン,ja,alias
+378,102,豆苗,ja,name
+379,102,Pea shoots,en,name_en
+380,102,トウミョウ,ja,variant
+381,102,とうみょう,ja,variant
+382,103,かいわれ大根,ja,name
+383,103,Daikon sprouts,en,name_en
+384,103,カイワレ,ja,alias
+385,103,かいわれ,ja,alias
+386,103,貝割れ大根,ja,alias
+387,103,カイワレ大根,ja,alias
+388,104,サニーレタス,ja,name
+389,104,Red leaf lettuce,en,name_en
+390,105,リーフレタス,ja,name
+391,105,Leaf lettuce,en,name_en
+392,106,空芯菜,ja,name
+393,106,Water spinach,en,name_en
+394,106,クウシンサイ,ja,variant
+395,106,エンサイ,ja,alias
+396,107,つるむらさき,ja,name
+397,107,Malabar spinach,en,name_en
+398,107,蔓紫,ja,variant
+399,108,ベビーリーフ,ja,name
+400,108,Baby leaf mix,en,name_en
+401,109,えごま,ja,name
+402,109,Perilla (egoma),en,name_en
+403,109,Perilla,en,name_en_part
+404,109,egoma,en,name_en_part
+405,109,荏胡麻,ja,variant
+406,110,レモングラス,ja,name
+407,110,Lemongrass,en,name_en
+408,111,チャービル,ja,name
+409,111,Chervil,en,name_en
+410,111,セルフィーユ,ja,alias
+411,112,マジョラム,ja,name
+412,112,Sweet marjoram,en,name_en
+413,112,マヨラナ,ja,alias
+414,112,Marjoram,en,alias
+415,113,ステビア,ja,name
+416,113,Stevia,en,name_en
+417,114,のらぼう菜,ja,name
+418,114,Norabona greens,en,name_en
+419,114,ノラボウナ,ja,variant
+420,115,ミツバ,ja,name
+421,115,Japanese parsley,en,name_en
+422,115,三つ葉,ja,variant
+423,115,三葉,ja,variant
+424,116,わけぎ,ja,name
+425,116,Welsh onion (Wakegi),en,name_en
+426,116,Welsh onion,en,name_en_part
+427,116,Wakegi,en,name_en_part
+428,116,分葱,ja,variant

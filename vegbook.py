@@ -17,6 +17,8 @@ import textwrap
 from datetime import datetime
 from pathlib import Path
 
+from vegbook_core import resolve_crop
+
 DB_PATH = Path(__file__).parent / "vegbook.db"
 
 LABELS = {
@@ -88,7 +90,8 @@ LABELS = {
 
 
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
+    # 読み取り専用で開く（CLI は DB を書き換えない）
+    conn = sqlite3.connect(f'{DB_PATH.resolve().as_uri()}?mode=ro', uri=True)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -177,15 +180,15 @@ def cmd_detail(args):
     L = LABELS[args.lang]
     conn = get_db()
 
-    col = "cr.name_en" if args.lang == "en" else "cr.name"
-    row = conn.execute(f"""
+    found = resolve_crop(conn, args.name)["crop"]   # 別名・表記ゆれ・英語名も受け付ける
+    row = conn.execute("""
         SELECT cr.*, cc.name AS category, cc.name_en AS category_en,
                ge.name AS environment, ge.name_en AS environment_en
         FROM crops cr
         LEFT JOIN crop_categories  cc ON cr.category_id  = cc.id
         LEFT JOIN grow_environments ge ON cr.environment_id = ge.id
-        WHERE {col} = ? COLLATE NOCASE OR cr.name = ? COLLATE NOCASE
-    """, [args.name, args.name]).fetchone()
+        WHERE cr.id = ?
+    """, [found["id"] if found else -1]).fetchone()
 
     if not row:
         print(f"Not found: {args.name}")
@@ -338,11 +341,7 @@ def cmd_companion(args):
     L = LABELS[args.lang]
     conn = get_db()
 
-    col = "name_en" if args.lang == "en" else "name"
-    crop = conn.execute(
-        f"SELECT id, name, name_en FROM crops WHERE {col} = ? COLLATE NOCASE OR name = ? COLLATE NOCASE",
-        [args.name, args.name]
-    ).fetchone()
+    crop = resolve_crop(conn, args.name)["crop"]   # 別名・表記ゆれ・英語名も受け付ける
 
     if not crop:
         print(f"Not found: {args.name}")

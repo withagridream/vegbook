@@ -1,0 +1,349 @@
+id,table_name,row_key,column_name,issue,action
+1,harvest_stats,crop_name=ダイコン|year=2007,"area_ha,shipment_t",作付面積が日本の耕地面積を超える異常値（取り込み不良の疑い・未修正）,hide
+2,harvest_stats,crop_name=ダイコン|year=2008,"area_ha,shipment_t",作付面積が日本の耕地面積を超える異常値（取り込み不良の疑い・未修正）,hide
+3,harvest_stats,crop_name=ダイコン|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+4,harvest_stats,crop_name=ダイコン|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+5,harvest_stats,crop_name=ダイコン|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+6,harvest_stats,crop_name=ダイコン|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+7,harvest_stats,crop_name=ダイコン|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+8,harvest_stats,crop_name=カブ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+9,harvest_stats,crop_name=カブ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+10,harvest_stats,crop_name=カブ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+11,harvest_stats,crop_name=カブ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+12,harvest_stats,crop_name=カブ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+13,harvest_stats,crop_name=にんじん|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+14,harvest_stats,crop_name=にんじん|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+15,harvest_stats,crop_name=にんじん|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+16,harvest_stats,crop_name=にんじん|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+17,harvest_stats,crop_name=にんじん|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+18,harvest_stats,crop_name=ゴボウ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+19,harvest_stats,crop_name=ゴボウ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+20,harvest_stats,crop_name=ゴボウ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+21,harvest_stats,crop_name=ゴボウ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+22,harvest_stats,crop_name=ゴボウ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+23,harvest_stats,crop_name=レンコン|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+24,harvest_stats,crop_name=レンコン|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+25,harvest_stats,crop_name=レンコン|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+26,harvest_stats,crop_name=レンコン|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+27,harvest_stats,crop_name=レンコン|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+28,harvest_stats,crop_name=ジャガイモ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+29,harvest_stats,crop_name=ジャガイモ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+30,harvest_stats,crop_name=ジャガイモ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+31,harvest_stats,crop_name=ジャガイモ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+32,harvest_stats,crop_name=ジャガイモ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+33,harvest_stats,crop_name=サトイモ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+34,harvest_stats,crop_name=サトイモ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+35,harvest_stats,crop_name=サトイモ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+36,harvest_stats,crop_name=サトイモ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+37,harvest_stats,crop_name=サトイモ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+38,harvest_stats,crop_name=白菜|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+39,harvest_stats,crop_name=白菜|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+40,harvest_stats,crop_name=白菜|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+41,harvest_stats,crop_name=白菜|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+42,harvest_stats,crop_name=白菜|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+43,harvest_stats,crop_name=小松菜|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+44,harvest_stats,crop_name=小松菜|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+45,harvest_stats,crop_name=小松菜|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+46,harvest_stats,crop_name=小松菜|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+47,harvest_stats,crop_name=小松菜|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+48,harvest_stats,crop_name=キャベツ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+49,harvest_stats,crop_name=キャベツ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+50,harvest_stats,crop_name=キャベツ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+51,harvest_stats,crop_name=キャベツ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+52,harvest_stats,crop_name=キャベツ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+53,harvest_stats,crop_name=チンゲン菜|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+54,harvest_stats,crop_name=チンゲン菜|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+55,harvest_stats,crop_name=チンゲン菜|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+56,harvest_stats,crop_name=チンゲン菜|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+57,harvest_stats,crop_name=チンゲン菜|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+58,harvest_stats,crop_name=ほうれん草|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+59,harvest_stats,crop_name=ほうれん草|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+60,harvest_stats,crop_name=ほうれん草|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+61,harvest_stats,crop_name=ほうれん草|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+62,harvest_stats,crop_name=ほうれん草|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+63,harvest_stats,crop_name=フキ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+64,harvest_stats,crop_name=フキ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+65,harvest_stats,crop_name=フキ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+66,harvest_stats,crop_name=フキ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+67,harvest_stats,crop_name=フキ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+68,harvest_stats,crop_name=春菊|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+69,harvest_stats,crop_name=春菊|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+70,harvest_stats,crop_name=春菊|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+71,harvest_stats,crop_name=春菊|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+72,harvest_stats,crop_name=春菊|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+73,harvest_stats,crop_name=セロリ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+74,harvest_stats,crop_name=セロリ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+75,harvest_stats,crop_name=セロリ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+76,harvest_stats,crop_name=セロリ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+77,harvest_stats,crop_name=セロリ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+78,harvest_stats,crop_name=アスパラガス|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+79,harvest_stats,crop_name=アスパラガス|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+80,harvest_stats,crop_name=アスパラガス|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+81,harvest_stats,crop_name=アスパラガス|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+82,harvest_stats,crop_name=アスパラガス|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+83,harvest_stats,crop_name=カリフラワー|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+84,harvest_stats,crop_name=カリフラワー|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+85,harvest_stats,crop_name=カリフラワー|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+86,harvest_stats,crop_name=カリフラワー|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+87,harvest_stats,crop_name=カリフラワー|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+88,harvest_stats,crop_name=ブロッコリー|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+89,harvest_stats,crop_name=ブロッコリー|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+90,harvest_stats,crop_name=ブロッコリー|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+91,harvest_stats,crop_name=ブロッコリー|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+92,harvest_stats,crop_name=ブロッコリー|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+93,harvest_stats,crop_name=レタス|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+94,harvest_stats,crop_name=レタス|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+95,harvest_stats,crop_name=レタス|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+96,harvest_stats,crop_name=レタス|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+97,harvest_stats,crop_name=レタス|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+98,harvest_stats,crop_name=ネギ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+99,harvest_stats,crop_name=ネギ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+100,harvest_stats,crop_name=ネギ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+101,harvest_stats,crop_name=ネギ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+102,harvest_stats,crop_name=ネギ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+103,harvest_stats,crop_name=ニラ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+104,harvest_stats,crop_name=ニラ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+105,harvest_stats,crop_name=ニラ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+106,harvest_stats,crop_name=ニラ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+107,harvest_stats,crop_name=ニラ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+108,harvest_stats,crop_name=玉ねぎ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+109,harvest_stats,crop_name=玉ねぎ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+110,harvest_stats,crop_name=玉ねぎ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+111,harvest_stats,crop_name=玉ねぎ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+112,harvest_stats,crop_name=玉ねぎ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+113,harvest_stats,crop_name=ニンニク|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+114,harvest_stats,crop_name=ニンニク|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+115,harvest_stats,crop_name=ニンニク|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+116,harvest_stats,crop_name=ニンニク|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+117,harvest_stats,crop_name=ニンニク|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+118,harvest_stats,crop_name=きゅうり|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+119,harvest_stats,crop_name=きゅうり|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+120,harvest_stats,crop_name=きゅうり|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+121,harvest_stats,crop_name=きゅうり|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+122,harvest_stats,crop_name=きゅうり|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+123,harvest_stats,crop_name=かぼちゃ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+124,harvest_stats,crop_name=かぼちゃ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+125,harvest_stats,crop_name=かぼちゃ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+126,harvest_stats,crop_name=かぼちゃ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+127,harvest_stats,crop_name=かぼちゃ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+128,harvest_stats,crop_name=ナス|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+129,harvest_stats,crop_name=ナス|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+130,harvest_stats,crop_name=ナス|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+131,harvest_stats,crop_name=ナス|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+132,harvest_stats,crop_name=ナス|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+133,harvest_stats,crop_name=トマト|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+134,harvest_stats,crop_name=トマト|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+135,harvest_stats,crop_name=トマト|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+136,harvest_stats,crop_name=トマト|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+137,harvest_stats,crop_name=トマト|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+138,harvest_stats,crop_name=ピーマン|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+139,harvest_stats,crop_name=ピーマン|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+140,harvest_stats,crop_name=ピーマン|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+141,harvest_stats,crop_name=ピーマン|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+142,harvest_stats,crop_name=ピーマン|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+143,harvest_stats,crop_name=とうもろこし|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+144,harvest_stats,crop_name=とうもろこし|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+145,harvest_stats,crop_name=とうもろこし|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+146,harvest_stats,crop_name=とうもろこし|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+147,harvest_stats,crop_name=とうもろこし|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+148,harvest_stats,crop_name=サヤインゲン|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+149,harvest_stats,crop_name=サヤインゲン|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+150,harvest_stats,crop_name=サヤインゲン|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+151,harvest_stats,crop_name=サヤインゲン|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+152,harvest_stats,crop_name=サヤインゲン|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+153,harvest_stats,crop_name=さやえんどう|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+154,harvest_stats,crop_name=さやえんどう|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+155,harvest_stats,crop_name=さやえんどう|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+156,harvest_stats,crop_name=さやえんどう|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+157,harvest_stats,crop_name=さやえんどう|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+158,harvest_stats,crop_name=そら豆|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+159,harvest_stats,crop_name=そら豆|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+160,harvest_stats,crop_name=そら豆|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+161,harvest_stats,crop_name=そら豆|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+162,harvest_stats,crop_name=そら豆|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+163,harvest_stats,crop_name=エダマメ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+164,harvest_stats,crop_name=エダマメ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+165,harvest_stats,crop_name=エダマメ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+166,harvest_stats,crop_name=エダマメ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+167,harvest_stats,crop_name=エダマメ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+168,harvest_stats,crop_name=しょうが|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+169,harvest_stats,crop_name=しょうが|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+170,harvest_stats,crop_name=しょうが|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+171,harvest_stats,crop_name=しょうが|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+172,harvest_stats,crop_name=しょうが|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+173,harvest_stats,crop_name=いちご|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+174,harvest_stats,crop_name=いちご|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+175,harvest_stats,crop_name=いちご|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+176,harvest_stats,crop_name=いちご|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+177,harvest_stats,crop_name=いちご|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+178,harvest_stats,crop_name=メロン|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+179,harvest_stats,crop_name=メロン|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+180,harvest_stats,crop_name=メロン|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+181,harvest_stats,crop_name=メロン|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+182,harvest_stats,crop_name=メロン|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+183,harvest_stats,crop_name=スイカ|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+184,harvest_stats,crop_name=スイカ|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+185,harvest_stats,crop_name=スイカ|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+186,harvest_stats,crop_name=スイカ|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+187,harvest_stats,crop_name=スイカ|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+188,harvest_stats,crop_name=ダイコン|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+189,harvest_stats,crop_name=ダイコン|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+190,harvest_stats,crop_name=カブ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+191,harvest_stats,crop_name=カブ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+192,harvest_stats,crop_name=にんじん|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+193,harvest_stats,crop_name=にんじん|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+194,harvest_stats,crop_name=ゴボウ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+195,harvest_stats,crop_name=ゴボウ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+196,harvest_stats,crop_name=レンコン|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+197,harvest_stats,crop_name=レンコン|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+198,harvest_stats,crop_name=ジャガイモ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+199,harvest_stats,crop_name=ジャガイモ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+200,harvest_stats,crop_name=サトイモ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+201,harvest_stats,crop_name=サトイモ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+202,harvest_stats,crop_name=白菜|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+203,harvest_stats,crop_name=白菜|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+204,harvest_stats,crop_name=小松菜|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+205,harvest_stats,crop_name=小松菜|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+206,harvest_stats,crop_name=キャベツ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+207,harvest_stats,crop_name=キャベツ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+208,harvest_stats,crop_name=チンゲン菜|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+209,harvest_stats,crop_name=チンゲン菜|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+210,harvest_stats,crop_name=ほうれん草|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+211,harvest_stats,crop_name=ほうれん草|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+212,harvest_stats,crop_name=フキ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+213,harvest_stats,crop_name=フキ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+214,harvest_stats,crop_name=春菊|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+215,harvest_stats,crop_name=春菊|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+216,harvest_stats,crop_name=セロリ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+217,harvest_stats,crop_name=セロリ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+218,harvest_stats,crop_name=アスパラガス|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+219,harvest_stats,crop_name=アスパラガス|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+220,harvest_stats,crop_name=カリフラワー|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+221,harvest_stats,crop_name=カリフラワー|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+222,harvest_stats,crop_name=ブロッコリー|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+223,harvest_stats,crop_name=ブロッコリー|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+224,harvest_stats,crop_name=レタス|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+225,harvest_stats,crop_name=レタス|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+226,harvest_stats,crop_name=ネギ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+227,harvest_stats,crop_name=ネギ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+228,harvest_stats,crop_name=ニラ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+229,harvest_stats,crop_name=ニラ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+230,harvest_stats,crop_name=玉ねぎ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+231,harvest_stats,crop_name=玉ねぎ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+232,harvest_stats,crop_name=ニンニク|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+233,harvest_stats,crop_name=ニンニク|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+234,harvest_stats,crop_name=きゅうり|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+235,harvest_stats,crop_name=きゅうり|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+236,harvest_stats,crop_name=かぼちゃ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+237,harvest_stats,crop_name=かぼちゃ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+238,harvest_stats,crop_name=ナス|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+239,harvest_stats,crop_name=ナス|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+240,harvest_stats,crop_name=トマト|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+241,harvest_stats,crop_name=トマト|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+242,harvest_stats,crop_name=ピーマン|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+243,harvest_stats,crop_name=ピーマン|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+244,harvest_stats,crop_name=とうもろこし|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+245,harvest_stats,crop_name=とうもろこし|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+246,harvest_stats,crop_name=サヤインゲン|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+247,harvest_stats,crop_name=サヤインゲン|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+248,harvest_stats,crop_name=さやえんどう|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+249,harvest_stats,crop_name=さやえんどう|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+250,harvest_stats,crop_name=そら豆|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+251,harvest_stats,crop_name=そら豆|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+252,harvest_stats,crop_name=エダマメ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+253,harvest_stats,crop_name=エダマメ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+254,harvest_stats,crop_name=しょうが|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+255,harvest_stats,crop_name=しょうが|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+256,harvest_stats,crop_name=いちご|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+257,harvest_stats,crop_name=いちご|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+258,harvest_stats,crop_name=メロン|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+259,harvest_stats,crop_name=メロン|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+260,harvest_stats,crop_name=スイカ|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+261,harvest_stats,crop_name=スイカ|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+262,harvest_stats,crop_name=ヤマイモ（長いも）|year=2014,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+263,harvest_stats,crop_name=ヤマイモ（長いも）|year=2015,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+264,harvest_stats,crop_name=ヤマイモ（長いも）|year=2016,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+265,harvest_stats,crop_name=ヤマイモ（長いも）|year=2017,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+266,harvest_stats,crop_name=ヤマイモ（長いも）|year=2018,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+267,harvest_stats,crop_name=ヤマイモ（長いも）|year=2019,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+268,harvest_stats,crop_name=ヤマイモ（長いも）|year=2020,"area_ha,harvest_t,shipment_t",取り込み不良の疑い・未修正：2014〜2020年は別の作物の値が入っている可能性があるため、値を返していません。（e-Stat の原典で確認してください）,hide
+269,harvest_stats,crop_name=いちご|year=2023,"area_ha,harvest_t,shipment_t",前後の年の約4倍で、値の取り込み不良の疑い（未修正）,hide
+270,climate_monthly,month=1|region=九州北部|year=2010,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+271,climate_monthly,month=2|region=九州北部|year=2010,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+272,climate_monthly,month=3|region=九州北部|year=2010,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+273,climate_monthly,month=4|region=九州北部|year=2010,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+274,climate_monthly,month=5|region=九州北部|year=2010,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+275,climate_monthly,month=6|region=九州北部|year=2010,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+276,climate_monthly,month=7|region=九州北部|year=2010,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+277,climate_monthly,month=8|region=九州北部|year=2010,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+278,climate_monthly,month=9|region=九州北部|year=2010,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+279,climate_monthly,month=10|region=九州北部|year=2010,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+280,climate_monthly,month=11|region=九州北部|year=2010,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+281,climate_monthly,month=12|region=九州北部|year=2010,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+282,climate_monthly,month=1|region=九州北部|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+283,climate_monthly,month=2|region=九州北部|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+284,climate_monthly,month=3|region=九州北部|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+285,climate_monthly,month=4|region=九州北部|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+286,climate_monthly,month=5|region=九州北部|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+287,climate_monthly,month=6|region=九州北部|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+288,climate_monthly,month=7|region=九州北部|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+289,climate_monthly,month=8|region=九州北部|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+290,climate_monthly,month=9|region=九州北部|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+291,climate_monthly,month=10|region=九州北部|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+292,climate_monthly,month=11|region=九州北部|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+293,climate_monthly,month=12|region=九州北部|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+294,climate_monthly,month=1|region=東北|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+295,climate_monthly,month=2|region=東北|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+296,climate_monthly,month=3|region=東北|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+297,climate_monthly,month=4|region=東北|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+298,climate_monthly,month=5|region=東北|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+299,climate_monthly,month=6|region=東北|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+300,climate_monthly,month=7|region=東北|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+301,climate_monthly,month=8|region=東北|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+302,climate_monthly,month=9|region=東北|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+303,climate_monthly,month=10|region=東北|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+304,climate_monthly,month=11|region=東北|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+305,climate_monthly,month=12|region=東北|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+306,climate_monthly,month=1|region=北海道|year=2006,precipitation,取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+307,climate_monthly,month=2|region=北海道|year=2006,precipitation,取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+308,climate_monthly,month=3|region=北海道|year=2006,precipitation,取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+309,climate_monthly,month=4|region=北海道|year=2006,precipitation,取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+310,climate_monthly,month=5|region=北海道|year=2006,precipitation,取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+311,climate_monthly,month=6|region=北海道|year=2006,precipitation,取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+312,climate_monthly,month=7|region=北海道|year=2006,precipitation,取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+313,climate_monthly,month=8|region=北海道|year=2006,precipitation,取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+314,climate_monthly,month=9|region=北海道|year=2006,precipitation,取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+315,climate_monthly,month=10|region=北海道|year=2006,precipitation,取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+316,climate_monthly,month=11|region=北海道|year=2006,precipitation,取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+317,climate_monthly,month=12|region=北海道|year=2006,precipitation,取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+318,climate_monthly,month=1|region=北海道|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+319,climate_monthly,month=2|region=北海道|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+320,climate_monthly,month=3|region=北海道|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+321,climate_monthly,month=4|region=北海道|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+322,climate_monthly,month=5|region=北海道|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+323,climate_monthly,month=6|region=北海道|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+324,climate_monthly,month=7|region=北海道|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+325,climate_monthly,month=8|region=北海道|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+326,climate_monthly,month=9|region=北海道|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+327,climate_monthly,month=10|region=北海道|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+328,climate_monthly,month=11|region=北海道|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+329,climate_monthly,month=12|region=北海道|year=2011,"avg_temp,precipitation",取り込み不良の疑い・未修正：この地域・年は月の値が列ずれしている可能性があるため、該当の値を返していません。,hide
+330,cause_conditions,id=6,\N,原因が「高温」なのに条件が air_temp_c<=20（向きが逆）。仮の行の誤りのため外した,removed
+331,cause_conditions,id=7,\N,原因が「高温 20℃以下が適温」の仮抽出で、条件が作物の温度上限との比較に変換されており意味が合わない。外した,removed
+332,cause_conditions,id=20,\N,保存中の原因（収穫後の高温・光）を、栽培中の温度（crops.temp_max）と比べている。外した,removed
+333,cause_conditions,id=21,\N,保存中の原因（親芋・子芋の保存で低温5℃以下）を、栽培中の気温（air_temp_c<=5）と比べている。外した,removed
+334,cause_conditions,id=22,\N,保存中の原因（親芋・子芋の保存で低温5℃以下）を、栽培中の最低温度（crops.temp_min）と比べている。外した,removed
+335,troubles,id=59,\N,収穫後の「困りごと」ではない（作物の文章を機械的に切り出した仮の行）。外した,removed
+336,troubles,id=118,\N,収穫後の「困りごと」ではない（「甘みが増す」は症状ではない）。外した,removed
+337,troubles,id=164,\N,収穫後の「困りごと」ではない（「冷蔵は不向き」は注意書きの文）。外した,removed
+338,troubles,id=174,\N,収穫後の「困りごと」ではない（「常温で1週間」は保存期間の記述）。外した,removed
+339,trouble_causes,id=66,\N,外した困りごと（troubles 59）に付いていた仮のつながり。外した,removed
+340,trouble_causes,id=128,\N,外した困りごと（troubles 118）に付いていた仮のつながり。外した,removed
+341,trouble_causes,id=174,\N,外した困りごと（troubles 164）に付いていた仮のつながり。外した,removed
+342,trouble_causes,id=184,\N,外した困りごと（troubles 174）に付いていた仮のつながり。外した,removed
+343,glossary,term=BT剤,"plain_ja,plain_en",出典のない効き目・安全性の断定（人体・環境への影響が極めて少ない／天然由来／にだけ効く／蜂や哺乳類に害がない）を外し、ラベル確認の注意を足した,note
+344,glossary,term=木酢液,"plain_ja,plain_en",出典のない効き目・安全性の断定（忌避する効果がある／天然素材で有機栽培でも使える／土壌改良に使う）を外した,note
+345,causes,id=44,\N,どの困りごと（troubles）にもつながっていない孤立した仮の原因。つながっていた困りごと（収穫後の困りごとでない仮の行）を外したため。2cで一次資料から入れ直すときに整理する,note
+346,causes,id=88,\N,どの困りごと（troubles）にもつながっていない孤立した仮の原因。つながっていた困りごと（収穫後の困りごとでない仮の行）を外したため。2cで一次資料から入れ直すときに整理する,note
+347,causes,id=92,\N,どの困りごと（troubles）にもつながっていない孤立した仮の原因。つながっていた困りごと（収穫後の困りごとでない仮の行）を外したため。2cで一次資料から入れ直すときに整理する,note
+348,troubles,id=58,phase,発芽・緑化する（ジャガイモ）の phase を growing から postharvest に直した。原因は収穫後の保存（高温・光）のため。緑化（ソラニン）は2cで一次資料から入れ直す対象,note

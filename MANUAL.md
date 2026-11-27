@@ -143,7 +143,7 @@ OS別の設定例：
 /mcp
 ```
 
-`vegbook` サーバーと10個のツール（`vegbook_search` 〜 `vegbook_update_crop`）が表示されれば正常に認識されている。
+`vegbook` サーバーと13個のツール（`vegbook_search` 〜 `vegbook_ask`）が表示されれば正常に認識されている。
 
 ---
 
@@ -430,13 +430,16 @@ MCP経由で使えるツールの仕様一覧です。
 | ツール名 | 機能 | パラメータ |
 |---|---|---|
 | vegbook_search | 作物を条件で検索 | month(1-12), category, difficulty(1-3), environment, lang(ja/en) |
-| vegbook_detail | 作物の詳細情報を取得 | name（日本語または英語）, lang |
+| vegbook_detail | 作物の詳細情報を取得（出典・地域・保存方法を方法ごとに含む） | name（日本語または英語）, lang |
 | vegbook_recommend | 今月のおすすめ野菜（難易度1-2）を取得 | month（省略時は当月）, lang |
-| vegbook_companion | コンパニオンプランツ（相性○×）を取得 | crop_name, lang |
+| vegbook_companion | コンパニオンプランツ（相性○×）を取得（登録の向きを問わず両方向から引く） | crop_name, lang |
 | vegbook_glossary | 農業用語を検索 | query（キーワード）, lang |
 | vegbook_climate | 地域別月別気候データを取得 | region, year（省略時は直近5年）, month |
 | vegbook_harvest_stats | 作物別収穫量統計を取得 | crop_name, start_year（デフォルト2000）, end_year |
-| vegbook_diagnose | DBの不足データを診断 | なし |
+| vegbook_diagnose | （互換用）vegbook_db_check と同じ。栽培の診断ではなくDBの不足診断 | なし |
+| vegbook_trouble | 「◯◯に困ったら」症状から原因・条件・対策・出典を返す | query, crop, lang, phase(growing/postharvest) |
+| vegbook_ask | 質問に関連する情報を出典つきで検索（FTS5）。保存方法の語は方法ごとに返す | query, crop, lang |
+| vegbook_db_check | DBの不足データを診断（旧 vegbook_diagnose） | なし |
 | vegbook_add_companion | コンパニオンプランツを追加（既定で無効） | crop_name, companion_name, effect, is_positive, effect_en |
 | vegbook_update_crop | 作物フィールドを更新（既定で無効） | crop_name, field, value |
 
@@ -480,107 +483,77 @@ MCP経由で使えるツールの仕様一覧です。
 
 ---
 
-## 4. データのリフレッシュ
+## 4. データの正本とビルド（2.0 開発中）
 
-vegbook.db のデータは以下のスクリプトで更新・補完できます。  
-実行前に必ず仮想環境を有効化してください（`mcp` パッケージが必要なスクリプトがあります）。
+**正本は `data/*.csv`（テーブルごとのUTF-8 CSV）と `schema.sql`。`vegbook.db` は生成物です。**
+データを直すときは CSV を編集してから `vegbook.db` を作り直します（バイナリの `vegbook.db` を直接編集しません。差分をレビューできるようにするためです）。標準ライブラリだけで動きます。
 
 ```bash
 cd vegbook
-source .venv/bin/activate
+python3 build_db.py                          # data/*.csv + schema.sql から vegbook.db を生成
+python3 verify_roundtrip.py                  # 往復一致の検査（DB→CSV→DB・chunksの再現性）。--original 元のDB を付けると段階1までのDBとも比べる
+python3 check_questions.py                   # 答えるべき問い（questions）に答えられるかの検収
+python3 export_csv.py [DB] [出力先] [--force]  # DB を CSV に書き出す。出力先が data/（正本）のときは --force がないと止まる
 ```
 
-### スクリプト一覧と実行順序
+- NULL は `\N`、空文字列は空欄で書きます。行は主キー順です。
+- `chunks`（RAG用の文章）と全文検索索引は `build_db.py` が生成します（CSVはありません）。
+- 出典は `sources` / `crop_field_sources` に登録します。出典のない「言い伝え」は入れません（`tradition` は記録した資料と地域が必須）。
 
-DB を一から再構築する場合は以下の順で実行してください。  
-部分更新の場合は該当スクリプトのみ実行すれば問題ありません。
+### 出典の関門とビルドの検査
 
-| 順序 | スクリプト | 内容 | 外部依存 |
-|---|---|---|---|
-| 1 | `build_glossary.py` | 用語集テーブルの作成・データ投入 | なし |
-| 2 | `expand_crops.py` | 作物品種の追加（既存品種はスキップ） | なし |
-| 3 | `enrich_crops.py` | 作物詳細データの補完（気温・日照・水やり等） | なし |
-| 4 | `enrich_companions.py` | コンパニオンプランツデータの補完 | なし |
-| 5 | `enrich_en.py` | 作物・カテゴリ等の英語データ投入 | なし |
-| 6 | `enrich_companion_en.py` | コンパニオンプランツ英語データ投入 | なし |
-| 7 | `collect_climate.py` | 気象庁から気候データを取得・更新 | 気象庁（公開データ・キー不要） |
-| 8 | `collect_harvest.py` | e-Stat から収穫量統計を取得・更新 | **e-Stat API キー必要** |
+次のどれかに違反すると `build_db.py` は止まります（既存の `vegbook.db` は壊れません）。
 
-### 各スクリプトの実行方法
+- **関門**：`provisional=0` の行（正式な行）は `source_id` と引用箇所 `locator`（ページ・節・URLのアンカー）が必須で、その出典は `sources.usable_as_evidence=1`（個別の値の根拠に使える出典）でなければなりません。`wisdom=1` も同じです。`usable_as_evidence` の既定は0で、確認した出典だけを明示的に1にします（一括記載の id 5〜9・fieldfresh・FAO トマトは0）。
+- **統計データの出典**（`kind=statistics`。気象庁・e-Stat）は、`trouble_causes`・`remedies`・`crop_storage`・`cause_conditions` の根拠に付けられません。
+- **親が仮なら子も仮**：`trouble_causes` は親の `troubles`・`causes` が、`remedies`・`cause_conditions` は親の `causes` が、すべて `provisional=0` でなければ `provisional=0` にできません。
+- `evidence_count`（よくある原因かの裏付けの件数）・検収の `sourced`・`chunks.has_source` は、「行も親の行もすべて `provisional=0` で、根拠に使える出典がある」ものだけで数えます。判定は `vegbook_core.is_evidence()` の1か所だけです。
+- 0/1の列（provisional・wisdom・uses_pesticide・is_positive など）と `lang`（ja/en）は CHECK で制限しています。外部キー違反（`PRAGMA foreign_key_check`）があれば止まります。
+- **chunks**：困りごとは「困りごと×原因」の単位で作ります。`has_source`・`provisional` は、その原因の判定（`is_evidence`）と同じで、根拠にできる chunk には根拠にできる対策だけを入れます。作物の文章欄の出典（`crop_field_sources`）も、`provisional=0`・根拠に使える出典（statistics 以外）・`locator` ありのものだけが根拠になります（既存の行は provisional=1）。
+- **引用箇所と出典の台帳**：`locator` は空白だけでは通りません。`wisdom=1` の行にも必須です。`usable_as_evidence=1` の出典は `url` と `retrieved_at` が必須です。
+- **農薬**：対策（remedies）・防除方法（pest_controls）・chunks に、農薬の商品名・薬剤の語（`build_db.py` の `PESTICIDE_TERMS`・`PESTICIDE_WEAK_TERMS`。水和剤・粒剤・乳剤・フロアブル・農薬・殺虫剤・殺菌剤・除草剤・ダイアジノン・fungicide など）があるのに「ラベルの適用作物」の注意書きがなければ止まります。対策（remedies）は、さらに `uses_pesticide=1` が必須です（`uses_pesticide=1` なら `caution` 必須は CHECK）。商品名・有効成分名は出典なしでは載せません。語の列挙は素通りしうるので、新しい語は見つけ次第 `PESTICIDE_TERMS` に足します。
+- `data_issues` の `row_key`（自然キー）が指す先が、hide・note は1行だけ存在し、removed は存在しないことを確かめます。
 
-**用語集の再構築**
+### 仮の行の扱い
 
-```bash
-python build_glossary.py
-```
+困りごと・原因・保存方法などの `provisional=1` の行は、作物の文章を機械的に切り出した**仮の行**です（切り出したスクリプトはリポジトリにありません）。
+**段階2cでは、仮の行の `provisional` を0に切り替えません。出典を見て、出典つきの新しい行（`provisional=0`）として入れ、仮の行は置き換えます。**
+明らかに誤った仮の行は、`data/data_issues.csv` に `action=removed` で記録したうえで CSV から外します。
 
-**作物品種の追加**
+### 段階2cで一次資料から入れる対象
 
-```bash
-python expand_crops.py
-```
+- **緑化（ソラニン）**：ジャガイモの「発芽・緑化する」（troubles 58・収穫後）は、仮の行のまま原因（収穫後の保存の高温・光）だけがつながっています。2cで一次資料（公的資料）から、症状・原因・予防（光を当てない・低温の限度）を出典と引用箇所つきの新しい行として入れ直します。仮の行の `provisional` は0にしません。
+- 孤立した仮の原因（causes 44・88・92）は、2cで整理します（`data_issues` に記録済み）。
 
-**作物詳細データの補完**
+### 疑いのある値（data_issues）と症状の言い換え（trouble_aliases）
 
-```bash
-python enrich_crops.py
-```
+- `data/data_issues.csv`：取り込み不良などが疑われる値（表名・行の自然キー `row_key`・列・問題・対処）。`action=hide` の値は MCP の `vegbook_climate` / `vegbook_harvest_stats` が返さず、警告文を付けます（コードの定数ではなくデータが持ちます）。行は自然キー（収穫統計は `crop_name=ダイコン|year=2007`、気候は `month=3|region=九州北部|year=2010`）で指すので、取り込み直しで行idが変わっても別の行を隠すことはありません。ビルドが「指した先が1行だけ存在するか」を照合します。
+- `data/trouble_aliases.csv`：利用者の言い回し→正式な症状名（例：実が割れる→裂果、すが入る→す入り、二股→又根）。`vegbook_trouble` / `vegbook_ask` の症状検索で使います。
+- `chunks` には `provisional`（仮の行由来か）と `has_source`（根拠に使える出典があるか）が付き、検索結果に出ます。
 
-**コンパニオンプランツの補完**
+### 引退したスクリプト
 
-```bash
-python enrich_companions.py
-python enrich_companion_en.py
-```
+`expand_crops.py`・`build_glossary.py`・`enrich_crops.py`・`enrich_en.py`・`enrich_companions.py`・`enrich_companion_en.py` は過去の取り込み記録です。
+正本は `data/*.csv` なので、どれも実行するとエラーで止まり「正本は data/*.csv」と表示します（生成物の vegbook.db を直接書き換えないため）。
 
-**英語データの投入**
+### 外部データの取り込み
 
-```bash
-python enrich_en.py
-```
+`collect_climate.py`（気象庁・キー不要）と `collect_harvest.py`（e-Stat・APIキー必要）は、`vegbook.db` にも `data/*.csv` にも直接書かず、
+`data/incoming/climate_monthly.csv`（`region_id,year,month,avg_temp,precipitation`）・`data/incoming/harvest_stats.csv`（`crop_name,year,area_ha,harvest_t,shipment_t,source`）に書き出します（外部通信が発生するので、実行は管理者が決めます）。
+正本への差し替え手順：
+1. 書き出されたCSVを、既存の `data/climate_monthly.csv`・`data/harvest_stats.csv` と自然キー（気候：region_id+year+month／収穫統計：crop_name+year）で突き合わせて目で確かめる
+2. 置き換える行は `id` を保ったまま値だけ差し替え、新しい行は末尾に `id` を振って追加する（`INSERT OR IGNORE` のように壊れた行を放置しない）
+3. 疑いが晴れた行の `data_issues` の hide を人が外す
+4. `python3 build_db.py --out 一時DB` で検査を通してから `vegbook.db` に差し替える
+5. **2014〜2020年の hide の見直し（2b の取り込み直しのあと必ず行う）**：`data_issues.csv` の収穫統計 hide（`crop_name=…|year=2014`〜`2020`）は、品目コード表のずれの疑いで、取り込み前の値が別の作物のものかもしれないという理由で隠しています。取り込み直した値について、(a) 作物ごとに 2013→2014 と 2020→2021 で値が不連続になっていないか、(b) e-Stat の原典の表と数点を目で突き合わせ、(c) 面積×単収と収穫量が合うか、を確かめます。直っている作物・年だけ hide の行を外し（行ごとに判断。一括で外さない）、直っていないものは残します。ダイコン2007・2008、いちご2023、気候の hide も同じ手順で見直します
+**気候データの一部の年と収穫統計の2014〜2020年は取り込み不良の疑いがあります（既知・未修正）。取り込み直しは 2.0 の次の段階で行います。**
 
-**気候データの更新（気象庁・APIキー不要）**
+### 検収（check_questions.py）
 
-```bash
-python collect_climate.py
-```
-
-**収穫量統計の更新（e-Stat API キーが必要）**
-
-```bash
-python collect_harvest.py <あなたご自身のAPIキー>
-```
-
-e-Stat API キーの取得：[https://www.e-stat.go.jp/api/](https://www.e-stat.go.jp/api/)（無料・要登録）
-
-### リフレッシュ後の確認
-
-スクリプト実行後は `vegbook_diagnose` ツールで不足データがないか確認することを推奨します。
-
-Claude Code から：
-
-```
-vegbook_diagnose を実行して不足データを確認して
-```
-
-または MCP ツールを直接呼び出す：
-
-```python
-# Python から直接確認
-import sqlite3
-from pathlib import Path
-
-DB = Path("vegbook.db")
-conn = sqlite3.connect(DB)
-no_companion = conn.execute(
-    "SELECT COUNT(*) FROM crops WHERE id NOT IN (SELECT DISTINCT crop_id FROM companion_plants)"
-).fetchone()[0]
-no_seed = conn.execute(
-    "SELECT COUNT(*) FROM crops WHERE seed_or_seedling IS NULL"
-).fetchone()[0]
-conn.close()
-print(f"コンパニオン未登録: {no_companion}件 / seed_type未設定: {no_seed}件")
-```
+`data/questions.csv`（258問・作物群ごとに40問以上。栽培中と収穫後、「先人の智慧」で答えるべき問いの印つき。問いの型 `qtype`（why/how/what）・期待する原因の語 `expected_terms`（検収の目安で、出典のある事実ではない）・出どころ `origin` つき）を、
+`vegbook_trouble` / `vegbook_ask` に投げて、原因と出典が返ったかを一覧にします。
+判定は `sourced`（根拠にできる出典つきで答えられた）/ `provisional`（仮の答え）/ `link_missing`（関連記述はあるが原因につながっていない）/ `no_data`（データがない）/ `fail`（不合格：返った症状の作物が問いと違う `crop_mismatch`・「なぜ」の問いに保存方法しか返らない `why_storage_only`・期待する語が原因の名前にない `expected_terms_missing`・期待する保存方法が返らない `expected_method_missing`・方法の理由の語がない `reason_missing`）/ `undecidable`（判定不能：答えは返ったが期待語・期待する保存方法が空）。
+問いの型 `qtype` は why（原因）/ how（方法）/ what（事実）/ reason（方法の理由。なぜ干すか等）。期待語は原因の名前だけと照合します（reason と先人の智慧は対策文・保存手順も見る）。`expected_method` は答えに返ってほしい保存方法です。
 
 ---
 
@@ -614,8 +587,16 @@ SOFTWARE.
 
 ### データ
 
-農研機構・農林水産省・Wikipedia（CC BY-SA）および家庭菜園実践知見を元に整備。  
-データの二次利用・改変は出典を明記のうえ自由に行えます。
+データの出典は `data/sources.csv` が正です（`usable_as_evidence` が「根拠に使えるか」）。
+
+| id | 出典 | 根拠に使えるか |
+|---|---|---|
+| 1 | fieldfresh（スケジュール表。播種・収穫月の出所） | 使えない（利用許諾なし・転載方針未確認。公的資料で入れ替える予定） |
+| 2 | FAO Crop Information: Tomato | 使えない（どの列の出典か未特定・ライセンス未確認） |
+| 3・4 | 気象庁（気候）・e-Stat（収穫統計） | 使えない（統計データ `kind=statistics`。取得日の記録がなく、原因・対策・保存方法・作物の値の根拠には付けられない。政府標準利用規約・原文は未確認） |
+| 5〜9 | 農研機構・農林水産省・Wikipedia（CC BY-SA）・FAO・家庭菜園実践知見（READMEなどへの一括記載） | 使えない（個別の値との対応・引用箇所が確かめられない） |
+
+**ライセンス：データのライセンスは未定です（管理者の判断待ち）。** LICENSE ファイルはありません。「二次利用・改変は自由」とは言えません（出典1・7の利用条件が未解決のため）。
 
 ### 連絡先
 

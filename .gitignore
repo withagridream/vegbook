@@ -13,3 +13,4 @@ schedule.xlsx
 *.bak
 *.tmp
 .venv/
+*.building
