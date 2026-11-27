@@ -351,6 +351,7 @@ CREATE TABLE questions (
 -- row_key は行の自然キー（取り込み直しで行idが変わっても同じ行を指す）。「列=値」を | でつなぎ、列名の昇順に並べる。
 --   harvest_stats   : crop_name=ダイコン|year=2007
 --   climate_monthly : month=3|region=九州北部|year=2010   （region は regions.name）
+--   crops           : name=そら豆
 --   glossary        : term=BT剤 / それ以外の表: id=行id（removed は実在しない行のid）
 -- ビルドで「hide・note は指した先が1行だけ存在する／removed は存在しない」を照合する。
 -- action: hide=値を返さない（行は残す）/ removed=行をCSVから外した（記録のみ）/ note=注意書きのみ
@@ -362,7 +363,7 @@ CREATE TABLE data_issues (
     column_name TEXT,
     issue       TEXT NOT NULL,
     action      TEXT NOT NULL CHECK (action IN ('hide','removed','note')),
-    UNIQUE(table_name, row_key, action)
+    UNIQUE(table_name, row_key, action, column_name)
 );
 CREATE INDEX idx_data_issues_table ON data_issues(table_name, row_key);
 

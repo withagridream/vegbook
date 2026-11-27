@@ -183,6 +183,49 @@ def load_data_issues(conn: sqlite3.Connection, table: str) -> dict[str, tuple[se
             for r in rows}
 
 
+def load_row_issues(conn: sqlite3.Connection, table: str) -> dict[str, list[dict]]:
+    """data_issues から、表の行ごとの印（hide=値を返さない / note=値は返すが警告を付ける）を
+    {row_key: [{'action', 'cols', 'issue'}, ...]} で返す。作物の表（crops）の警告に使う。"""
+    try:
+        rows = conn.execute("SELECT row_key, column_name, issue, action FROM data_issues "
+                            "WHERE table_name=? AND action IN ('hide','note') ORDER BY id", (table,)).fetchall()
+    except sqlite3.OperationalError:   # 古いDB（data_issues がない）でも動く
+        return {}
+    out: dict[str, list[dict]] = {}
+    for r in rows:
+        out.setdefault(r['row_key'], []).append(
+            {'action': r['action'], 'issue': r['issue'],
+             'cols': {c.strip() for c in (r['column_name'] or '').split(',') if c.strip()}})
+    return out
+
+
+def apply_crop_issues(item: dict, crop_name: str, issues: dict[str, list[dict]], shown: dict[str, str],
+                      other: dict[str, str] | None = None) -> dict:
+    """作物の返り値 item に data_issues の印を反映する。
+    ・hide の列：出力のキーを None にして、warnings に理由を入れる（shown に入っている列だけ。表示言語の列）
+    ・note の列：値は返したまま、warnings に理由を入れる（shown に加えて other＝別言語の列も対象）
+    shown・other は {DBの列名: 出力のキー}。
+    """
+    marks = issues.get(issue_key(name=crop_name))
+    if not marks:
+        return item
+    other = other or {}
+    warnings: list[str] = []
+    for m in marks:
+        keys: list[str] = []
+        for col in sorted(m['cols']):
+            key = shown.get(col) or (other.get(col) if m['action'] == 'note' else None)
+            if key and key in item and key not in keys:
+                keys.append(key)
+        for key in keys:
+            if m['action'] == 'hide':
+                item[key] = None
+            warnings.append(f'{key}: {m["issue"]}' + ('（値は返していません）' if m['action'] == 'hide' else ''))
+    if warnings:
+        item['warnings'] = list(dict.fromkeys(warnings))
+    return item
+
+
 def _trigrams(text: str) -> set[str]:
     t = ''.join(text.split())
     return {t[i:i + 3] for i in range(len(t) - 2)}

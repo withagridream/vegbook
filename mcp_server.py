@@ -28,7 +28,7 @@ from mcp.server.fastmcp import FastMCP
 
 from vegbook_core import (
     STORAGE_METHODS, STORAGE_METHODS_EN, UNSOURCED, ask, kana_variants, resolve_crop,
-    issue_key, load_data_issues, source_info, source_usable, storage_rows, trouble,
+    apply_crop_issues, issue_key, load_data_issues, load_row_issues, source_info, source_usable, storage_rows, trouble,
 )
 
 DB = Path(__file__).parent / 'vegbook.db'
@@ -72,6 +72,32 @@ def _in_month_sql(start: str, end: str) -> str:
 # 対象の行・列・警告文は data/data_issues.csv（DBの data_issues 表）が持つ。action='hide' の行の列は None にして返す。
 # 出力のキー名（avg_temp_c など）とDBの列名の対応
 _CLIMATE_COLS = {'avg_temp': 'avg_temp_c', 'precipitation': 'precipitation_mm'}
+
+# 作物の表（crops）の列と、各ツールの出力キーの対応。data_issues の印（hide・note）を warnings に反映する。
+# shown=その言語で表示している列、other=別言語の列（note のときだけ対象にする）
+_TEXT_COLS = ('sunlight', 'watering', 'storage', 'harvest_sign', 'failure_points')
+_NUM_COLS = {'days_to_harvest': 'days_to_harvest', 'temp_min': 'temp_min', 'temp_max': 'temp_max',
+             'sow_start': 'sow_months', 'sow_end': 'sow_months',
+             'harvest_start': 'harvest_months', 'harvest_end': 'harvest_months'}
+
+
+def _detail_colmaps(lang: str) -> tuple[dict[str, str], dict[str, str]]:
+    ja = {c: c for c in _TEXT_COLS}
+    en = {c + '_en': c for c in _TEXT_COLS}
+    shown, other = (en, ja) if lang == 'en' else (ja, en)
+    return {**_NUM_COLS, **shown}, other
+
+
+_LIST_COLS = {'days_to_harvest': 'days_to_harvest', 'harvest_start': 'harvest', 'harvest_end': 'harvest'}
+
+
+def _ambiguity(res: dict) -> dict:
+    """名前が複数の作物に当たったとき（Taro＝サトイモ・タロイモ など）、候補をすべて返す。"""
+    if not res['also']:
+        return {}
+    return {'candidates': [res['crop']['name'], *res['also']],
+            'candidates_note': '入力した名前は複数の作物に当たります。先頭の作物の結果を返しています。'
+                               '別の作物なら、候補の名前（日本語）で指定し直してください。'}
 
 
 _kana_variants = kana_variants  # 互換用の別名（実体は vegbook_core.kana_variants）
@@ -124,6 +150,7 @@ def vegbook_search(
 
     query += ' ORDER BY c.difficulty, c.name'
     rows = conn.execute(query, params).fetchall()
+    issues = load_row_issues(conn, 'crops')
     conn.close()
 
     results = []
@@ -150,7 +177,9 @@ def vegbook_search(
                 'harvest': f"{r['harvest_start']}-{r['harvest_end']}月",
                 'environment': r['environment'],
             })
-    return results
+    cols = {'days_to_harvest': 'days_to_harvest', 'sow_start': 'sow', 'sow_end': 'sow',
+            'harvest_start': 'harvest', 'harvest_end': 'harvest'}
+    return [apply_crop_issues(it, r['name'], issues, cols) for it, r in zip(results, rows)]
 
 
 # ── ② 作物詳細 ──────────────────────────────────────────────────────
@@ -213,6 +242,7 @@ def vegbook_detail(name: str, lang: str = 'ja') -> dict:
         (res['crop']['id'],),
     ).fetchone()
     extras = _detail_extras(conn, row, lang)
+    issues = load_row_issues(conn, 'crops')
     conn.close()
 
     if lang == 'en':
@@ -257,8 +287,10 @@ def vegbook_detail(name: str, lang: str = 'ja') -> dict:
         }
     if res['also']:
         out['also_matches'] = res['also']
+    out.update(_ambiguity(res))
     out.update(extras)
-    return out
+    shown, other = _detail_colmaps(lang)
+    return apply_crop_issues(out, row['name'], issues, shown, other)
 
 
 # ── ③ 今月のおすすめ ────────────────────────────────────────────────
@@ -285,6 +317,7 @@ def vegbook_recommend(month: int | None = None, lang: str = 'ja') -> list[dict]:
            ORDER BY c.difficulty, c.days_to_harvest''',
         (month, month, month, month),
     ).fetchall()
+    issues = load_row_issues(conn, 'crops')
     conn.close()
 
     results = []
@@ -305,7 +338,7 @@ def vegbook_recommend(month: int | None = None, lang: str = 'ja') -> list[dict]:
                 'days_to_harvest': r['days_to_harvest'],
                 'harvest': f"{r['harvest_start']}-{r['harvest_end']}月",
             })
-    return results
+    return [apply_crop_issues(it, r['name'], issues, _LIST_COLS) for it, r in zip(results, rows)]
 
 
 # ── ④ コンパニオンプランツ ──────────────────────────────────────────
@@ -358,6 +391,7 @@ def vegbook_companion(crop_name: str, lang: str = 'ja') -> dict:
     }
     if res['also']:
         out['also_matches'] = res['also']
+    out.update(_ambiguity(res))
     return out
 
 

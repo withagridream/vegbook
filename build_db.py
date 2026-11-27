@@ -165,7 +165,7 @@ def check_data_issues(conn: sqlite3.Connection) -> list[str]:
             bad.append(f'data_issues id={r["id"]}: removed なのに {t} {r["row_key"]} が残っている')
         if r['action'] in ('hide', 'note') and n != 1:
             bad.append(f'data_issues id={r["id"]}: {t} {r["row_key"]} が{n}行に当たる（1行だけに当たる必要がある）')
-        if r['action'] == 'hide':
+        if r['action'] in ('hide', 'note'):
             cols = {c[1] for c in conn.execute(f'PRAGMA table_info({t})')}  # noqa: S608
             for c in (r['column_name'] or '').split(','):
                 if c.strip() and c.strip() not in cols:
