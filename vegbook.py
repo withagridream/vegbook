@@ -17,7 +17,7 @@ import textwrap
 from datetime import datetime
 from pathlib import Path
 
-from vegbook_core import resolve_crop
+from vegbook_core import crop_marks, load_row_issues, resolve_crop
 
 DB_PATH = Path(__file__).parent / "vegbook.db"
 
@@ -118,7 +118,31 @@ def name_col(lang):
     return "name_en" if lang == "en" else "name"
 
 
-def print_crop_row(row, lang):
+# data_issues（疑いのある値の台帳）の印を、CLI の表示に反映する。hide=（非表示：理由）／note=値の後に ※要確認：理由
+_NUM_MARK_COLS = {"days_to_harvest": "days", "sow_start": "sow", "sow_end": "sow",
+                  "harvest_start": "harvest", "harvest_end": "harvest", "temp_min": "temp", "temp_max": "temp"}
+_TEXT_MARK_COLS = ("sunlight", "watering", "storage", "harvest_sign", "failure_points")
+
+
+def marks_for(row, issues, lang):
+    """作物 row の印を {表示キー: {'hide': [...], 'note': [...]}} で返す（表示キー: days/sow/harvest/temp と文章欄の列名）。"""
+    ja = {c: c for c in _TEXT_MARK_COLS}
+    en = {c + "_en": c for c in _TEXT_MARK_COLS}
+    shown, other = (en, ja) if lang == "en" else (ja, en)
+    return crop_marks(row["name"], issues, {**_NUM_MARK_COLS, **shown}, other)
+
+
+def mark_notes(mk, key, indent="    "):
+    """note の理由を「※要確認：理由」の行にして返す。"""
+    return [wrap("※要確認：" + r, indent=indent) for r in mk.get(key, {}).get("note", [])]
+
+
+def hidden_text(mk, key):
+    hs = mk.get(key, {}).get("hide", [])
+    return "（非表示：" + "／".join(hs) + "）" if hs else None
+
+
+def print_crop_row(row, lang, mk=None):
     L = LABELS[lang]
     n = row[name_col(lang)] or row["name"]
     cat = row["category_en"] if lang == "en" else row["category"]
@@ -126,6 +150,12 @@ def print_crop_row(row, lang):
           f"{L['sow']}: {row['sow_start']}–{row['sow_end']}{L['month_unit']}  "
           f"{L['harvest']}: {row['harvest_start']}–{row['harvest_end']}{L['month_unit']}  "
           f"[{cat or '—'}]")
+    for key in ("sow", "harvest"):
+        h = hidden_text(mk or {}, key)
+        if h:
+            print(wrap(f"{L[key]}{h}", indent="    "))
+        for line in mark_notes(mk or {}, key):
+            print(line)
 
 
 # ------------------------------------------------------------------ search
@@ -160,6 +190,7 @@ def cmd_search(args):
 
     query += " ORDER BY cr.difficulty, cr.name"
     rows = conn.execute(query, params).fetchall()
+    issues = load_row_issues(conn, "crops")
     conn.close()
 
     if not rows:
@@ -171,7 +202,7 @@ def cmd_search(args):
     print(f" {header} ({len(rows)})")
     print(f"{'—'*60}")
     for r in rows:
-        print_crop_row(r, args.lang)
+        print_crop_row(r, args.lang, marks_for(r, issues, args.lang))
     print()
 
 
@@ -217,7 +248,9 @@ def cmd_detail(args):
         WHERE cp.crop_id = ?
     """, [crop_id]).fetchall()
 
+    issues = load_row_issues(conn, "crops")
     conn.close()
+    mk = marks_for(row, issues, args.lang)
 
     n = row[name_col(args.lang)] or row["name"]
     cat = row["category_en"] if args.lang == "en" else row["category"]
@@ -229,15 +262,31 @@ def cmd_detail(args):
     print(f"  {L['category']:<16}: {cat or '—'}")
     print(f"  {L['environment']:<16}: {env or '—'}")
     print(f"  {L['difficulty']:<16}: {stars(row['difficulty'])}")
-    if row["sow_start"]:
-        print(f"  {L['sow']:<16}: {row['sow_start']}–{row['sow_end']}{L['month_unit']}")
-    if row["harvest_start"]:
-        print(f"  {L['harvest']:<16}: {row['harvest_start']}–{row['harvest_end']}{L['month_unit']}")
-    if row["days_to_harvest"]:
-        print(f"  {L['days']:<16}: {row['days_to_harvest']}{L['days_unit']}")
-    if row["temp_min"]:
-        unit = "°C"
-        print(f"  {L['temp']:<16}: {row['temp_min']}–{row['temp_max']} {unit}")
+    def line(key, label, value):
+        """数値の項目を1行出す。hide なら（非表示：理由）、note なら値の後に ※要確認：理由。"""
+        h = hidden_text(mk, key)
+        if h:
+            print(wrap(f"{label:<16}: {h}", indent="  "))
+        elif value:
+            print(f"  {label:<16}: {value}")
+        else:
+            return
+        for t in mark_notes(mk, key):
+            print(t)
+
+    line("sow", L["sow"], f"{row['sow_start']}–{row['sow_end']}{L['month_unit']}" if row["sow_start"] else "")
+    line("harvest", L["harvest"], f"{row['harvest_start']}–{row['harvest_end']}{L['month_unit']}" if row["harvest_start"] else "")
+    line("days", L["days"], f"{row['days_to_harvest']}{L['days_unit']}" if row["days_to_harvest"] else "")
+    line("temp", L["temp"], f"{row['temp_min']}–{row['temp_max']} °C" if row["temp_min"] else "")
+
+    def text_block(key, label, value, header_prefix="\n  "):
+        h = hidden_text(mk, key)
+        if not (value or h):
+            return
+        print(f"{header_prefix}{label}:")
+        print(wrap(h) if h else wrap(value))
+        for t in mark_notes(mk, key, indent="  "):
+            print(t)
 
     sun = row["sunlight_en"] if args.lang == "en" else row["sunlight"]
     wat = row["watering_en"] if args.lang == "en" else row["watering"]
@@ -245,27 +294,17 @@ def cmd_detail(args):
     sig = row["harvest_sign_en"] if args.lang == "en" else row["harvest_sign"]
     sto = row["storage_en"] if args.lang == "en" else row["storage"]
 
-    if sun:
-        print(f"\n  {L['sunlight']}:")
-        print(wrap(sun))
-    if wat:
-        print(f"\n  {L['watering']}:")
-        print(wrap(wat))
+    text_block("sunlight", L["sunlight"], sun)
+    text_block("watering", L["watering"], wat)
     if row["planter_size"]:
         print(f"\n  {L['planter']}: {row['planter_size']}")
     if row["rotation_years"] is not None:
         rot = L["rotation_none"] if row["rotation_years"] == 0 \
               else f"{row['rotation_years']} {L['rotation_years']}"
         print(f"  {L['rotation']}: {rot}")
-    if fai:
-        print(f"\n  {L['failure']}:")
-        print(wrap(fai))
-    if sig:
-        print(f"\n  {L['harvest_sign']}:")
-        print(wrap(sig))
-    if sto:
-        print(f"\n  {L['storage']}:")
-        print(wrap(sto))
+    text_block("failure_points", L["failure"], fai)
+    text_block("harvest_sign", L["harvest_sign"], sig)
+    text_block("storage", L["storage"], sto)
 
     if fertilizers:
         print(f"\n  {L['fertilizers']}:")
@@ -309,6 +348,7 @@ def cmd_recommend(args):
         ORDER BY cr.name LIMIT 8
     """, [month] * 4).fetchall()
 
+    issues = load_row_issues(conn, "crops")
     conn.close()
 
     sow_label = f"{month}{L['month_unit']} {L['month_sow']}" if args.lang == "ja" \
@@ -321,7 +361,7 @@ def cmd_recommend(args):
     print(f"{'—'*60}")
     if sowable:
         for r in sowable:
-            print_crop_row(r, args.lang)
+            print_crop_row(r, args.lang, marks_for(r, issues, args.lang))
     else:
         print(f"  {L['no_result']}")
 
@@ -330,7 +370,7 @@ def cmd_recommend(args):
     print(f"{'—'*60}")
     if harvestable:
         for r in harvestable:
-            print_crop_row(r, args.lang)
+            print_crop_row(r, args.lang, marks_for(r, issues, args.lang))
     else:
         print(f"  {L['no_result']}")
     print()
