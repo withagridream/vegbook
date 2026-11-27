@@ -17,7 +17,7 @@ import tempfile
 from pathlib import Path
 
 from build_db import build
-from export_csv import export, TABLES
+from export_csv import export, ORDER, TABLES
 
 HERE = Path(__file__).parent
 LEGACY = ['regions', 'crop_categories', 'grow_environments', 'fertilizers', 'pests', 'pest_controls',
@@ -27,7 +27,7 @@ LEGACY = ['regions', 'crop_categories', 'grow_environments', 'fertilizers', 'pes
 
 def dump(conn: sqlite3.Connection, table: str) -> tuple[list[str], list[tuple]]:
     cols = [r[1] for r in conn.execute(f'PRAGMA table_info({table})')]
-    order = 'id'
+    order = ORDER.get(table, 'id')
     rows = conn.execute(f'SELECT {",".join(cols)}, {",".join("typeof(" + c + ")" for c in cols)} '  # noqa: S608
                         f'FROM {table} ORDER BY {order}').fetchall()
     return cols, [tuple(r) for r in rows]
@@ -72,6 +72,17 @@ def main() -> int:
         same = b.execute(q).fetchall() == c2.execute(q).fetchall()
         print(f'[{"OK" if same else "NG"}] chunks の再現性（2回のビルドで同一）: {b.execute("SELECT COUNT(*) FROM chunks").fetchone()[0]}件')
         fail += 0 if same else 1
+        # 4. リポジトリの vegbook.db と、CSV からビルドした DB が全表（chunks を含む）で一致する
+        repo_db = HERE / 'vegbook.db'
+        if repo_db.exists():
+            rdb = sqlite3.connect(f'{repo_db.resolve().as_uri()}?mode=ro', uri=True)
+            diff = []
+            for t in [*TABLES, 'chunks']:
+                if dump(rdb, t) != dump(b, t):
+                    diff.append(t)
+            print(f'[{"OK" if not diff else "NG"}] リポジトリの vegbook.db と CSV からのビルドが全表で一致'
+                  + (f'（不一致: {", ".join(diff)}）' if diff else f'（{len(TABLES) + 1}表）'))
+            fail += 1 if diff else 0
     print('結果:', '全て一致' if not fail else f'{fail}件の不一致')
     return 1 if fail else 0
 
