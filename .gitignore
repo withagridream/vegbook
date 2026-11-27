@@ -14,3 +14,7 @@ schedule.xlsx
 *.tmp
 .venv/
 *.building
+
+# 作業環境の設定（公開しない。中身は開かない）
+.mcp.json
+.claude/
