@@ -508,7 +508,7 @@ python3 export_csv.py [DB] [outdir]          # dump the DB to CSV (e.g. after co
 - `locator` must not be blank (also required for `wisdom=1`); a source with `usable_as_evidence=1` needs `url` and `retrieved_at`.
 - **Statistics sources** (`kind=statistics`: JMA, e-Stat) cannot back `trouble_causes`, `remedies`, `crop_storage` or `cause_conditions`.
 - **A provisional parent makes the child provisional**: `trouble_causes` needs `troubles` and `causes` to be `provisional=0`; `remedies` / `cause_conditions` need their `causes` parent to be `provisional=0`.
-- `evidence_count`, the acceptance check's `sourced` and `chunks.has_source` count only rows where the row and all parents are `provisional=0` and the source is usable. The judgement lives in one function, `vegbook_core.is_evidence()`.
+- `evidence_count`, the acceptance check's `sourced` and `chunks.has_source` count only rows where the row and all parents are `provisional=0` and the source is usable. The judgement lives in one function, `vegbook_core.is_evidence()`. The acceptance check counts `sourced` only when an evidenced cause (or storage row) itself matches the expected terms; a match on a provisional cause is `provisional`.
 - 0/1 columns and `lang` are restricted by CHECK constraints; any `PRAGMA foreign_key_check` violation stops the build.
 - **Pesticides**: remedies / pest_controls / chunks that contain a pesticide or product word (`PESTICIDE_TERMS` in `build_db.py`) without the label caution ("ラベルの適用作物") stop the build. Product and active-ingredient names are not published without a source.
 - Remedies containing a pesticide word (wettable powder, granules, emulsion, flowable, fungicide, etc.) must have `uses_pesticide=1` (and `uses_pesticide=1` requires `caution` by CHECK).

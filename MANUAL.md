@@ -507,7 +507,7 @@ python3 export_csv.py [DB] [出力先] [--force]  # DB を CSV に書き出す�
 - **関門**：`provisional=0` の行（正式な行）は `source_id` と引用箇所 `locator`（ページ・節・URLのアンカー）が必須で、その出典は `sources.usable_as_evidence=1`（個別の値の根拠に使える出典）でなければなりません。`wisdom=1` も同じです。`usable_as_evidence` の既定は0で、確認した出典だけを明示的に1にします（一括記載の id 5〜9・fieldfresh・FAO トマトは0）。
 - **統計データの出典**（`kind=statistics`。気象庁・e-Stat）は、`trouble_causes`・`remedies`・`crop_storage`・`cause_conditions` の根拠に付けられません。
 - **親が仮なら子も仮**：`trouble_causes` は親の `troubles`・`causes` が、`remedies`・`cause_conditions` は親の `causes` が、すべて `provisional=0` でなければ `provisional=0` にできません。
-- `evidence_count`（よくある原因かの裏付けの件数）・検収の `sourced`・`chunks.has_source` は、「行も親の行もすべて `provisional=0` で、根拠に使える出典がある」ものだけで数えます。判定は `vegbook_core.is_evidence()` の1か所だけです。
+- `evidence_count`（よくある原因かの裏付けの件数）・検収の `sourced`・`chunks.has_source` は、「行も親の行もすべて `provisional=0` で、根拠に使える出典がある」ものだけで数えます。判定は `vegbook_core.is_evidence()` の1か所だけです。検収の `sourced` は、さらに「出典のある原因（保存方法）そのものが期待語に当たる」ときだけで、仮の原因で期待語に当たった問いは `provisional` です。
 - 0/1の列（provisional・wisdom・uses_pesticide・is_positive など）と `lang`（ja/en）は CHECK で制限しています。外部キー違反（`PRAGMA foreign_key_check`）があれば止まります。
 - **chunks**：困りごとは「困りごと×原因」の単位で作ります。`has_source`・`provisional` は、その原因の判定（`is_evidence`）と同じで、根拠にできる chunk には根拠にできる対策だけを入れます。作物の文章欄の出典（`crop_field_sources`）も、`provisional=0`・根拠に使える出典（statistics 以外）・`locator` ありのものだけが根拠になります（既存の行は provisional=1）。
 - **引用箇所と出典の台帳**：`locator` は空白だけでは通りません。`wisdom=1` の行にも必須です。`usable_as_evidence=1` の出典は `url` と `retrieved_at` が必須です。

@@ -66,6 +66,7 @@ def judge(conn: sqlite3.Connection, q: sqlite3.Row) -> tuple[str, str]:
     期待語（expected_terms）の照合は原因の名前だけで行う（対策文は見ない）。
     例外：方法の理由（reason）と先人の智慧（wisdom=1）は、対策文・保存方法の手順も見る。
     期待語も期待する保存方法も空の問いは、答えが返っても合格にせず undecidable（判定不能）にする。
+    出典つき（sourced）は、出典のある原因（保存方法）そのものが期待語に当たるときだけ（仮の行で当たった合格は provisional）。
     """
     crop = q['crop']
     qt = q['qtype']
@@ -102,6 +103,9 @@ def judge(conn: sqlite3.Connection, q: sqlite3.Row) -> tuple[str, str]:
         if qt == 'reason' and terms and not _terms_hit(wide(causes, use), terms):
             return _fail('reason_missing', f'方法は返ったが、理由の語（{"・".join(terms[:4])}…）がない')
         ev = [s for s in use if s['has_source']]
+        # 方法の理由（reason）は、出典のある保存方法の側で理由の語に当たるときだけ出典つきにする
+        if ev and qt == 'reason' and terms and not _terms_hit(wide(causes, ev), terms):
+            ev = []
         if ev:
             return done('sourced', f'保存方法{len(ev)}件（出典あり）')
         return done('provisional', f'保存方法{len(use)}件（出典未登録・仮抽出）')
@@ -110,9 +114,14 @@ def judge(conn: sqlite3.Connection, q: sqlite3.Row) -> tuple[str, str]:
         if terms and not _terms_hit(text, terms):
             code = 'reason_missing' if qt == 'reason' else 'expected_terms_missing'
             return _fail(code, f'原因{len(causes)}件の名前に期待する語（{"・".join(terms[:4])}…）がない')
+        # 出典つき（sourced）は、出典のある原因そのものが期待語に当たるときだけ。
+        # 期待語には仮の原因で当たり、出典は別の原因にある、という合格を出さない
         ev = [c for c in causes if c['evidence_count'] > 0]
-        if ev:
+        ev_text = wide(ev, []) if (qt == 'reason' or q['wisdom']) else names(ev)
+        if ev and (not terms or _terms_hit(ev_text, terms)):
             return done('sourced', f'原因{len(ev)}件（出典あり）')
+        if ev:
+            return done('provisional', f'原因{len(causes)}件（出典つきの原因{len(ev)}件は期待する語に当たらない・残りは仮抽出）')
         return done('provisional', f'原因{len(causes)}件（出典未登録・仮抽出）')
     if trs and not matched:
         return _fail('crop_mismatch', f'返った症状{len(trs)}件の作物が問いと違う（{trs[0]["crop"]}など）')
