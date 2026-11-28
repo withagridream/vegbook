@@ -196,7 +196,7 @@ CREATE INDEX idx_crop_aliases_alias ON crop_aliases(alias);
 -- method: refrigerate=冷蔵 / room=常温・冷暗所 / freeze=冷凍 / dry=干す・乾燥 /
 --         pickle=漬ける / cure=キュアリング・追熟 / ground=土中・囲い
 -- provisional=1 は crops.storage の文章から機械的に切り出した仮の行（source_id は空）。
--- 出典付きの行は provisional=0 で入れる（段階2c）。
+-- 出典付きの行は provisional=0 で入れる。
 CREATE TABLE crop_storage (
     id                INTEGER PRIMARY KEY,
     crop_id           INTEGER NOT NULL REFERENCES crops(id),
@@ -222,7 +222,7 @@ CREATE TABLE crop_storage (
 );
 CREATE INDEX idx_crop_storage_crop ON crop_storage(crop_id);
 
--- ── 土（スキーマのみ。値は段階2cで出典付きで入れる）────
+-- ── 土（スキーマのみ。値はこれから出典付きで入れる）────
 CREATE TABLE crop_soil (
     crop_id                  INTEGER PRIMARY KEY REFERENCES crops(id),
     ph_min                   REAL,
@@ -244,7 +244,7 @@ CREATE TABLE crop_soil (
 
 -- ── 困りごと：症状 → 原因（複数）→ 条件 → 予防・対策 → 出典 ──────────
 -- phase: growing=栽培中 / postharvest=収穫後。provisional=1 は既存の文章から機械的に拾った仮の行
--- （出典未登録）。出典付きの行は provisional=0・source_id あり（段階2c）。
+-- （出典未登録）。出典付きの行は provisional=0・source_id あり。
 CREATE TABLE troubles (
     id               INTEGER PRIMARY KEY,
     symptom          TEXT NOT NULL,

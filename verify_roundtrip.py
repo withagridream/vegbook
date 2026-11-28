@@ -4,7 +4,7 @@
     python3 verify_roundtrip.py [--original 元のDB]
 
 検査:
-  1. 元のDB（--original。段階1までの vegbook.db）と、data/*.csv から作ったDBで、
+  1. 元のDB（--original。テキスト正本（data/*.csv）に移る前の vegbook.db）と、data/*.csv から作ったDBで、
      従来の13テーブルが全行・全列・型まで一致する
   2. 作ったDB → CSV に書き出し直したものが、data/*.csv とバイト単位で一致する（DB→CSV→DB の往復）
   3. 作ったDB を2回作って chunks が同じになる（生成が決まった順序で行われる）
@@ -36,7 +36,7 @@ def dump(conn: sqlite3.Connection, table: str) -> tuple[list[str], list[tuple]]:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument('--original', type=Path, default=None,
-                    help='段階1までの vegbook.db（省略すると 1. の比較を飛ばす。段階2a以降は応急処置・仮の行の整理で元と違うため）')
+                    help='テキスト正本（data/*.csv）に移る前の vegbook.db（省略すると 1. の比較を飛ばす。テキスト正本に移ってからは、誤りの応急処置と仮の行の整理で元と違うため）')
     a = ap.parse_args()
     fail = 0
     with tempfile.TemporaryDirectory() as td:

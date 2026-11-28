@@ -143,7 +143,7 @@ troubles ── trouble_causes ── causes ── cause_conditions   （作物
 ### crop_soil（スキーマのみ）
 
 作物ごとの適正pH範囲（`ph_min`・`ph_max`）、水はけ/保水の好み、合う土質、プランター用土の配合の目安、NPK要求の目安。
-各値に `*_source_id` を持つ。値は出典付きで入れる（段階2c）。
+各値に `*_source_id` を持つ。値は出典付きで入れる。
 
 ---
 
@@ -171,7 +171,7 @@ troubles ── trouble_causes ── causes ── cause_conditions   （作物
 | `watering_en` | TEXT | 水やり頻度（英語） |
 | `temp_min` | REAL | 適正最低気温（℃） |
 | `temp_max` | REAL | 適正最高気温（℃） |
-| `seed_or_seedling` | TEXT | 自由記述（`seed`・`seedling`・`both` の3値に正規化していない。実際は46種類の値が混ざる）。2c で正規化する対象 |
+| `seed_or_seedling` | TEXT | 自由記述（`seed`・`seedling`・`both` の3値に正規化していない。実際は46種類の値が混ざる）。今後正規化する対象 |
 | `price_min` | INTEGER | 種・苗の最低価格（円） |
 | `price_max` | INTEGER | 種・苗の最高価格（円） |
 | `planter_size` | TEXT | プランターサイズ目安 |

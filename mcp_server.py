@@ -33,7 +33,7 @@ from vegbook_core import (
 
 DB = Path(__file__).parent / 'vegbook.db'
 
-__version__ = '2.0.0-dev'  # 2.0 開発中（リリース表記は段階2cの完了後に決める）
+__version__ = '2.0.0-dev'  # 2.0 開発中（リリース表記は出典つきの入力が進んでから決める）
 
 mcp = FastMCP('vegbook')
 

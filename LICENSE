@@ -58,7 +58,7 @@ Exception 1: data derived from the Japan Meteorological Agency and e-Stat
   出典の表示と、加工した旨の表示が必要です。
 - 加工：このデータベースは、元の統計を取り込み、一部の値を「取り込み不良の疑い」として
   返さない処理をしています（data/data_issues.csv）。元の統計そのものではありません。
-- 利用規約の原文は、監査の整理で参照したもので、本文との照合は済んでいません（未確認）。
+- 上の扱いは、利用規約の原文とまだ照合していません（未確認）。
 
 Climate_monthly (JMA) and harvest_stats (e-Stat) follow the terms of use of their
 sources (Government Standard Terms of Use): cite the source and state that the

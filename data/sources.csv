@@ -1,8 +1,8 @@
 id,title,publisher,url,license,retrieved_at,checksum,note,kind,region,usable_as_evidence
-1,スケジュール表（家庭菜園を始めよう）,家庭菜園を始めよう（fieldfresh.xyz）,https://fieldfresh.xyz/convenient/schedule/,All Rights Reserved 表記あり（利用規約・転載方針は未確認。利用許諾なし）,2026-05-05,605e884c7563089b187ecec2d19bd3942ab29c4ae2293fbc8c48b8bd9de2c461,播種月・収穫月（sow_start/sow_end/harvest_start/harvest_end）の出所。関東の平野部が基準。checksum はローカルの schedule.xlsx（監査で同サイトの配布物と判断）の sha256。管理者決定：公的資料で確かめ直し、出典付きで入れ替える予定。,other,\N,0
+1,スケジュール表（家庭菜園を始めよう）,家庭菜園を始めよう（fieldfresh.xyz）,https://fieldfresh.xyz/convenient/schedule/,All Rights Reserved 表記あり（利用規約・転載方針は未確認。利用許諾なし）,2026-05-05,605e884c7563089b187ecec2d19bd3942ab29c4ae2293fbc8c48b8bd9de2c461,播種月・収穫月（sow_start/sow_end/harvest_start/harvest_end）の出所。関東の平野部が基準。checksum はローカルの schedule.xlsx（同サイトの配布物と判断）の sha256。管理者決定：公的資料で確かめ直し、出典付きで入れ替える予定。,other,\N,0
 2,FAO Crop Information: Tomato,FAO（国連食糧農業機関）,https://www.fao.org/land-water/databases-and-software/crop-information/tomato/en/,\N,2026-05-05,\N,トマト行の source_url に記載。どの列がこの資料由来かは未特定のため field=* で登録。ライセンス未確認。,official,\N,0
-3,気象庁 過去の気象データ（月ごとの値）,気象庁,https://www.data.jma.go.jp/obd/stats/etrn/,政府標準利用規約（出典の記載と加工した旨の記載が必要。監査の整理で、原文は未確認）,\N,\N,collect_climate.py の取得先（monthly_s3.php）。観測所：東京47662・大阪47772・福岡47807・仙台47590・札幌47412。取得日は記録なし。,statistics,\N,0
-4,野菜生産出荷統計（e-Stat 政府統計コード 00500215）,e-Stat（政府統計の総合窓口）,https://www.e-stat.go.jp/,政府標準利用規約（出典の記載と加工した旨の記載が必要。監査の整理で、原文は未確認）,\N,\N,collect_harvest.py の取得先（API）。取得日は記録なし。2014〜2020年ほか一部は取り込み不良の疑い（未修正）。,statistics,\N,0
+3,気象庁 過去の気象データ（月ごとの値）,気象庁,https://www.data.jma.go.jp/obd/stats/etrn/,政府標準利用規約（出典の記載と加工した旨の記載が必要。原文は未確認）,\N,\N,collect_climate.py の取得先（monthly_s3.php）。観測所：東京47662・大阪47772・福岡47807・仙台47590・札幌47412。取得日は記録なし。,statistics,\N,0
+4,野菜生産出荷統計（e-Stat 政府統計コード 00500215）,e-Stat（政府統計の総合窓口）,https://www.e-stat.go.jp/,政府標準利用規約（出典の記載と加工した旨の記載が必要。原文は未確認）,\N,\N,collect_harvest.py の取得先（API）。取得日は記録なし。2014〜2020年ほか一部は取り込み不良の疑い（未修正）。,statistics,\N,0
 5,農研機構の資料（一括記載）,農研機構,\N,\N,\N,\N,README と enrich_*.py 冒頭に出典として一括記載。個別の値との対応は確認できていないため crop_field_sources には紐づけていない。,research,\N,0
 6,農林水産省 普及資料（一括記載）,農林水産省,\N,\N,\N,\N,README と enrich_*.py 冒頭に出典として一括記載。個別の値との対応は未確認・未紐づけ。,official,\N,0
 7,Wikipedia（一括記載）,Wikimedia,\N,CC BY-SA（記載のみ。どの文章を取ったかは特定できない）,\N,\N,README と enrich_*.py 冒頭に記載。使用箇所は未特定・未紐づけ。,other,\N,0

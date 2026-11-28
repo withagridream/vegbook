@@ -17,7 +17,7 @@
                  reason_missing         方法の理由（reason）の問いで、理由の語が答えにない
   undecidable  答えは返ったが、期待語・期待する保存方法が空で、合っているか判定できない（合格にしない）
 問いの型（qtype）：why=原因を問う / how=方法を問う / what=事実・定義・期間を問う。
-段階2a・2b・2cを通した検収の基準。2cの進み具合は sourced の件数で見る。
+検収の基準。公的資料による出典つきの入力の進み具合は sourced の件数で見る。
 """
 import argparse
 import csv
