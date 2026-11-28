@@ -173,3 +173,4 @@ id,symptom,symptom_reading,phase,crop_id,category,lang,provisional,origin
 176,裂果,\N,growing,1,\N,ja,0,公的資料からの充填（2c 試し入れ）
 177,尻腐れ果,\N,growing,1,\N,ja,0,公的資料からの充填（2c 試し入れ）
 178,落花・着果不良,\N,growing,1,\N,ja,0,公的資料からの充填（2c 試し入れ）
+179,花落ち,\N,growing,19,\N,ja,0,公的資料からの充填（2c 試し入れ）
