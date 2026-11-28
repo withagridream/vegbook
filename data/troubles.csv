@@ -172,3 +172,4 @@ id,symptom,symptom_reading,phase,crop_id,category,lang,provisional,origin
 175,花が咲いて固くなる,\N,growing,114,\N,ja,1,既存データからの仮抽出
 176,裂果,\N,growing,1,\N,ja,0,公的資料からの充填（2c 試し入れ）
 177,尻腐れ果,\N,growing,1,\N,ja,0,公的資料からの充填（2c 試し入れ）
+178,落花・着果不良,\N,growing,1,\N,ja,0,公的資料からの充填（2c 試し入れ）

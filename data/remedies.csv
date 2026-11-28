@@ -14,3 +14,4 @@ id,cause_id,kind,text,caution,uses_pesticide,crop_id,source_id,lang,provisional,
 13,100,prevention,深耕により十分な根域を確保する,\N,0,1,13,ja,0,0,p.115「尻腐れ果」第2段落
 14,100,prevention,多量の追肥を避ける,\N,0,1,13,ja,0,0,p.116 冒頭（「尻腐れ果」第2段落の続き）
 15,99,treatment,発生前からカルシウム資材を葉面散布する,\N,0,1,13,ja,0,0,p.116 冒頭（「尻腐れ果」第2段落の続き）
+16,102,prevention,ハウス内の温度上昇を抑える（遮光・遮熱資材、外気導入）,\N,0,1,10,ja,0,0,1頁の表 宮城県（施設）対策欄
