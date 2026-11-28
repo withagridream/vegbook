@@ -17,7 +17,8 @@ import sys
 from pathlib import Path
 
 from export_csv import TABLES
-from vegbook_core import STORAGE_METHODS, format_days, is_evidence, issue_key, load_row_issues
+from vegbook_core import (STORAGE_METHODS, STORAGE_NOTE_COLS, TROUBLE_NOTE_COLS, crop_note_text, format_days,
+                          is_evidence, issue_key, load_row_issues)
 
 HERE = Path(__file__).parent
 NULL = '\\N'
@@ -195,6 +196,26 @@ def check_chunks_issues(conn: sqlite3.Connection) -> list[str]:
     return bad
 
 
+def check_hide_pairs(conn: sqlite3.Connection) -> list[str]:
+    """文章欄の hide は、日英の両方を挙げるか、もう片方に note を付けること（片方だけ隠して他方が漏れるのを防ぐ）。"""
+    bad: list[str] = []
+    text_cols = set(CROP_TEXT_FIELDS)
+    by_key: dict[str, dict[str, set[str]]] = {}
+    for r in conn.execute("SELECT row_key, column_name, action FROM data_issues WHERE table_name='crops'"):
+        d = by_key.setdefault(r['row_key'], {'hide': set(), 'note': set()})
+        if r['action'] in d:
+            d[r['action']] |= {c.strip() for c in (r['column_name'] or '').split(',') if c.strip()}
+    for key, d in by_key.items():
+        for col in d['hide']:
+            base = col[:-3] if col.endswith('_en') else col
+            if base not in text_cols:
+                continue
+            pair = base if col.endswith('_en') else base + '_en'
+            if pair not in d['hide'] and pair not in d['note']:
+                bad.append(f'data_issues crops {key}: {col} を hide にしているのに、対の {pair} が hide でも note でもない')
+    return bad
+
+
 def build_chunks(conn: sqlite3.Connection) -> int:
     """文章欄から chunks を作る。順序は決まっているので、同じCSVからは同じ結果になる。
 
@@ -220,6 +241,7 @@ def build_chunks(conn: sqlite3.Connection) -> int:
 
     # 作物の文章欄：data_issues の hide の列からは chunk を作らない／note の列の chunk は仮（provisional=1・has_source=0）で警告つき
     crop_issues = load_row_issues(conn, 'crops')
+    crop_names = {r[0]: r[1] for r in conn.execute('SELECT id, name FROM crops')}
     for r in conn.execute(f'SELECT id, name, {", ".join(CROP_TEXT_FIELDS)}, '
                           + ', '.join(f + '_en' for f in CROP_TEXT_FIELDS) + ' FROM crops ORDER BY id'):  # noqa: S608
         cid = r[0]
@@ -240,8 +262,10 @@ def build_chunks(conn: sqlite3.Connection) -> int:
         label = STORAGE_METHODS.get(r['method'], r['method'])
         days = format_days(r['duration_min_days'], r['duration_max_days'])
         text = ('（先人の智慧）' if r['wisdom'] else '') + f'保存（{label}）：{r["steps"] or ""}' + (f'［{days}］' if days else '')
+        # 作物の storage 欄に note があれば、保存方法の chunk にも警告を引き継ぐ（仮・根拠にしない）
+        warn = crop_note_text(crop_issues, crop_names.get(r['crop_id']), STORAGE_NOTE_COLS)
         out.append(row(r['source_id'], r['crop_id'], r['lang'], 'storage_' + r['method'], text,
-                       'crop_storage', r['id'], r['provisional']))
+                       'crop_storage', r['id'], 1 if warn else r['provisional'], warn))
     for r in conn.execute('SELECT id, term, reading, plain_ja, plain_en FROM glossary ORDER BY id'):
         reading = f'（{r["reading"]}）' if r['reading'] else ''
         out.append(row(None, None, 'ja', 'glossary', f'{r["term"]}{reading}：{r["plain_ja"]}', 'glossary', r['id']))
@@ -253,8 +277,10 @@ def build_chunks(conn: sqlite3.Connection) -> int:
             'SELECT c.id, c.name, tc.source_id, tc.provisional FROM trouble_causes tc '
             'JOIN causes c ON c.id = tc.cause_id WHERE tc.trouble_id = ? ORDER BY c.id, tc.id', (t['id'],)).fetchall()
         section = 'trouble_' + t['phase']
+        # 作物の failure_points・harvest_sign 欄に note があれば、困りごとの chunk にも警告を引き継ぐ
+        twarn = crop_note_text(crop_issues, crop_names.get(t['crop_id']), TROUBLE_NOTE_COLS)
         if not tcs:   # 原因がまだつながっていない症状は、症状だけの chunk（仮）
-            out.append(row(None, t['crop_id'], t['lang'], section, f'症状：{t["symptom"]}', 'troubles', t['id'], 1))
+            out.append(row(None, t['crop_id'], t['lang'], section, f'症状：{t["symptom"]}', 'troubles', t['id'], 1, twarn))
             continue
         # 困りごと×原因の単位で chunk を作る。has_source・provisional は、その原因の判定（is_evidence）と同じにする
         for cid in dict.fromkeys(c['id'] for c in tcs):
@@ -266,6 +292,8 @@ def build_chunks(conn: sqlite3.Connection) -> int:
             rem = conn.execute(
                 'SELECT text, caution, provisional, source_id FROM remedies WHERE cause_id = ? '
                 'AND (crop_id IS NULL OR crop_id IS ?) ORDER BY id', (cid, t['crop_id'])).fetchall()
+            if twarn:
+                ev = []
             if ev:   # 根拠にできる chunk には、根拠にできる対策だけを入れる（仮の対策・出典のない対策は入れない）
                 rem = [r for r in rem if is_evidence(r['source_id'] in usable, r['provisional'], cprov.get(cid, 1))]
             parts = [f'症状：{t["symptom"]}', f'原因：{mine[0]["name"]}']
@@ -275,7 +303,7 @@ def build_chunks(conn: sqlite3.Connection) -> int:
             if cau:
                 parts.append('注意：' + '／'.join(cau))
             out.append(row(min(ev) if ev else None, t['crop_id'], t['lang'], section,
-                           '\n'.join(parts), 'troubles', t['id'], 0 if ev else 1))
+                           '\n'.join(parts), 'troubles', t['id'], 0 if ev else 1, twarn))
     conn.executemany(
         'INSERT INTO chunks (source_id, crop_id, lang, section, text, is_translation, ref_table, ref_id, '
         'provisional, has_source, warning) VALUES (?,?,?,?,?,?,?,?,?,?,?)', out)
@@ -302,7 +330,7 @@ def build(out: Path, data_dir: Path = HERE / 'data') -> dict[str, int]:
         # 検査に1つでも違反があればビルドを止める（既存の vegbook.db は壊れない）
         bad_fk = conn.execute('PRAGMA foreign_key_check').fetchall()
         problems = [f'外部キー違反: {tuple(b)}' for b in bad_fk]
-        problems += check_gate(conn) + check_pesticide(conn) + check_data_issues(conn) + check_chunks_issues(conn)
+        problems += check_gate(conn) + check_pesticide(conn) + check_data_issues(conn) + check_hide_pairs(conn) + check_chunks_issues(conn)
         if problems:
             raise SystemExit(f'ビルドを中止します（{len(problems)}件の検査違反）:\n  ' + '\n  '.join(problems[:30]))
         ok = conn.execute('PRAGMA integrity_check').fetchone()[0]

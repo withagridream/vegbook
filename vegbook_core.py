@@ -199,6 +199,20 @@ def load_row_issues(conn: sqlite3.Connection, table: str) -> dict[str, list[dict
     return out
 
 
+def crop_note_text(issues: dict[str, list[dict]], crop_name: str | None, cols: set[str]) -> str | None:
+    """作物の data_issues の note のうち、列 cols に当たるものの理由を「／」でつないで返す（なければ None）。
+    保存方法・困りごとなど、作物の文章欄から作った情報へ警告を引き継ぐために使う。"""
+    if not crop_name:
+        return None
+    notes = [m['issue'] for m in issues.get(issue_key(name=crop_name), []) if m['action'] == 'note' and m['cols'] & cols]
+    return '／'.join(dict.fromkeys(notes)) or None
+
+
+# 警告の引き継ぎ先：保存方法は storage の欄、困りごとは failure_points・harvest_sign の欄の印を引き継ぐ
+STORAGE_NOTE_COLS = {'storage', 'storage_en'}
+TROUBLE_NOTE_COLS = {'failure_points', 'failure_points_en', 'harvest_sign', 'harvest_sign_en'}
+
+
 def crop_marks(crop_name: str, issues: dict[str, list[dict]], shown: dict[str, str],
                other: dict[str, str] | None = None) -> dict[str, dict[str, list[str]]]:
     """作物の data_issues の印を、出力のキーごとにまとめる。{出力キー: {'hide': [理由...], 'note': [理由...]}}。
@@ -350,17 +364,25 @@ def search_troubles(conn: sqlite3.Connection, query: str, crop_id: int | None = 
             scored.append((score, t['id'], t))
     scored.sort(key=lambda x: (-x[0], x[1]))
     out = []
+    issues = load_row_issues(conn, 'crops')
     for _, _, t in scored[:limit]:
         causes = conn.execute(
             '''SELECT c.*, tc.cause_id, MIN(tc.provisional) AS tc_provisional, MIN(tc.crop_id) AS crop_id
                FROM trouble_causes tc JOIN causes c ON c.id = tc.cause_id
                WHERE tc.trouble_id = ? GROUP BY tc.cause_id ORDER BY tc.cause_id''', (t['id'],)).fetchall()
-        out.append({
+        warning = crop_note_text(issues, t['crop_name'], TROUBLE_NOTE_COLS)   # 作物の文章欄の印を引き継ぐ
+        item = {
             'symptom': t['symptom'], 'phase': t['phase'], 'crop': t['crop_name'],
             'provisional': bool(t['provisional']),
             'causes': [_cause_detail(conn, t['id'], c, crop_id if crop_id is not None else t['crop_id'],
                                      bool(t['provisional'])) for c in causes],
-        })
+            'warning': warning,
+        }
+        for c in item['causes']:
+            c['warning'] = warning
+            if warning:
+                c['evidence_count'] = 0   # 元の文章欄に疑いがあるので、根拠に数えない
+        out.append(item)
     return out
 
 
@@ -446,6 +468,8 @@ def storage_rows(conn: sqlite3.Connection, crop_id: int, methods: list[str] | No
         sql += ' AND method IN (' + ','.join('?' * len(methods)) + ')'
         params += methods
     out = []
+    cname = conn.execute('SELECT name FROM crops WHERE id = ?', (crop_id,)).fetchone()
+    warning = crop_note_text(load_row_issues(conn, 'crops'), cname['name'] if cname else None, STORAGE_NOTE_COLS)
     for r in conn.execute(sql + ' ORDER BY id', params):
         src = source_info(conn, r['source_id'])
         out.append({'method': r['method'], 'method_label': STORAGE_METHODS.get(r['method'], r['method']),
@@ -453,7 +477,8 @@ def storage_rows(conn: sqlite3.Connection, crop_id: int, methods: list[str] | No
                     'duration_min_days': r['duration_min_days'], 'duration_max_days': r['duration_max_days'],
                     'temp_c_min': r['temp_c_min'], 'temp_c_max': r['temp_c_max'], 'caution': r['caution'],
                     'source': src, 'provisional': bool(r['provisional']),
-                    'has_source': is_evidence(source_usable(src), r['provisional']), 'wisdom': bool(r['wisdom'])})
+                    'has_source': is_evidence(source_usable(src), r['provisional']) and not warning,
+                    'wisdom': bool(r['wisdom']), 'warning': warning})
     return out
 
 
