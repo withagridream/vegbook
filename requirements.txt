@@ -1,5 +1,5 @@
 # MCP サーバー（vegbook_* ツール群）
-mcp
+mcp==1.27.1
 
 
 # データ収集スクリプト（collect_harvest.py）
