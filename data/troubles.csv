@@ -170,3 +170,4 @@ id,symptom,symptom_reading,phase,crop_id,category,lang,provisional,origin
 172,根腐れ,\N,growing,107,\N,ja,1,既存データからの仮抽出
 173,とう立ち・水切れ・密植,\N,growing,108,\N,ja,1,既存データからの仮抽出
 175,花が咲いて固くなる,\N,growing,114,\N,ja,1,既存データからの仮抽出
+176,裂果,\N,growing,1,\N,ja,0,公的資料からの充填（2c 試し入れ）

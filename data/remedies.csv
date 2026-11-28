@@ -8,3 +8,5 @@ id,cause_id,kind,text,caution,uses_pesticide,crop_id,source_id,lang,provisional,
 7,78,prevention,2〜3年ごとの掘り上げが必要,\N,0,63,\N,ja,1,0,\N
 8,8,prevention,梅雨期の管理が重要,\N,0,72,\N,ja,1,0,\N
 9,86,prevention,プランターまたは区画管理が推奨,\N,0,92,\N,ja,1,0,\N
+10,94,prevention,敷わらと適切な灌水で土壌水分の極端な変動を避ける,\N,0,1,13,ja,0,0,p.115「裂果」第3段落
+11,94,prevention,生育後半は灌水量を少しずつ減らしていく,\N,0,1,13,ja,0,0,p.115「裂果」第3段落末
