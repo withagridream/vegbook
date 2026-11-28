@@ -435,9 +435,10 @@ def search_chunks(conn: sqlite3.Connection, query: str, crop_id: int | None = No
         base = ('SELECT ch.*, bm25(chunks_fts) AS score FROM chunks_fts JOIN chunks ch ON ch.id = chunks_fts.rowid '
                 'WHERE chunks_fts MATCH ?' if match else 'SELECT ch.*, 0 AS score FROM chunks ch WHERE 1=1')
         sql = f'{base}{filt}{cond} ORDER BY {order}score, ch.id LIMIT ?'  # noqa: S608 – 固定文字列だけを連結
-        args = ([match] if match else []) + params + like_of(must) + like_of(rank) + [limit]
+        args = ([match] if match else []) + params + like_of(must) + like_of(rank) + [limit * 3]
         return conn.execute(sql, args).fetchall()
 
+    pool = limit * 3   # 出典つきを先に並べ替えるため、多めに取ってから limit 件に絞る
     fqs = [fq for fq in (_fts_query(t) for t in long_tokens) if fq]
     if fqs:
         rows = run(' AND '.join(f'({fq})' for fq in fqs), [], short_tokens)
@@ -451,7 +452,21 @@ def search_chunks(conn: sqlite3.Connection, query: str, crop_id: int | None = No
         else:   # 全体が2文字以下：語ごとの部分一致のOR
             cond = ' OR '.join("ch.text LIKE ? ESCAPE '\\'" for _ in tokens)
             rows = conn.execute(f'SELECT ch.*, 0 AS score FROM chunks ch WHERE ({cond}){filt} ORDER BY ch.id LIMIT ?',  # noqa: S608
-                                like_of(tokens) + params + [limit]).fetchall()
+                                like_of(tokens) + params + [limit * 3]).fetchall()
+    # 症状の言い換え（trouble_aliases）：質問に「実が割れる」などが含まれていたら、正式な症状名（裂果）を含む文章も
+    # 候補に足す（OR で広げる。2文字の症状名もあるので部分一致で探す）
+    syms = trouble_alias_symptoms(conn, query)
+    if syms:
+        cond = ' OR '.join("ch.text LIKE ? ESCAPE '\\'" for _ in syms)
+        extra = conn.execute(
+            f'SELECT ch.*, 0 AS score FROM chunks ch WHERE ({cond}){filt} '  # noqa: S608 – 固定文字列だけを連結
+            'ORDER BY ch.has_source DESC, ch.provisional, ch.id LIMIT ?',
+            [f'%{_like_escape(x)}%' for x in syms] + params + [limit * 3]).fetchall()
+        seen = {r['id'] for r in rows}
+        rows = list(rows) + [r for r in extra if r['id'] not in seen]
+    # 同じくらい当たるなら、根拠にできる（has_source=1・provisional=0）切れ端を先に出す（元の順位は保つ安定ソート）
+    # （has_source=1 は provisional=0 を含む。それ以外は元の順位のまま）
+    rows = sorted(rows, key=lambda r: not r['has_source'])[:limit]
     out = []
     for r in rows:
         crop = conn.execute('SELECT name FROM crops WHERE id=?', (r['crop_id'],)).fetchone() if r['crop_id'] else None
