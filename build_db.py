@@ -278,7 +278,9 @@ def build_chunks(conn: sqlite3.Connection) -> int:
             'JOIN causes c ON c.id = tc.cause_id WHERE tc.trouble_id = ? ORDER BY c.id, tc.id', (t['id'],)).fetchall()
         section = 'trouble_' + t['phase']
         # 作物の failure_points・harvest_sign 欄に note があれば、困りごとの chunk にも警告を引き継ぐ
-        twarn = crop_note_text(crop_issues, crop_names.get(t['crop_id']), TROUBLE_NOTE_COLS)
+        # （文章欄から拾った仮の困りごとだけ。出典つきの行は文章欄に依らないので引き継がない）
+        twarn = (crop_note_text(crop_issues, crop_names.get(t['crop_id']), TROUBLE_NOTE_COLS)
+                 if t['provisional'] else None)
         if not tcs:   # 原因がまだつながっていない症状は、症状だけの chunk（仮）
             out.append(row(None, t['crop_id'], t['lang'], section, f'症状：{t["symptom"]}', 'troubles', t['id'], 1, twarn))
             continue

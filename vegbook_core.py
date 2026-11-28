@@ -370,7 +370,8 @@ def search_troubles(conn: sqlite3.Connection, query: str, crop_id: int | None = 
             '''SELECT c.*, tc.cause_id, MIN(tc.provisional) AS tc_provisional, MIN(tc.crop_id) AS crop_id
                FROM trouble_causes tc JOIN causes c ON c.id = tc.cause_id
                WHERE tc.trouble_id = ? GROUP BY tc.cause_id ORDER BY tc.cause_id''', (t['id'],)).fetchall()
-        warning = crop_note_text(issues, t['crop_name'], TROUBLE_NOTE_COLS)   # 作物の文章欄の印を引き継ぐ
+        # 作物の文章欄の印を引き継ぐ（文章欄から機械的に拾った仮の困りごとだけ。出典つきの行は文章欄に依らない）
+        warning = crop_note_text(issues, t['crop_name'], TROUBLE_NOTE_COLS) if t['provisional'] else None
         item = {
             'symptom': t['symptom'], 'phase': t['phase'], 'crop': t['crop_name'],
             'provisional': bool(t['provisional']),
