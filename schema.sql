@@ -389,7 +389,9 @@ CREATE TABLE chunks (
     provisional    INTEGER NOT NULL DEFAULT 0 CHECK (provisional IN (0,1)),
     has_source     INTEGER NOT NULL DEFAULT 0 CHECK (has_source IN (0,1)),
     -- warning: data_issues の note（疑いのある値）に当たる chunk の警告文。hide の値は chunk を作らない
-    warning        TEXT
+    warning        TEXT,
+    -- locator: 根拠の引用箇所（has_source=1 のときだけ入る。困りごとは原因の引用箇所＋対策の引用箇所）
+    locator        TEXT
 );
 CREATE INDEX idx_chunks_crop ON chunks(crop_id);
 CREATE VIRTUAL TABLE chunks_fts USING fts5(

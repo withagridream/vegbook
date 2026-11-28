@@ -92,6 +92,28 @@ Values derived from FAO Crop Information (sources id=2) are of unverified status
 (columns unidentified, license unchecked) and are not covered until verified.
 
 ----------------------------------------------------------------------
+例外4：農林水産省ウェブサイト掲載資料に由来するデータ
+Exception 4: data derived from documents on the MAFF website
+----------------------------------------------------------------------
+- 対象：sources id=10〜13（農林水産省「高温による被害と産地毎の取組事例」のトマト・
+  ナス・キュウリの表、農林水産省ウェブサイトに掲載の「秋田県野菜栽培技術指針 トマト」）を
+  出典とする troubles・causes・trouble_causes・remedies の行
+- 農林水産省ウェブサイトのコンテンツの利用ルール（公共データ利用規約 第1.0版・PDL1.0）に
+  従ってください。出典の表示と、編集・加工した旨の表示が必要です。
+  https://www.maff.go.jp/j/use/link.html
+- 加工：原文の表・本文から、症状・原因・対策を要約して取り出し、表の形に分けています。
+  原文そのものではなく、国（または府省・県）が作成したものでもありません。
+- sources id=13 は秋田県が発行した資料です（平成19年3月）。PDF に権利表記はありませんが、
+  県の著作物である可能性があるため、ここでは事実の要約と短い引用箇所（locator）だけを
+  載せ、本文の転載はしていません。
+
+Rows citing sources id=10-13 (MAFF heat-damage case tables; Akita Prefecture's
+vegetable cultivation guideline hosted on the MAFF website) follow the MAFF website
+terms (Public Data License 1.0): cite the source and state that it was edited. The
+rows are summaries extracted from the documents, not the originals. Source 13 was
+published by Akita Prefecture; only facts and short locators are included.
+
+----------------------------------------------------------------------
 そのほか
 ----------------------------------------------------------------------
 - sources id=5〜9（READMEなどへの一括記載）は、個別の値の根拠として使えません。

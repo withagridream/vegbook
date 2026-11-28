@@ -473,7 +473,7 @@ def search_chunks(conn: sqlite3.Connection, query: str, crop_id: int | None = No
         out.append({'crop': crop['name'] if crop else None, 'section': r['section'], 'lang': r['lang'],
                     'text': r['text'], 'source': source_info(conn, r['source_id']),
                     'provisional': bool(r['provisional']), 'has_source': bool(r['has_source']),
-                    'warning': r['warning']})
+                    'locator': r['locator'], 'warning': r['warning']})
     return out
 
 

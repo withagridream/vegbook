@@ -225,19 +225,21 @@ def build_chunks(conn: sqlite3.Connection) -> int:
     out: list[tuple] = []
     usable = {r[0] for r in conn.execute('SELECT id FROM sources WHERE usable_as_evidence = 1')}
 
-    def src(crop_id: int, field: str) -> int | None:
-        # provisional=0（対象列・引用箇所を確認済み）で、根拠に使える出典（statistics 以外）だけ
+    def src(crop_id: int, field: str) -> tuple[int | None, str | None]:
+        # provisional=0（対象列・引用箇所を確認済み）で、根拠に使える出典（statistics 以外）だけ。出典と引用箇所を返す
         r = conn.execute(
-            'SELECT MIN(f.source_id) FROM crop_field_sources f JOIN sources s ON s.id = f.source_id '
-            "WHERE f.crop_id=? AND f.field=? AND f.provisional=0 AND s.usable_as_evidence=1 AND s.kind <> 'statistics'",
-            (crop_id, field)).fetchone()
-        return r[0]
+            'SELECT f.source_id, f.locator FROM crop_field_sources f JOIN sources s ON s.id = f.source_id '
+            "WHERE f.crop_id=? AND f.field=? AND f.provisional=0 AND s.usable_as_evidence=1 AND s.kind <> 'statistics' "
+            'ORDER BY f.source_id LIMIT 1', (crop_id, field)).fetchone()
+        return (r[0], r[1]) if r else (None, None)
 
-    def row(source_id, crop_id, lang, section, text, ref_table, ref_id, provisional=0, warning=None):
+    def row(source_id, crop_id, lang, section, text, ref_table, ref_id, provisional=0, warning=None, locator=None):
         # 根拠にできる判定は vegbook_core.is_evidence の1か所だけ（親が仮かどうかは呼び出し側が provisional に含める）
+        # 引用箇所（locator）は根拠にできる chunk だけに入れる
         ok = is_evidence(source_id in usable, provisional)
         sid = source_id if ok else None
-        return (sid, crop_id, lang, section, text, 0, ref_table, ref_id, 1 if provisional else 0, 1 if ok else 0, warning)
+        return (sid, crop_id, lang, section, text, 0, ref_table, ref_id, 1 if provisional else 0, 1 if ok else 0, warning,
+                locator if ok else None)
 
     # 作物の文章欄：data_issues の hide の列からは chunk を作らない／note の列の chunk は仮（provisional=1・has_source=0）で警告つき
     crop_issues = load_row_issues(conn, 'crops')
@@ -256,16 +258,17 @@ def build_chunks(conn: sqlite3.Connection) -> int:
                 if notes:
                     out.append(row(None, cid, lang, field, str(val).strip(), 'crops', cid, 1, '／'.join(notes)))
                 else:
-                    out.append(row(src(cid, fld), cid, lang, field, str(val).strip(), 'crops', cid))
+                    sid, loc = src(cid, fld)
+                    out.append(row(sid, cid, lang, field, str(val).strip(), 'crops', cid, locator=loc))
     for r in conn.execute('SELECT id, crop_id, method, steps, duration_min_days, duration_max_days, '
-                          'source_id, lang, wisdom, provisional FROM crop_storage ORDER BY id'):
+                          'source_id, lang, wisdom, provisional, locator FROM crop_storage ORDER BY id'):
         label = STORAGE_METHODS.get(r['method'], r['method'])
         days = format_days(r['duration_min_days'], r['duration_max_days'])
         text = ('（先人の智慧）' if r['wisdom'] else '') + f'保存（{label}）：{r["steps"] or ""}' + (f'［{days}］' if days else '')
         # 作物の storage 欄に note があれば、保存方法の chunk にも警告を引き継ぐ（仮・根拠にしない）
         warn = crop_note_text(crop_issues, crop_names.get(r['crop_id']), STORAGE_NOTE_COLS)
         out.append(row(r['source_id'], r['crop_id'], r['lang'], 'storage_' + r['method'], text,
-                       'crop_storage', r['id'], 1 if warn else r['provisional'], warn))
+                       'crop_storage', r['id'], 1 if warn else r['provisional'], warn, r['locator']))
     for r in conn.execute('SELECT id, term, reading, plain_ja, plain_en FROM glossary ORDER BY id'):
         reading = f'（{r["reading"]}）' if r['reading'] else ''
         out.append(row(None, None, 'ja', 'glossary', f'{r["term"]}{reading}：{r["plain_ja"]}', 'glossary', r['id']))
@@ -274,7 +277,7 @@ def build_chunks(conn: sqlite3.Connection) -> int:
     cprov = {r[0]: r[1] for r in conn.execute('SELECT id, provisional FROM causes')}
     for t in conn.execute('SELECT * FROM troubles ORDER BY id'):
         tcs = conn.execute(
-            'SELECT c.id, c.name, tc.source_id, tc.provisional FROM trouble_causes tc '
+            'SELECT c.id, c.name, tc.source_id, tc.provisional, tc.locator FROM trouble_causes tc '
             'JOIN causes c ON c.id = tc.cause_id WHERE tc.trouble_id = ? ORDER BY c.id, tc.id', (t['id'],)).fetchall()
         section = 'trouble_' + t['phase']
         # 作物の failure_points・harvest_sign 欄に note があれば、困りごとの chunk にも警告を引き継ぐ
@@ -288,11 +291,12 @@ def build_chunks(conn: sqlite3.Connection) -> int:
         for cid in dict.fromkeys(c['id'] for c in tcs):
             mine = [c for c in tcs if c['id'] == cid]
             # 親の困りごと・親の原因が仮なら、つながりが provisional=0 でも根拠にしない
-            ev = [c['source_id'] for c in mine
-                  if is_evidence(c['source_id'] in usable, c['provisional'], t['provisional'], cprov.get(cid, 1))]
+            evrows = [c for c in mine
+                      if is_evidence(c['source_id'] in usable, c['provisional'], t['provisional'], cprov.get(cid, 1))]
+            ev = [c['source_id'] for c in evrows]
             # 対策は、この原因の対策で、この困りごとの作物に当てはまるものだけ（crop_id が空は全作物向け）
             rem = conn.execute(
-                'SELECT text, caution, provisional, source_id FROM remedies WHERE cause_id = ? '
+                'SELECT text, caution, provisional, source_id, locator FROM remedies WHERE cause_id = ? '
                 'AND (crop_id IS NULL OR crop_id IS ?) ORDER BY id', (cid, t['crop_id'])).fetchall()
             if twarn:
                 ev = []
@@ -304,11 +308,18 @@ def build_chunks(conn: sqlite3.Connection) -> int:
             cau = [r['caution'] for r in rem if r['caution']]
             if cau:
                 parts.append('注意：' + '／'.join(cau))
+            # 引用箇所：chunk の出典（いちばん小さい出典id）の原因の引用箇所と、同じ出典の対策の引用箇所
+            loc = None
+            if ev:
+                sid0 = min(ev)
+                cl = list(dict.fromkeys(c['locator'] for c in evrows if c['source_id'] == sid0 and c['locator']))
+                rl = list(dict.fromkeys(r['locator'] for r in rem if r['source_id'] == sid0 and r['locator']))
+                loc = '原因：' + '／'.join(cl) + ('　対処：' + '／'.join(rl) if rl else '')
             out.append(row(min(ev) if ev else None, t['crop_id'], t['lang'], section,
-                           '\n'.join(parts), 'troubles', t['id'], 0 if ev else 1, twarn))
+                           '\n'.join(parts), 'troubles', t['id'], 0 if ev else 1, twarn, loc))
     conn.executemany(
         'INSERT INTO chunks (source_id, crop_id, lang, section, text, is_translation, ref_table, ref_id, '
-        'provisional, has_source, warning) VALUES (?,?,?,?,?,?,?,?,?,?,?)', out)
+        'provisional, has_source, warning, locator) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', out)
     conn.execute("INSERT INTO chunks_fts(chunks_fts) VALUES('rebuild')")
     return len(out)
 

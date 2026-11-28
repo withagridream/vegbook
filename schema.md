@@ -132,6 +132,8 @@ troubles ── trouble_causes ── causes ── cause_conditions   （作物
 
 `source_id`・`provisional`・`has_source`：根拠にできる行（行も親も provisional=0・根拠に使える出典あり）のときだけ `source_id` が入り `has_source=1`。
 
+`locator`：根拠の引用箇所。`has_source=1` のときだけ入る。困りごとの chunk は「原因：（原因の引用箇所）　対処：（同じ出典の対策の引用箇所）」の形。
+
 ### crop_aliases（名前解決）
 
 `kind`：`name`=正式名 / `name_en`=英語名 / `name_en_shared`=他の作物と重複する英語名（Bell Pepper・Taro・Turnip の2件目。曖昧なときの優先度は最低）/

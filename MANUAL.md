@@ -533,7 +533,7 @@ python3 export_csv.py [DB] [出力先] [--force]  # DB を CSV に書き出す�
 
 - `data/data_issues.csv`：取り込み不良などが疑われる値（表名・行の自然キー `row_key`・列・問題・対処）。`action=hide` の値は MCP の `vegbook_climate` / `vegbook_harvest_stats` が返さず、警告文を付けます（コードの定数ではなくデータが持ちます）。行は自然キー（収穫統計は `crop_name=ダイコン|year=2007`、気候は `month=3|region=九州北部|year=2010`）で指すので、取り込み直しで行idが変わっても別の行を隠すことはありません。ビルドが「指した先が1行だけ存在するか」を照合します。
 - `data/trouble_aliases.csv`：利用者の言い回し→正式な症状名（例：実が割れる→裂果、すが入る→す入り、二股→又根）。`vegbook_trouble` / `vegbook_ask` の症状検索で使います。
-- `chunks` には `provisional`（仮の行由来か）と `has_source`（根拠に使える出典があるか）が付き、検索結果に出ます。
+- `chunks` には `provisional`（仮の行由来か）と `has_source`（根拠に使える出典があるか）、`locator`（根拠の引用箇所。`has_source=1` のときだけ）が付き、検索結果に出ます。
 
 ### 引退したスクリプト
 

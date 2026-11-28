@@ -528,7 +528,7 @@ Rows with `provisional=1` in troubles / causes / storage were cut mechanically o
 
 - `data/data_issues.csv`: values suspected of import errors (table, natural-key `row_key`, column, issue, action). Rows are addressed by natural key (`crop_name=ダイコン|year=2007`, `month=3|region=九州北部|year=2010`), so a re-import that changes row ids cannot hide the wrong row; the build checks each key hits exactly one row. Values with `action=hide` are withheld by the MCP tools `vegbook_climate` / `vegbook_harvest_stats` with a warning (the data holds this, not code constants).
 - `data/trouble_aliases.csv`: user wording -> formal symptom name (e.g. 実が割れる -> 裂果), used by symptom search.
-- `chunks` carries `provisional` and `has_source` and returns them in search results.
+- `chunks` carries `provisional`, `has_source` and `locator` (the cited location, set only when `has_source=1`) and returns them in search results.
 
 ### Retired scripts
 
