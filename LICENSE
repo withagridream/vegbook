@@ -1,0 +1,99 @@
+vegbook / withagridream
+Copyright (c) 2026 withagridream
+
+このリポジトリは、コードとデータで別のライセンスを使います。
+This repository uses separate licenses for code and data.
+
+======================================================================
+1. コード / Code — MIT License
+   対象：*.py・*.sql・*.conf などのプログラム・設定、build_db.py・schema.sql を含む
+======================================================================
+
+MIT License
+
+Copyright (c) 2026 withagridream
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+======================================================================
+2. データ / Data — CC BY 4.0
+   対象：data/*.csv と vegbook.db のうち、作者が作成した部分
+   https://creativecommons.org/licenses/by/4.0/
+======================================================================
+
+Data in data/*.csv and vegbook.db that was created by the author is licensed
+under the Creative Commons Attribution 4.0 International License (CC BY 4.0):
+https://creativecommons.org/licenses/by/4.0/
+Attribution: "withagridream (vegbook)".
+
+作者が作成したデータは、表示（クレジット）を条件に、利用・改変・再配布できます。
+クレジットの例：「出典：withagridream（vegbook）」。改変した場合はその旨を示してください。
+
+下の例外は、この CC BY 4.0 の対象外です。
+The following exceptions are NOT covered by the CC BY 4.0 grant above.
+
+----------------------------------------------------------------------
+例外1：気象庁・e-Stat 由来のデータ
+Exception 1: data derived from the Japan Meteorological Agency and e-Stat
+----------------------------------------------------------------------
+- 対象：climate_monthly（気象庁「過去の気象データ」。sources id=3）、
+  harvest_stats（e-Stat「野菜生産出荷統計」政府統計コード 00500215。sources id=4）
+- それぞれの利用規約（政府標準利用規約）に従ってください。
+  出典の表示と、加工した旨の表示が必要です。
+- 加工：このデータベースは、元の統計を取り込み、一部の値を「取り込み不良の疑い」として
+  返さない処理をしています（data/data_issues.csv）。元の統計そのものではありません。
+- 利用規約の原文は、監査の整理で参照したもので、本文との照合は済んでいません（未確認）。
+
+Climate_monthly (JMA) and harvest_stats (e-Stat) follow the terms of use of their
+sources (Government Standard Terms of Use): cite the source and state that the
+data was processed. The data here was imported and partly withheld as suspected
+import errors; it is not the original statistics.
+
+----------------------------------------------------------------------
+例外2：fieldfresh 由来の月データ
+Exception 2: sowing/harvest month data derived from fieldfresh
+----------------------------------------------------------------------
+- 対象：sources id=1（家庭菜園を始めよう／fieldfresh.xyz のスケジュール表）に由来する
+  播種月・収穫月（crops の sow_start・sow_end・harvest_start・harvest_end のうち
+  data/crop_field_sources.csv で source_id=1 が付いた29作物の値）
+- このライセンスの対象外です。権利を確認できていません（All Rights Reserved の表記あり。
+  利用許諾なし）。公的資料で確かめ直して入れ替える予定です。入れ替えるまで、
+  これらの値の再利用は、元の権利者の許諾を確かめてから行ってください。
+
+These month values (29 crops with source_id=1 in crop_field_sources) are NOT
+licensed here: their rights are unverified and they are scheduled to be replaced
+with values from public sources.
+
+----------------------------------------------------------------------
+例外3：FAO 由来のデータ
+Exception 3: data derived from FAO
+----------------------------------------------------------------------
+- 対象：sources id=2（FAO Crop Information: Tomato）に由来する値
+- 扱いは未確認です（どの列がこの資料由来か未特定で、ライセンスも未確認）。
+  確認できるまで、このライセンスの対象外として扱ってください。
+
+Values derived from FAO Crop Information (sources id=2) are of unverified status
+(columns unidentified, license unchecked) and are not covered until verified.
+
+----------------------------------------------------------------------
+そのほか
+----------------------------------------------------------------------
+- sources id=5〜9（READMEなどへの一括記載）は、個別の値の根拠として使えません。
+  データ出典の一覧と、根拠に使えるかどうかは data/sources.csv を見てください。
+- データの正確性は保証しません。栽培の結果は自己責任でお願いします。

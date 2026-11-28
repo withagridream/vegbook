@@ -568,7 +568,7 @@ python3 export_csv.py [DB] [出力先] [--force]  # DB を CSV に書き出す�
 ```
 MIT License
 
-Copyright (c) 2026 withagridream@gmail.com
+Copyright (c) 2026 withagridream
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -600,7 +600,10 @@ SOFTWARE.
 | 3・4 | 気象庁（気候）・e-Stat（収穫統計） | 使えない（統計データ `kind=statistics`。取得日の記録がなく、原因・対策・保存方法・作物の値の根拠には付けられない。政府標準利用規約・原文は未確認） |
 | 5〜9 | 農研機構・農林水産省・Wikipedia（CC BY-SA）・FAO・家庭菜園実践知見（READMEなどへの一括記載） | 使えない（個別の値との対応・引用箇所が確かめられない） |
 
-**ライセンス：データのライセンスは未定です（管理者の判断待ち）。** LICENSE ファイルはありません。「二次利用・改変は自由」とは言えません（出典1・7の利用条件が未解決のため）。
+**ライセンス**：コードは MIT License、データ（`data/*.csv`・`vegbook.db` のうち作者が作成した部分）は CC BY 4.0（https://creativecommons.org/licenses/by/4.0/ 。表示が条件）です。全文は `LICENSE` を見てください。次は CC BY 4.0 の対象外です。
+- 気象庁・e-Stat 由来のデータ（`climate_monthly`・`harvest_stats`）：それぞれの利用規約（政府標準利用規約）に従います。出典の表示と、加工した旨（一部の値を取り込み不良の疑いとして返さない処理）の表示が必要です。
+- fieldfresh 由来の月データ（出典 id=1。29作物の播種・収穫月）：権利未確認のため対象外で、公的資料に入れ替える予定です。
+- FAO 由来（出典 id=2）：扱いは未確認です。
 
 ### 連絡先
 

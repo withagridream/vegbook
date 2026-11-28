@@ -386,5 +386,5 @@ chunks（生成物）＋ chunks_fts（FTS5 trigram）
 
 ## ライセンス
 
-データ出典: `data/sources.csv` が正（README のデータの項を参照）。データのライセンスは未定（管理者の判断待ち）。  
+データ出典: `data/sources.csv` が正（README のデータの項を参照）。ライセンスはコード MIT・データ CC BY 4.0（例外あり。`LICENSE` を参照）。  
 コード: MIT License — Copyright (c) 2026 withagridream@gmail.com

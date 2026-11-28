@@ -552,7 +552,7 @@ Rows with `provisional=1` in troubles / causes / storage were cut mechanically o
 ```
 MIT License
 
-Copyright (c) 2026 withagridream@gmail.com
+Copyright (c) 2026 withagridream
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -584,7 +584,10 @@ The source of truth for data sources is `data/sources.csv` (`usable_as_evidence`
 | 3, 4 | JMA (climate), e-Stat (harvest statistics) | No (statistics, `kind=statistics`; no retrieval date recorded; cannot back causes, remedies, storage or crop values; Government Standard Terms of Use, original text unchecked) |
 | 5-9 | NARO, MAFF, Wikipedia (CC BY-SA), FAO, home-gardening field notes (blanket mentions in README etc.) | No (cannot be tied to individual values or passages) |
 
-**License: the data license is undecided (waiting for the maintainer's decision).** There is no LICENSE file, and "free secondary use" cannot be claimed (the terms of sources 1 and 7 are unresolved).
+**License**: code is under the MIT License; data (the author-created parts of `data/*.csv` and `vegbook.db`) is under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/ ; attribution required). See `LICENSE` for the full text. Not covered by CC BY 4.0:
+- Data derived from JMA and e-Stat (`climate_monthly`, `harvest_stats`): follow their terms of use (Government Standard Terms of Use); cite the source and state that the data was processed (some values are withheld as suspected import errors).
+- Sowing/harvest month data derived from fieldfresh (source id=1; 29 crops): rights unverified, to be replaced with public sources.
+- FAO-derived data (source id=2): status unverified.
 
 ### Contact
 
